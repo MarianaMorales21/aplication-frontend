@@ -60,19 +60,17 @@ const _nav = [
     name: 'Trucks',
     to: '/buttons',
     icon: <CIcon icon={cilTruck} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'General Information',
-        to: '/buttons/buttons',
-      },
-    ],
   },
   {
     component: CNavGroup,
-    name: 'Invoices',
+    name: 'Order',
     icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
     items: [
+      {
+        component: CNavItem,
+        name: 'Order Details',
+        to: '/forms/form-control',
+      },
       {
         component: CNavItem,
         name: 'Invoices Control',
