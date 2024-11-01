@@ -22,7 +22,7 @@ const Login = () => {
         <CRow className="justify-content-center">
           <CCol md={8}>
             <CCardGroup>
-              <CCard className="p-4" style={{ backgroundColor:"	#2898ee"}}>
+              <CCard className="p-4">
                 <CCardBody>
                   <CForm>
                     <h1>Login</h1>
@@ -45,22 +45,20 @@ const Login = () => {
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} className="px-4">
+                        <CButton color="primary" className="px-4">
                           Login
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
-                            <Link to='/forgotpassword'> 
-                              <CButton style={{color:"white"}} className="px-0">
-                                Forgot password?
-                              </CButton>
-                            </Link>
+                        <CButton color="link" className="px-0">
+                          Forgot password?
+                        </CButton>
                       </CCol>
                     </CRow>
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard style={{width: '44%', backgroundColor:'#c4dafa'}}>
+              <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
                 <CCardBody className="text-center">
                   <div>
                     <h2>Sign up</h2>
@@ -68,7 +66,7 @@ const Login = () => {
                     You are not registered?, do it now and you will have access to all our services allowing you to have information instantly
                     </p>
                     <Link to="/register">
-                      <CButton style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} className="mt-3" active tabIndex={-1}>
+                      <CButton color="primary" className="mt-3" active tabIndex={-1}>
                         Register Now!
                       </CButton>
                     </Link>
