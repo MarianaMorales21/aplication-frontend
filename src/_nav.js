@@ -28,7 +28,7 @@ const _nav = [
   },
   {
     component: CNavTitle,
-    name: 'Theme',
+    name: 'Modules',
   },
   {
     component: CNavItem,

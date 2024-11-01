@@ -15,19 +15,18 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
-
 const Login = () => {
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
-      <CContainer>
+      <CContainer style={{borderColor:'black'}}>
         <CRow className="justify-content-center">
           <CCol md={8}>
             <CCardGroup>
-              <CCard className="p-4">
+              <CCard className="p-4" style={{ backgroundColor:"	#2898ee"}}>
                 <CCardBody>
                   <CForm>
                     <h1>Login</h1>
-                    <p className="text-body-secondary">Sign In to your account</p>
+                    <h5 className="text-body-secondary"  style={{ Color:"white"}}>Sign In to your account</h5>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
@@ -46,29 +45,30 @@ const Login = () => {
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4">
+                        <CButton style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} className="px-4">
                           Login
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
-                        <CButton color="link" className="px-0">
-                          Forgot password?
-                        </CButton>
+                            <Link to='/forgotpassword'> 
+                              <CButton style={{color:"white"}} className="px-0">
+                                Forgot password?
+                              </CButton>
+                            </Link>
                       </CCol>
                     </CRow>
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
+              <CCard style={{width: '44%', backgroundColor:'#c4dafa'}}>
                 <CCardBody className="text-center">
                   <div>
                     <h2>Sign up</h2>
                     <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                      tempor incididunt ut labore et dolore magna aliqua.
+                    You are not registered?, do it now and you will have access to all our services allowing you to have information instantly
                     </p>
                     <Link to="/register">
-                      <CButton color="primary" className="mt-3" active tabIndex={-1}>
+                      <CButton style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} className="mt-3" active tabIndex={-1}>
                         Register Now!
                       </CButton>
                     </Link>
