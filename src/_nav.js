@@ -74,7 +74,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Invoices Control',
-        to: '/forms/form-control',
+        to: '/invoices',
       },
     ],
   },

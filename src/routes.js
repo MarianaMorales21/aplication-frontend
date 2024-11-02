@@ -10,6 +10,7 @@ const Clients= React.lazy(() => import('./views/clients/Clients'))
 const Drivers= React.lazy(() => import('./views/drivers/Drivers'))
 const Materials= React.lazy(()=> import('./views/materials/Materials'))
 const Flota= React.lazy(()=> import('./views/flota/flota'))
+const Invoices= React.lazy(()=> import('./views/invoices/Invoices'))
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'))
@@ -66,6 +67,7 @@ const routes = [
   { path: '/drivers', name:'Drivers', element: Drivers},
   { path: '/materials', name:'Materials', element: Materials},
   { path: '/flota', name:'Flota', element: Flota},
+  { path: '/invoices', name:'Invoices', element: Invoices},
 ]
 
 export default routes
