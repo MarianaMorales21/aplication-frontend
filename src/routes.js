@@ -6,6 +6,7 @@ const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 const Forgotpassword = React.lazy(() => import('./views/pages/forgotpassword/forgotpassword'))
 const Users= React.lazy(() => import('./views/Users/Users'))
+const Clients= React.lazy(() => import('./views/clients/Clients'))
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'))
@@ -58,6 +59,7 @@ const routes = [
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/forgotpassword', name: 'forgotpassword', element: Forgotpassword},
   { path: '/Users', name: 'Users', element: Users},
+  { path: '/clients', name:'Clients', element: Clients}
 ]
 
 export default routes
