@@ -88,7 +88,7 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Materials',
-     to: '/buttons/buttons',
+     to: '/materials',
     icon: <CIcon icon={cilTerrain} customClassName="nav-icon" />,
   },
   {
