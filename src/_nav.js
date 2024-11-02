@@ -94,7 +94,7 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Flota',
-     to: '/buttons/buttons',
+     to: '/flota',
     icon: <CIcon icon={cilGrain} customClassName="nav-icon" />,
   },
   {
