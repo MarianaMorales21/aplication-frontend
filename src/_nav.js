@@ -40,13 +40,13 @@ const _nav = [
   {
     component: CNavGroup,
     name: 'Drivers',
-    to: '/base',
+    to: '/drivers',
     icon: <CIcon icon={cilAsteriskCircle} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
         name: 'Generial Information',
-        to: '/base/accordion',
+        to: '/Drivers',
       },
       {
         component: CNavItem,

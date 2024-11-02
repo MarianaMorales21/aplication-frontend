@@ -12,11 +12,10 @@ import {
     CFormInput, 
     CContainer
  } from '@coreui/react';
-
-const Users = () => {
+const Drivers = () => {
   return (
     <div>
-      <h1>List of users</h1>
+      <h1>List of Drivers</h1>
       <div>
         <CNavbar style={{border: '1px solid gray', borderRadius:'10px', marginBottom:'10px', backgroundColor:'white'}}>
         <CContainer style={{display:'flex'}}>
@@ -25,48 +24,44 @@ const Users = () => {
                 <CButton type="submit" style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} variant="outline">
                     Search
                 </CButton>
-                <CFormInput type="date" className="me-2" style={{marginLeft:'15px'}} />
-                <CButton type="submit" style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} variant="outline">
-                    Search
-                </CButton>
-                <CFormInput type='search' className="me-2" style={{marginLeft:'15px'}} placeholder="Search for role"/>
-                <CButton type="submit" style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} variant="outline">
-                    Search
-                </CButton>
             </CForm>
-            <h6>Nro. Users: 2</h6>
+            <h6>Nro. Drivers: 2</h6>
         </CContainer>
+        
         </CNavbar>
         </div>
       <CTable style={{border: '1px solid gray', borderRadius:'50px'}}>
         <CTableHead>
           <CTableRow>
-            <CTableHeaderCell>ID</CTableHeaderCell>
+            <CTableHeaderCell>DNI</CTableHeaderCell>
             <CTableHeaderCell>Name</CTableHeaderCell>
             <CTableHeaderCell>Email</CTableHeaderCell>
-            <CTableHeaderCell>Rol</CTableHeaderCell>
-            <CTableHeaderCell>Status</CTableHeaderCell>
+            <CTableHeaderCell>Phone</CTableHeaderCell>
+            <CTableHeaderCell>Address</CTableHeaderCell>
+            <CTableHeaderCell>License Expiration Date</CTableHeaderCell>
             <CTableHeaderCell>Options</CTableHeaderCell>
           </CTableRow>
         </CTableHead>
         <CTableBody>
           <CTableRow>
-            <CTableDataCell>{'1'}</CTableDataCell>
+            <CTableDataCell>{'30781815'}</CTableDataCell>
             <CTableDataCell>{'Mariana Morales'}</CTableDataCell>
             <CTableDataCell>{'Marianamorales2110@gmail.com'}</CTableDataCell>
-            <CTableDataCell>{'Driver'}</CTableDataCell>
-            <CTableDataCell>{'Active'}</CTableDataCell>
+            <CTableDataCell>{'0412-1617297'}</CTableDataCell>
+            <CTableDataCell>{'5ta Avenida de San Cristobal'}</CTableDataCell>
+            <CTableDataCell>{'21/10/2024'}</CTableDataCell>
             <CTableDataCell>
             <CButton style={{backgroundColor:'green', marginRight:'10px', color:'white'}}>Edit</CButton>
             <CButton style={{backgroundColor:'red', marginRight:'10px', color:'white'}}>Delete</CButton>
             </CTableDataCell>
           </CTableRow>
           <CTableRow>
-            <CTableDataCell>{'2'}</CTableDataCell>
+            <CTableDataCell>{'30781864'}</CTableDataCell>
             <CTableDataCell>{'Jose Morales'}</CTableDataCell>
             <CTableDataCell>{'Josemorales@gmail.com'}</CTableDataCell>
-            <CTableDataCell>{'Client'}</CTableDataCell>
-            <CTableDataCell>{'Inactive'}</CTableDataCell>
+            <CTableDataCell>{'0412-1617297'}</CTableDataCell>
+            <CTableDataCell>{'5ta Avenida de San Cristobal'}</CTableDataCell>
+            <CTableDataCell>{'21/10/2024'}</CTableDataCell>
             <CTableDataCell>
             <CButton style={{backgroundColor:'green', marginRight:'10px', color:'white'}}>Edit</CButton>
             <CButton style={{backgroundColor:'red', marginRight:'10px', color:'white'}}>Delete</CButton>
@@ -74,11 +69,8 @@ const Users = () => {
           </CTableRow>
         </CTableBody>
       </CTable>
-      <CButton type="submit" style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} variant="outline">
-       New User
-        </CButton>
     </div>
   );
 };
 
-export default Users;
+export default Drivers;
