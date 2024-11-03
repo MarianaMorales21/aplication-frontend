@@ -51,7 +51,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Working hours',
-        to: '/base/breadcrumbs',
+        to: '/working_hours',
       },
     ],
   },
@@ -69,7 +69,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Order Details',
-        to: '/forms/form-control',
+        to: '/order_details',
       },
       {
         component: CNavItem,
