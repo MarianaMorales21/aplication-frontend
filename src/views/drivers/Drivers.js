@@ -1,18 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { 
-    CTable, 
-    CTableBody, 
-    CTableHead, 
-    CTableHeaderCell, 
-    CTableRow, 
-    CTableDataCell, 
-    CButton, 
-    CNavbar,
-    CForm,
-    CFormInput, 
-    CContainer
- } from '@coreui/react';
+  CTable, 
+  CTableBody, 
+  CTableHead, 
+  CTableHeaderCell, 
+  CTableRow, 
+  CTableDataCell, 
+  CButton, 
+  CNavbar,
+  CForm,
+  CFormInput, 
+  CContainer,
+  CModal, 
+  CModalHeader, 
+  CModalTitle, 
+  CModalBody, 
+  CModalFooter,
+  CCol, 
+  CFormSelect
+} from '@coreui/react';
 const Drivers = () => {
+  const [visible, setVisible] = useState(false);
+  const [visibleSm, setVisibleSm] = useState(false);
   return (
     <div>
       <h1>List of Drivers</h1>
@@ -51,8 +60,8 @@ const Drivers = () => {
             <CTableDataCell>{'5ta Avenida de San Cristobal'}</CTableDataCell>
             <CTableDataCell>{'21/10/2024'}</CTableDataCell>
             <CTableDataCell>
-            <CButton style={{backgroundColor:'green', marginRight:'10px', color:'white'}}>Edit</CButton>
-            <CButton style={{backgroundColor:'red', marginRight:'10px', color:'white'}}>Delete</CButton>
+            <CButton style={{backgroundColor:'green', marginRight:'10px', color:'white'}} onClick={() => setVisibleSm(!visibleSm)}>Edit</CButton>
+            <CButton style={{backgroundColor:'red', marginRight:'10px', color:'white'}} onClick={() => setVisible(!visible)}>Delete</CButton>
             </CTableDataCell>
           </CTableRow>
           <CTableRow>
@@ -63,13 +72,112 @@ const Drivers = () => {
             <CTableDataCell>{'5ta Avenida de San Cristobal'}</CTableDataCell>
             <CTableDataCell>{'21/10/2024'}</CTableDataCell>
             <CTableDataCell>
-            <CButton style={{backgroundColor:'green', marginRight:'10px', color:'white'}}>Edit</CButton>
-            <CButton style={{backgroundColor:'red', marginRight:'10px', color:'white'}}>Delete</CButton>
+            <CButton style={{backgroundColor:'green', marginRight:'10px', color:'white'}} onClick={() => setVisibleSm(!visibleSm)}>Edit</CButton>
+            <CButton style={{backgroundColor:'red', marginRight:'10px', color:'white'}} onClick={() => setVisible(!visible)}>Delete</CButton>
             </CTableDataCell>
           </CTableRow>
         </CTableBody>
       </CTable>
-    </div>
+
+          <CModal visible={visible} onClose={() => setVisible(false)}>
+          <CModalHeader>
+          <CModalTitle>Attention</CModalTitle>
+          </CModalHeader>
+          <CModalBody>Are you sure to remove this driver from the system?</CModalBody>
+          <CModalFooter>
+          <CButton style={{ backgroundColor: 'green', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => setVisible(false)}>
+              Cancel
+          </CButton>
+          <CButton style={{ backgroundColor: 'red', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => setVisible(false)}>
+              Delete
+          </CButton>
+          </CModalFooter>
+          </CModal>
+      <CModal size="sm" visible={visibleSm} onClose={() => setVisibleSm(false)}>
+      <CModalHeader>
+        <CModalTitle>Edit Driver</CModalTitle>
+      </CModalHeader>
+      <CModalBody>
+          <h6>Nro. User: 5012</h6>
+          <h6>DNI: 30781815</h6>
+          <h6>Name Driver: Mariana Morales</h6>
+      <CForm className="row g-3">
+          <CCol>
+              <CFormSelect id="type" label="Limitations License" style={{borderColor:'black'}}>
+              <option>Choose...</option>
+              <option>Spectacles</option>
+              <option>Cardiology</option>
+              </CFormSelect>
+          </CCol>
+          <CCol md={6}>
+                <CFormInput id="date" label="Date of Issue License" type='date' style={{borderColor:'black'}}/>
+            </CCol>
+            <CCol md={6}>
+                <CFormInput id="date" label="Expiration Date" type='date' style={{borderColor:'black'}}/>
+            </CCol>
+            <CCol>
+              <CFormSelect id="sex" label="Sex" style={{borderColor:'black'}}>
+              <option>Choose...</option>
+              <option>Female</option>
+              <option>Male</option>
+              </CFormSelect>
+          </CCol>
+          <CCol md={6}>
+              <CButton style={{backgroundColor:'red', borderColor:'black', color:'white', marginBottom:'10px'}} type="submit" onClick={() => setVisibleLg(false)} >
+                  Cancel
+              </CButton>
+              <CButton style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} type="submit" onClick={() => setVisible(!visible)}>Add Changes</CButton>
+          </CCol>
+      </CForm>
+      </CModalBody>
+      </CModal>
+      <h2>New Driver</h2>
+      <div>
+      <CNavbar style={{border: '1px solid gray', borderRadius:'10px', marginBottom:'10px', backgroundColor:'white'}}>
+      <CContainer>
+          <CForm>    
+          <CCol md={12}>
+              <CFormInput placeholder="Name User" id="Name" label="Name User" type='search' style={{borderColor:'black'}}/>
+          </CCol>
+          <h6 style={{marginTop:'15px'}}>Data Found:</h6>
+            <p>
+              Name:<br></br>          
+              DNI:<br/>
+              Email: <br/>
+              Phone:<br/>
+              Address:<br/>
+            </p>
+            <div style={{borderTop: '2px solid black', width:'800px'}}>
+            <CCol md={4} style={{marginTop:'10px'}}>
+              <CFormSelect id="type" label="Limitations License" style={{borderColor:'black'}}>
+              <option>Choose...</option>
+              <option>Spectacles</option>
+              <option>Cardiology</option>
+              </CFormSelect>
+          </CCol >
+          <CCol md={6} style={{marginTop:'10px'}}>
+                <CFormInput id="date" label="Date of Issue License" type='date' style={{borderColor:'black'}}/>
+            </CCol>
+            <CCol md={6} style={{marginTop:'10px'}}>
+                <CFormInput id="date" label="Expiration Date" type='date' style={{borderColor:'black'}}/>
+            </CCol>
+            <CCol md={4} style={{marginTop:'10px'}}>
+              <CFormSelect id="sex" label="Sex" style={{borderColor:'black'}}>
+              <option>Choose...</option>
+              <option>Female</option>
+              <option>Male</option>
+              </CFormSelect>
+          </CCol >
+            </div>
+            <CButton type="submit" style={{backgroundColor:'#107acc', borderColor:'black', color:'white', marginTop:'10px'}} 
+            variant="outline">
+            Add New Driver
+            </CButton>
+          </CForm>
+      </CContainer>
+      </CNavbar>
+  </div>
+</div>
   );
 };
 

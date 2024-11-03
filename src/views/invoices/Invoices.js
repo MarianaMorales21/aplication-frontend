@@ -17,8 +17,7 @@ import {
   CModalBody, 
   CModalFooter,
   CCol, 
-  CFormSelect,
-  CFormCheck
+  CFormSelect
 } from '@coreui/react';
 
 const Invoices = () => {
