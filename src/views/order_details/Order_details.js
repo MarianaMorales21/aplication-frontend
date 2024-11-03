@@ -82,29 +82,37 @@ const Order_details = () => {
                 <CTable style={{border: '1px solid black', borderRadius:'50px'}}>
                     <CTableHead>
                     <CTableRow>
+                        <CTableHeaderCell>ID Truck</CTableHeaderCell>
+                        <CTableHeaderCell>ID Driver</CTableHeaderCell>
                         <CTableHeaderCell>Matrial</CTableHeaderCell>
                         <CTableHeaderCell>Quantity</CTableHeaderCell>
                         <CTableHeaderCell>Delivery Date</CTableHeaderCell>
                         <CTableHeaderCell>Total Cost</CTableHeaderCell>
+                        <CTableHeaderCell>Address</CTableHeaderCell>
                         <CTableHeaderCell>Delete Material</CTableHeaderCell>
-                        
                     </CTableRow>
                     </CTableHead>
                     <CTableBody>
                     <CTableRow>
+                        <CTableDataCell>{'5025'}</CTableDataCell>
+                        <CTableDataCell>{'Jose Morales'}</CTableDataCell>
                         <CTableDataCell>{'Grava'}</CTableDataCell>
                         <CTableDataCell>{'5M'}</CTableDataCell>
                         <CTableDataCell>{'21/10/2024'}</CTableDataCell>
                         <CTableDataCell>{'500$'}</CTableDataCell>
+                        <CTableDataCell>{'Avenida las flores. Calle 2'}</CTableDataCell>
                         <CTableDataCell>
                             <CButton style={{ backgroundColor: 'red', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => setVisibleMd(!visibleMd)}>Delete</CButton>
                         </CTableDataCell>
                     </CTableRow>
                     <CTableRow>
+                        <CTableDataCell>{'5027'}</CTableDataCell>
+                        <CTableDataCell>{'Jose Morales'}</CTableDataCell>
                         <CTableDataCell>{'Arena Roja'}</CTableDataCell>
                         <CTableDataCell>{'6M'}</CTableDataCell>
                         <CTableDataCell>{'18/10/2024'}</CTableDataCell>
                         <CTableDataCell>{'100$'}</CTableDataCell>
+                        <CTableDataCell>{'Avenida las flores. Calle 2'}</CTableDataCell>
                         <CTableDataCell>
                             <CButton style={{ backgroundColor: 'red', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => setVisibleMd(!visibleMd)}>Delete</CButton>
                         </CTableDataCell>
@@ -186,6 +194,9 @@ const Order_details = () => {
             <CCol md={12}>
                 <CFormInput id="dateD" label="Material delivery date" type='date' style={{borderColor:'black'}}/>
             </CCol>
+            <CCol md={12} >
+                <CFormInput placeholder="Address" id="Address" label="Address" style={{borderColor:'black'}}/>
+            </CCol>
             <CCol md={6}>
                 <CButton style={{backgroundColor:'red', borderColor:'black', color:'white', marginRight:'10px'}} type="submit" onClick={() => setVisibleLg(false)} >
                     Cancel
@@ -261,7 +272,7 @@ const Order_details = () => {
 
       <CModal fullscreen="md" visible={visibleMd2} onClose={() => setVisibleMd2(false)}>
       <CModalHeader >
-            <CModalTitle>Attention</CModalTitle>
+            <CModalTitle>New Material</CModalTitle>
             </CModalHeader>
             <CModalBody>
             <CCol md={6}>
@@ -290,30 +301,6 @@ const Order_details = () => {
             </CButton>
             </CModalFooter>
       </CModal>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </div>
   );
 };

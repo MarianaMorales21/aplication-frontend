@@ -2,8 +2,6 @@ import { element } from 'prop-types'
 import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
-const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
-const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 const Forgotpassword = React.lazy(() => import('./views/pages/forgotpassword/forgotpassword'))
 const Users= React.lazy(() => import('./views/Users/Users'))
 const Clients= React.lazy(() => import('./views/clients/Clients'))

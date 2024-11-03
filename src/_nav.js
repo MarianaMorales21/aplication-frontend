@@ -78,12 +78,6 @@ const _nav = [
       },
     ],
   },
-  {
-    component: CNavItem,
-    name: 'Trips',
-     to: '/buttons/buttons',
-    icon: <CIcon icon={cilPaperPlane} customClassName="nav-icon" />,
-  },
 
   {
     component: CNavItem,
@@ -111,6 +105,11 @@ const _nav = [
         component: CNavItem,
         name: 'Register',
         to: '/register',
+      },
+      {
+        component: CNavItem,
+        name: 'Forgot Password',
+        to: '/forgotpassword',
       },
     ],
   },

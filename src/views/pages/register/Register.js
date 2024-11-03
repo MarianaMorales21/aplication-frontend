@@ -13,6 +13,7 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import { Link } from 'react-router-dom'
 
 const Register = () => {
   return (
@@ -56,7 +57,10 @@ const Register = () => {
                     />
                   </CInputGroup>
                   <div className="d-grid">
+                    <Link to={"/Users"}>
                     <CButton style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}}>Create Account</CButton>
+                    </Link>
+                    
                   </div>
                 </CForm>
               </CCardBody>
