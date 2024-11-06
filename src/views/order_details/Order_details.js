@@ -16,13 +16,14 @@ import {
   CModalBody, 
   CModalFooter,
   CCol, 
-  CFormSelect
+  CFormSelect,
+  CModal
 } from '@coreui/react';
 
 const Order_details = () => {
   const [visibleXL, setVisibleXL] = useState(false);
   const [visibleLg, setVisibleLg] = useState(false);
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const [visibleSm, setVisibleSm] = useState(false);
   const [visibleMd, setVisibleMd] = useState(false);
   const [visibleMd2, setVisibleMd2] = useState(false);
@@ -121,10 +122,10 @@ const Order_details = () => {
                 </div> 
                 </CModalBody>
                 <CModalFooter>
-                <CButton style={{ backgroundColor: 'green', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => {}}>
+                <CButton style={{ backgroundColor: 'green', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => setVisibleMd2(!visible)}>
                     Add New Material
                   </CButton>
-                  <CButton style={{ backgroundColor: 'red', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => setVisibleXL(true)}>
+                  <CButton style={{ backgroundColor: 'red', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => setVisibleXL(false)}>
                     Close
                   </CButton>
                   <CButton style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} onClick={() => setVisibleXL(false)}>Add changes</CButton>
@@ -134,7 +135,7 @@ const Order_details = () => {
             </CTableDataCell>
             <CTableDataCell>
               <CButton style={{ backgroundColor: 'green', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => setVisibleSm(!visibleSm)}>Edit</CButton>
-              <CButton style={{ backgroundColor: 'red', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => setVisible(true)}>Delete</CButton>
+              <CButton style={{ backgroundColor: 'red', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => setVisible(!visible)}>Delete</CButton>
             </CTableDataCell>
           </CTableRow>
           <CTableRow>
@@ -148,7 +149,7 @@ const Order_details = () => {
             </CTableDataCell>
             <CTableDataCell>
               <CButton style={{ backgroundColor: 'green', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => setVisibleSm(!visibleSm)}>Edit</CButton>
-              <CButton style={{ backgroundColor: 'red', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => {}}>Delete</CButton>
+              <CButton style={{ backgroundColor: 'red', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => setVisible(!visible)}>Delete</CButton>
             </CTableDataCell>
           </CTableRow>
         </CTableBody>
@@ -200,7 +201,7 @@ const Order_details = () => {
                 <CButton style={{backgroundColor:'red', borderColor:'black', color:'white', marginRight:'10px'}} type="submit" onClick={() => setVisibleLg(false)} >
                     Cancel
                 </CButton>
-                <CButton style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} type="submit" onClick={() => setVisible(!visible)}>Add Order</CButton>
+                <CButton style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} type="submit" onClick={() => setVisibleLg(false)}>Add Order</CButton>
             </CCol>
         </CForm>
         </CModalBody>
@@ -244,10 +245,10 @@ const Order_details = () => {
                 <CFormInput placeholder="Address" id="Address" label="Address" style={{borderColor:'black'}}/>
             </CCol>
             <CCol md={6}>
-                <CButton style={{backgroundColor:'red', borderColor:'black', color:'white', marginBottom:'10px'}} type="submit" onClick={() => setVisibleLg(false)} >
+                <CButton style={{backgroundColor:'red', borderColor:'black', color:'white', marginBottom:'10px'}} type="submit" onClick={() => setVisibleSm(false)} >
                     Cancel
                 </CButton>
-                <CButton style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} type="submit" onClick={() => setVisible(!visible)}>Add Changes</CButton>
+                <CButton style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} type="submit" onClick={() => setVisibleSm(false)}>Add Changes</CButton>
             </CCol>
         </CForm>
         </CModalBody>
