@@ -11,7 +11,6 @@ import {
   CForm,
   CFormInput, 
   CContainer,
-  CModal, 
   CModalHeader, 
   CModalTitle, 
   CModalBody, 
@@ -23,7 +22,7 @@ import {
 const Order_details = () => {
   const [visibleXL, setVisibleXL] = useState(false);
   const [visibleLg, setVisibleLg] = useState(false);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [visibleSm, setVisibleSm] = useState(false);
   const [visibleMd, setVisibleMd] = useState(false);
   const [visibleMd2, setVisibleMd2] = useState(false);
@@ -122,10 +121,10 @@ const Order_details = () => {
                 </div> 
                 </CModalBody>
                 <CModalFooter>
-                <CButton style={{ backgroundColor: 'green', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => setVisibleMd2(!visibleMd2)}>
+                <CButton style={{ backgroundColor: 'green', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => {}}>
                     Add New Material
                   </CButton>
-                  <CButton style={{ backgroundColor: 'red', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => setVisibleXL(false)}>
+                  <CButton style={{ backgroundColor: 'red', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => setVisibleXL(true)}>
                     Close
                   </CButton>
                   <CButton style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} onClick={() => setVisibleXL(false)}>Add changes</CButton>
@@ -149,7 +148,7 @@ const Order_details = () => {
             </CTableDataCell>
             <CTableDataCell>
               <CButton style={{ backgroundColor: 'green', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => setVisibleSm(!visibleSm)}>Edit</CButton>
-              <CButton style={{ backgroundColor: 'red', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => setVisible(true)}>Delete</CButton>
+              <CButton style={{ backgroundColor: 'red', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => {}}>Delete</CButton>
             </CTableDataCell>
           </CTableRow>
         </CTableBody>
