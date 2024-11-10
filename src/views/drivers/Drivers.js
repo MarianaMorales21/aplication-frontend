@@ -22,11 +22,12 @@ import {
 const Drivers = () => {
   const [visible, setVisible] = useState(false);
   const [visibleSm, setVisibleSm] = useState(false);
+  const [visibleND, setVisibleND] = useState(false);
   return (
     <div>
       <h1>List of Drivers</h1>
       <div>
-        <CNavbar style={{border: '1px solid gray', borderRadius:'10px', marginBottom:'10px', backgroundColor:'white'}}>
+        <CNavbar style={{border: '1px solid gray', borderRadius:'10px', marginBottom:'10px'}}>
         <CContainer style={{display:'flex'}}>
             <CForm className="d-flex">    
                 <CFormInput type="search" className="me-2" placeholder="Search for usernames" />
@@ -131,9 +132,18 @@ const Drivers = () => {
       </CForm>
       </CModalBody>
       </CModal>
-      <h2>New Driver</h2>
-      <div>
-      <CNavbar style={{border: '1px solid gray', borderRadius:'10px', marginBottom:'10px', backgroundColor:'white'}}>
+      <CButton type="submit" style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} variant="outline" onClick={() => setVisibleND(!visibleND)}>
+       New Driver
+      </CButton>
+
+
+      <CModal size='xl' visible={visibleND} onClose={() => setVisibleND(false)} aria-labelledby="modalTitle">
+        <CModalHeader>
+            <CModalTitle id="modalTitle">New Client</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+        <div>
+      <CNavbar>
       <CContainer>
           <CForm>    
           <CCol md={12}>
@@ -169,14 +179,23 @@ const Drivers = () => {
               </CFormSelect>
           </CCol >
             </div>
-            <CButton type="submit" style={{backgroundColor:'#107acc', borderColor:'black', color:'white', marginTop:'10px'}} 
-            variant="outline">
-            Add New Driver
-            </CButton>
           </CForm>
       </CContainer>
       </CNavbar>
-  </div>
+      </div>
+        </CModalBody>
+        <CModalFooter>
+        <CButton type="submit" style={{backgroundColor:'#107acc', borderColor:'black', color:'white'} } onClick={() => setVisibleND(false)}
+            variant="outline">
+            Add New Driver
+        </CButton>
+        </CModalFooter>
+      </CModal>
+
+
+
+
+      
 </div>
   );
 };

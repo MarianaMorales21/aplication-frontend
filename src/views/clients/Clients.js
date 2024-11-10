@@ -22,11 +22,12 @@ import {
 const Clients = () => {
   const [visible, setVisible] = useState(false);
   const [visibleSm, setVisibleSm] = useState(false);
+  const [visibleNC, setVisibleNC] = useState(false);
   return (
     <div>
       <h1>List of Clients</h1>
       <div>
-        <CNavbar style={{border: '1px solid gray', borderRadius:'10px', marginBottom:'10px', backgroundColor:'white'}}>
+        <CNavbar style={{border: '1px solid gray', borderRadius:'10px', marginBottom:'10px'}}>
         <CContainer style={{display:'flex'}}>
             <CForm className="d-flex">    
                 <CFormInput type="search" className="me-2" placeholder="Search for usernames" />
@@ -135,9 +136,15 @@ const Clients = () => {
         </CForm>
         </CModalBody>
       </CModal>
-      <h2>New Client</h2>
+      <CButton type="submit" style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} variant="outline" onClick={() => setVisibleNC(!visibleNC)}>
+       New Client
+      </CButton>
+      <CModal size='xl' visible={visibleNC} onClose={() => setVisibleNC(false)} aria-labelledby="modalTitle">
+        <CModalHeader>
+            <CModalTitle id="modalTitle">New Client</CModalTitle>
+        </CModalHeader>
       <div>
-      <CNavbar style={{border: '1px solid gray', borderRadius:'10px', marginBottom:'10px', backgroundColor:'white'}}>
+      <CNavbar >
         <CContainer>
             <CForm>    
             <CCol md={12}>
@@ -161,14 +168,18 @@ const Clients = () => {
                 </CFormSelect>
               </CCol>
               </div>
-              <CButton type="submit" style={{backgroundColor:'#107acc', borderColor:'black', color:'white', marginTop:'15px'}} 
-              variant="outline">
-              Add New Client
-              </CButton>
+
             </CForm>
         </CContainer>
         </CNavbar>
       </div>
+      <CModalFooter>
+        <CButton type="submit" style={{backgroundColor:'#107acc', borderColor:'black', color:'white'} } 
+          variant="outline" onClick={() => setVisibleNC(false)}>
+          Add New Client
+        </CButton>
+      </CModalFooter>
+      </CModal>
     </div>
  
   );

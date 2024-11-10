@@ -29,7 +29,7 @@ const Working_hours = () => {
     <div>
       <h1>List of Working Hours</h1>
       <div>
-        <CNavbar style={{ border: '1px solid gray', borderRadius: '10px', marginBottom: '10px', backgroundColor: 'white' }}>
+        <CNavbar style={{ border: '1px solid gray', borderRadius: '10px', marginBottom: '10px'}}>
           <CContainer style={{ display: 'flex' }}>
             <CForm className="d-flex">
               <CFormInput type="search" className="me-2" placeholder="Search for Driver"/>

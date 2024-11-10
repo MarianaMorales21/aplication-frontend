@@ -17,16 +17,18 @@ import {
   CModalBody, 
   CModalFooter,
   CCol, 
-  CFormSelect
+  CFormSelect,
+  CFooter
 } from '@coreui/react';
 const Flota = () => {
     const [visible, setVisible] = useState(false);
     const [visibleSm, setVisibleSm] = useState(false);
+    const [visibleNM, setVisibleNM] = useState(false);
   return (
     <div>
       <h1>List of Flota</h1>
       <div>
-        <CNavbar style={{border: '1px solid gray', borderRadius:'10px', marginBottom:'10px', backgroundColor:'white'}}>
+        <CNavbar style={{border: '1px solid gray', borderRadius:'10px', marginBottom:'10px'}}>
         <CContainer style={{display:'flex'}}>
             <CForm className="d-flex">    
                 <CFormInput type="search" className="me-2" placeholder="Search for driver" />
@@ -126,9 +128,17 @@ const Flota = () => {
         </CForm>
         </CModalBody>
       </CModal>
-      <h2>New Member</h2>
-      <div>
-      <CNavbar style={{border: '1px solid gray', borderRadius:'10px', marginBottom:'10px', backgroundColor:'white'}}>
+      <CButton type="submit" style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} variant="outline" onClick={() => setVisibleNM(!visibleNM)}>
+       New Member
+      </CButton>
+
+      <CModal size='xl' visible={visibleNM} onClose={() => setVisibleNM(false)} aria-labelledby="modalTitle">
+        <CModalHeader>
+            <CModalTitle id="modalTitle">New Member</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+        <div>
+      <CNavbar>
         <CContainer>
             <CForm>    
             <CCol md={12}>
@@ -164,14 +174,18 @@ const Flota = () => {
                 <CFormInput placeholder="Brand" id="Brand" label="Brand" style={{borderColor:'black'}}/>
             </CCol>
               </div>
-              <CButton type="submit" style={{backgroundColor:'#107acc', borderColor:'black', color:'white', marginTop:'15px'}} 
-              variant="outline">
-              Add New Member
-              </CButton>
             </CForm>
         </CContainer>
         </CNavbar>
       </div>
+        </CModalBody>
+        <CFooter>
+          <CButton type="submit" style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} 
+              variant="outline">
+              Add New Member
+          </CButton>
+        </CFooter>
+      </CModal>
     </div>
   );
 };

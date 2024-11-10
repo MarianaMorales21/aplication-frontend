@@ -28,7 +28,7 @@ const Users = () => {
     <div>
       <h1>List of users</h1>
       <div>
-        <CNavbar style={{border: '1px solid gray', borderRadius:'10px', marginBottom:'10px', backgroundColor:'white'}}>
+        <CNavbar style={{border: '1px solid gray', borderRadius:'10px', marginBottom:'10px'}}>
         <CContainer style={{display:'flex'}}>
             <CForm className="d-flex">    
                 <CFormInput type="search" className="me-2" placeholder="Search for usernames" />
