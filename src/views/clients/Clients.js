@@ -1,50 +1,62 @@
-import React, { useState } from 'react';
-import { 
-  CTable, 
-  CTableBody, 
-  CTableHead, 
-  CTableHeaderCell, 
-  CTableRow, 
-  CTableDataCell, 
-  CButton, 
+import React, { useState } from 'react'
+import {
+  CTable,
+  CTableBody,
+  CTableHead,
+  CTableHeaderCell,
+  CTableRow,
+  CTableDataCell,
+  CButton,
   CNavbar,
   CForm,
-  CFormInput, 
+  CFormInput,
   CContainer,
-  CModal, 
-  CModalHeader, 
-  CModalTitle, 
-  CModalBody, 
+  CModal,
+  CModalHeader,
+  CModalTitle,
+  CModalBody,
   CModalFooter,
-  CCol, 
-  CFormSelect
-} from '@coreui/react';
+  CCol,
+  CFormSelect,
+} from '@coreui/react'
 const Clients = () => {
-  const [visible, setVisible] = useState(false);
-  const [visibleSm, setVisibleSm] = useState(false);
-  const [visibleNC, setVisibleNC] = useState(false);
+  const [visible, setVisible] = useState(false)
+  const [visibleSm, setVisibleSm] = useState(false)
+  const [visibleNC, setVisibleNC] = useState(false)
   return (
     <div>
       <h1>List of Clients</h1>
       <div>
-        <CNavbar style={{border: '1px solid gray', borderRadius:'10px', marginBottom:'10px'}}>
-        <CContainer style={{display:'flex'}}>
-            <CForm className="d-flex">    
-                <CFormInput type="search" className="me-2" placeholder="Search for usernames" />
-                <CButton type="submit" style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} variant="outline">
-                    Search
-                </CButton>
-                <CFormInput type='search' className="me-2" style={{marginLeft:'15px'}} placeholder="Search for type"/>
-                <CButton type="submit" style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} variant="outline">
-                    Search
-                </CButton>
+        <CNavbar style={{ border: '1px solid gray', borderRadius: '10px', marginBottom: '10px' }}>
+          <CContainer style={{ display: 'flex' }}>
+            <CForm className="d-flex">
+              <CFormInput type="search" className="me-2" placeholder="Search for usernames" />
+              <CButton
+                type="submit"
+                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                variant="outline"
+              >
+                Search
+              </CButton>
+              <CFormInput
+                type="search"
+                className="me-2"
+                style={{ marginLeft: '15px' }}
+                placeholder="Search for type"
+              />
+              <CButton
+                type="submit"
+                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                variant="outline"
+              >
+                Search
+              </CButton>
             </CForm>
             <h6>Nro. Clients: 5</h6>
-        </CContainer>
-        
+          </CContainer>
         </CNavbar>
-        </div>
-      <CTable style={{border: '1px solid gray', borderRadius:'50px'}}>
+      </div>
+      <CTable style={{ border: '1px solid gray', borderRadius: '50px' }}>
         <CTableHead>
           <CTableRow>
             <CTableHeaderCell>DNI</CTableHeaderCell>
@@ -67,8 +79,18 @@ const Clients = () => {
             <CTableDataCell>{'Empresa'}</CTableDataCell>
             <CTableDataCell>{'2'}</CTableDataCell>
             <CTableDataCell>
-            <CButton style={{backgroundColor:'green', marginRight:'10px', color:'white'}} onClick={() => setVisibleSm(!visibleSm)}>Edit</CButton>
-            <CButton style={{backgroundColor:'red', marginRight:'10px', color:'white'}} onClick={() => setVisible(!visible)}>Delete</CButton>
+              <CButton
+                style={{ backgroundColor: 'green', marginRight: '10px', color: 'white' }}
+                onClick={() => setVisibleSm(!visibleSm)}
+              >
+                Edit
+              </CButton>
+              <CButton
+                style={{ backgroundColor: 'red', marginRight: '10px', color: 'white' }}
+                onClick={() => setVisible(!visible)}
+              >
+                Delete
+              </CButton>
             </CTableDataCell>
           </CTableRow>
           <CTableRow>
@@ -80,109 +102,187 @@ const Clients = () => {
             <CTableDataCell>{'Persona'}</CTableDataCell>
             <CTableDataCell>{'1'}</CTableDataCell>
             <CTableDataCell>
-            <CButton style={{backgroundColor:'green', marginRight:'10px', color:'white'}} onClick={() => setVisibleSm(!visibleSm)}>Edit</CButton>
-            <CButton style={{backgroundColor:'red', marginRight:'10px', color:'white'}} onClick={() => setVisible(!visible)}>Delete</CButton>
+              <CButton
+                style={{ backgroundColor: 'green', marginRight: '10px', color: 'white' }}
+                onClick={() => setVisibleSm(!visibleSm)}
+              >
+                Edit
+              </CButton>
+              <CButton
+                style={{ backgroundColor: 'red', marginRight: '10px', color: 'white' }}
+                onClick={() => setVisible(!visible)}
+              >
+                Delete
+              </CButton>
             </CTableDataCell>
           </CTableRow>
         </CTableBody>
       </CTable>
       <CModal visible={visible} onClose={() => setVisible(false)}>
-            <CModalHeader>
-            <CModalTitle>Attention</CModalTitle>
-            </CModalHeader>
-            <CModalBody>Are you sure to remove this client from the system?</CModalBody>
-            <CModalFooter>
-            <CButton style={{ backgroundColor: 'green', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => setVisible(false)}>
-                Cancel
-            </CButton>
-            <CButton style={{ backgroundColor: 'red', marginRight: '10px', color: 'white', borderColor: 'black' }} onClick={() => setVisible(false)}>
-                Delete
-            </CButton>
-            </CModalFooter>
-            </CModal>
+        <CModalHeader>
+          <CModalTitle>Attention</CModalTitle>
+        </CModalHeader>
+        <CModalBody>Are you sure to remove this client from the system?</CModalBody>
+        <CModalFooter>
+          <CButton
+            style={{
+              backgroundColor: 'green',
+              marginRight: '10px',
+              color: 'white',
+              borderColor: 'black',
+            }}
+            onClick={() => setVisible(false)}
+          >
+            Cancel
+          </CButton>
+          <CButton
+            style={{
+              backgroundColor: 'red',
+              marginRight: '10px',
+              color: 'white',
+              borderColor: 'black',
+            }}
+            onClick={() => setVisible(false)}
+          >
+            Delete
+          </CButton>
+        </CModalFooter>
+      </CModal>
       <CModal size="sm" visible={visibleSm} onClose={() => setVisibleSm(false)}>
         <CModalHeader>
           <CModalTitle>Edit Client</CModalTitle>
         </CModalHeader>
         <CModalBody>
-            <h6>Nro. User: 5012</h6>
-            <h6>DNI: 30781815</h6>
-            <h6>Name Client: Mariana Morales</h6>
-        <CForm className="row g-3">
+          <h6>Nro. User: 5012</h6>
+          <h6>DNI: 30781815</h6>
+          <h6>Name Client: Mariana Morales</h6>
+          <CForm className="row g-3">
             <CCol>
-                <CFormSelect id="type" label="Client Type" style={{borderColor:'black'}}>
+              <CFormSelect id="type" label="Client Type" style={{ borderColor: 'black' }}>
                 <option>Choose...</option>
                 <option>Enterprise</option>
                 <option>Person</option>
                 <option>Government</option>
-                </CFormSelect>
+              </CFormSelect>
             </CCol>
-            <CCol md={6} >
-                <CFormInput placeholder="Email" id="email" label="Email" type='email' style={{borderColor:'black'}}/>
+            <CCol md={6}>
+              <CFormInput
+                placeholder="Email"
+                id="email"
+                label="Email"
+                type="email"
+                style={{ borderColor: 'black' }}
+              />
             </CCol>
-            <CCol md={6} >
-                <CFormInput placeholder="Phone" id="Phone" label="Phone" style={{borderColor:'black'}}/>
+            <CCol md={6}>
+              <CFormInput
+                placeholder="Phone"
+                id="Phone"
+                label="Phone"
+                style={{ borderColor: 'black' }}
+              />
             </CCol>
-            <CCol md={6} >
-                <CFormInput placeholder="Address" id="Address" label="Address" style={{borderColor:'black'}}/>
+            <CCol md={6}>
+              <CFormInput
+                placeholder="Address"
+                id="Address"
+                label="Address"
+                style={{ borderColor: 'black' }}
+              />
             </CCol>
 
             <CCol md={6}>
-                <CButton style={{backgroundColor:'red', borderColor:'black', color:'white', marginBottom:'10px'}} type="submit" onClick={() => setVisibleLg(false)} >
-                    Cancel
-                </CButton>
-                <CButton style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} type="submit" onClick={() => setVisible(!visible)}>Add Changes</CButton>
+              <CButton
+                style={{
+                  backgroundColor: 'red',
+                  borderColor: 'black',
+                  color: 'white',
+                  marginBottom: '10px',
+                }}
+                type="submit"
+                onClick={() => setVisibleLg(false)}
+              >
+                Cancel
+              </CButton>
+              <CButton
+                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                type="submit"
+                onClick={() => setVisible(!visible)}
+              >
+                Add Changes
+              </CButton>
             </CCol>
-        </CForm>
+          </CForm>
         </CModalBody>
       </CModal>
-      <CButton type="submit" style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}} variant="outline" onClick={() => setVisibleNC(!visibleNC)}>
-       New Client
+      <CButton
+        type="submit"
+        style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+        variant="outline"
+        onClick={() => setVisibleNC(!visibleNC)}
+      >
+        New Client
       </CButton>
-      <CModal size='xl' visible={visibleNC} onClose={() => setVisibleNC(false)} aria-labelledby="modalTitle">
+      <CModal
+        size="xl"
+        visible={visibleNC}
+        onClose={() => setVisibleNC(false)}
+        aria-labelledby="modalTitle"
+      >
         <CModalHeader>
-            <CModalTitle id="modalTitle">New Client</CModalTitle>
+          <CModalTitle id="modalTitle">New Client</CModalTitle>
         </CModalHeader>
-      <div>
-      <CNavbar >
-        <CContainer>
-            <CForm>    
-            <CCol md={12}>
-                <CFormInput placeholder="Name User" id="Name" label="Name User" type='search' style={{borderColor:'black'}}/>
-            </CCol>
-            <h6 style={{marginTop:'15px'}}>Data Found:</h6>
-              <p>
-                Name:<br></br>          
-                DNI:<br/>
-                Email: <br/>
-                Phone:<br/>
-                Address:<br/>
-              </p>
-              <div style={{borderTop: '2px solid black', width:'800px'}}>
-              <CCol style={{marginTop:'15px'}}>
-                <CFormSelect id="type" label="Client Type" style={{borderColor:'black'}}>
-                <option>Choose...</option>
-                <option>Enterprise</option>
-                <option>Person</option>
-                <option>Government</option>
-                </CFormSelect>
-              </CCol>
-              </div>
-
-            </CForm>
-        </CContainer>
-        </CNavbar>
-      </div>
-      <CModalFooter>
-        <CButton type="submit" style={{backgroundColor:'#107acc', borderColor:'black', color:'white'} } 
-          variant="outline" onClick={() => setVisibleNC(false)}>
-          Add New Client
-        </CButton>
-      </CModalFooter>
+        <div>
+          <CNavbar>
+            <CContainer>
+              <CForm>
+                <CCol md={12}>
+                  <CFormInput
+                    placeholder="Name User"
+                    id="Name"
+                    label="Name User"
+                    type="search"
+                    style={{ borderColor: 'black' }}
+                  />
+                </CCol>
+                <h6 style={{ marginTop: '15px' }}>Data Found:</h6>
+                <p>
+                  Name:<br></br>
+                  DNI:
+                  <br />
+                  Email: <br />
+                  Phone:
+                  <br />
+                  Address:
+                  <br />
+                </p>
+                <div style={{ borderTop: '2px solid black', width: '800px' }}>
+                  <CCol style={{ marginTop: '15px' }}>
+                    <CFormSelect id="type" label="Client Type" style={{ borderColor: 'black' }}>
+                      <option>Choose...</option>
+                      <option>Enterprise</option>
+                      <option>Person</option>
+                      <option>Government</option>
+                    </CFormSelect>
+                  </CCol>
+                </div>
+              </CForm>
+            </CContainer>
+          </CNavbar>
+        </div>
+        <CModalFooter>
+          <CButton
+            type="submit"
+            style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+            variant="outline"
+            onClick={() => setVisibleNC(false)}
+          >
+            Add New Client
+          </CButton>
+        </CModalFooter>
       </CModal>
     </div>
- 
-  );
-};
+  )
+}
 
-export default Clients;
+export default Clients
