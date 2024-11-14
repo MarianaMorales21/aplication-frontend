@@ -10,7 +10,6 @@ import {
   cilTruck,
   cilTerrain,
   cilGrain,
-  cilPaperPlane
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -93,7 +92,7 @@ const _nav = [
   },
   {
     component: CNavGroup,
-    name: 'Pages',
+    name: 'Extra Options',
     icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
     items: [
       {

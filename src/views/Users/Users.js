@@ -34,7 +34,7 @@ const Users = () => {
               <CFormInput type="search" className="me-2" placeholder="Search for usernames" />
               <CButton
                 type="submit"
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc', color: 'white' }}
                 variant="outline"
               >
                 Search
@@ -42,7 +42,7 @@ const Users = () => {
               <CFormInput type="date" className="me-2" style={{ marginLeft: '15px' }} />
               <CButton
                 type="submit"
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc', color: 'white' }}
                 variant="outline"
               >
                 Search
@@ -55,7 +55,7 @@ const Users = () => {
               />
               <CButton
                 type="submit"
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc', color: 'white' }}
                 variant="outline"
               >
                 Search
@@ -128,7 +128,6 @@ const Users = () => {
                       backgroundColor: 'green',
                       marginRight: '10px',
                       color: 'white',
-                      borderColor: 'black',
                     }}
                     onClick={() => setVisible(false)}
                   >
@@ -139,7 +138,6 @@ const Users = () => {
                       backgroundColor: 'red',
                       marginRight: '10px',
                       color: 'white',
-                      borderColor: 'black',
                     }}
                     onClick={() => setVisible(false)}
                   >
@@ -153,7 +151,7 @@ const Users = () => {
       </CTable>
       <CButton
         type="submit"
-        style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+        style={{ backgroundColor: '#107acc', color: 'white' }}
         variant="outline"
         onClick={() => setVisibleLg(!visibleLg)}
       >
@@ -259,7 +257,7 @@ const Users = () => {
                 Cancel
               </CButton>
               <CButton
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc', color: 'white' }}
                 type="submit"
                 onClick={() => setVisible(!visible)}
               >
@@ -349,7 +347,6 @@ const Users = () => {
               <CButton
                 style={{
                   backgroundColor: 'red',
-                  borderColor: 'black',
                   color: 'white',
                   marginBottom: '10px',
                 }}
@@ -359,7 +356,7 @@ const Users = () => {
                 Cancel
               </CButton>
               <CButton
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc', color: 'white' }}
                 type="submit"
                 onClick={() => setVisible(!visible)}
               >

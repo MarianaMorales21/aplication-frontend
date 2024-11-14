@@ -35,7 +35,7 @@ const Invoices = () => {
               <CFormInput type="search" className="me-2" placeholder="Search for client" />
               <CButton
                 type="submit"
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc',  color: 'white' }}
                 variant="outline"
               >
                 Search
@@ -43,7 +43,7 @@ const Invoices = () => {
               <CFormInput type="date" className="me-2" style={{ marginLeft: '10px' }} />
               <CButton
                 type="submit"
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc',  color: 'white' }}
                 variant="outline"
               >
                 Search
@@ -78,7 +78,7 @@ const Invoices = () => {
                   backgroundColor: '#fbb117',
                   marginRight: '10px',
                   color: 'white',
-                  borderColor: 'black',
+                  
                 }}
                 onClick={() => setVisibleXL(!visibleXL)}
               >
@@ -155,14 +155,14 @@ const Invoices = () => {
                       backgroundColor: 'red',
                       marginRight: '10px',
                       color: 'white',
-                      borderColor: 'black',
+                      
                     }}
                     onClick={() => setVisibleXL(false)}
                   >
                     Close
                   </CButton>
                   <CButton
-                    style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                    style={{ backgroundColor: '#107acc',  color: 'white' }}
                     onClick={() => setVisibleXL(false)}
                   >
                     Download invoice
@@ -176,7 +176,7 @@ const Invoices = () => {
                   backgroundColor: 'green',
                   marginRight: '10px',
                   color: 'white',
-                  borderColor: 'black',
+                  
                 }}
                 onClick={() => setVisibleSm(!visibleSm)}
               >
@@ -187,7 +187,7 @@ const Invoices = () => {
                   backgroundColor: 'red',
                   marginRight: '10px',
                   color: 'white',
-                  borderColor: 'black',
+                  
                 }}
                 onClick={() => setVisible(true)}
               >
@@ -207,7 +207,7 @@ const Invoices = () => {
                   backgroundColor: '#fbb117',
                   marginRight: '10px',
                   color: 'white',
-                  borderColor: 'black',
+                  
                 }}
                 onClick={() => setVisibleXL(!visibleXL)}
               >
@@ -220,7 +220,7 @@ const Invoices = () => {
                   backgroundColor: 'green',
                   marginRight: '10px',
                   color: 'white',
-                  borderColor: 'black',
+                 
                 }}
                 onClick={() => setVisibleSm(!visibleSm)}
               >
@@ -231,7 +231,7 @@ const Invoices = () => {
                   backgroundColor: 'red',
                   marginRight: '10px',
                   color: 'white',
-                  borderColor: 'black',
+                  
                 }}
                 onClick={() => setVisible(true)}
               >
@@ -243,7 +243,7 @@ const Invoices = () => {
       </CTable>
       <CButton
         type="submit"
-        style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+        style={{ backgroundColor: '#107acc',  color: 'white' }}
         variant="outline"
         onClick={() => setVisibleLg(!visibleLg)}
       >
@@ -310,7 +310,7 @@ const Invoices = () => {
               <CButton
                 style={{
                   backgroundColor: 'red',
-                  borderColor: 'black',
+                  
                   color: 'white',
                   marginRight: '10px',
                 }}
@@ -320,7 +320,7 @@ const Invoices = () => {
                 Cancel
               </CButton>
               <CButton
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc',  color: 'white' }}
                 type="submit"
                 onClick={() => setVisible(!visible)}
               >
@@ -341,7 +341,7 @@ const Invoices = () => {
               backgroundColor: 'green',
               marginRight: '10px',
               color: 'white',
-              borderColor: 'black',
+              
             }}
             onClick={() => setVisible(false)}
           >
@@ -352,7 +352,7 @@ const Invoices = () => {
               backgroundColor: 'red',
               marginRight: '10px',
               color: 'white',
-              borderColor: 'black',
+              
             }}
             onClick={() => setVisible(false)}
           >
@@ -409,7 +409,7 @@ const Invoices = () => {
               <CButton
                 style={{
                   backgroundColor: 'red',
-                  borderColor: 'black',
+                  
                   color: 'white',
                   marginBottom: '10px',
                 }}
@@ -419,7 +419,7 @@ const Invoices = () => {
                 Cancel
               </CButton>
               <CButton
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc',  color: 'white' }}
                 type="submit"
                 onClick={() => setVisible(!visible)}
               >

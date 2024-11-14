@@ -10,6 +10,9 @@ import {
   CSidebarToggler,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
+import {
+  cilTruck,
+} from '@coreui/icons'
 
 import { AppSidebarNav } from './AppSidebarNav'
 
@@ -38,8 +41,8 @@ const AppSidebar = () => {
     >
       <CSidebarHeader className="border-bottom">
         <CSidebarBrand to="/">
-          <CIcon customClassName="sidebar-brand-full" icon={logo} height={32} />
-          <CIcon customClassName="sidebar-brand-narrow" icon={sygnet} height={32} />
+        <img src="\src\assets\images\logocooperative.png" className='sidebar-brand-full' alt="Logo" height={45} width={150} /> 
+        <CIcon customClassName="sidebar-brand-narrow" icon={cilTruck}height={32}/>
         </CSidebarBrand>
         <CCloseButton
           className="d-lg-none"

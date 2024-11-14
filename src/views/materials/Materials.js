@@ -33,7 +33,7 @@ const Materials = () => {
               <CFormInput type="search" className="me-2" placeholder="Search for name material" />
               <CButton
                 type="submit"
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc', color: 'white' }}
                 variant="outline"
               >
                 Search
@@ -100,7 +100,7 @@ const Materials = () => {
       </CTable>
       <CButton
         type="submit"
-        style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+        style={{ backgroundColor: '#107acc', color: 'white' }}
         variant="outline"
         onClick={() => setVisibleLg(!visibleLg)}
       >
@@ -160,7 +160,6 @@ const Materials = () => {
               <CButton
                 style={{
                   backgroundColor: 'red',
-                  borderColor: 'black',
                   color: 'white',
                   marginRight: '10px',
                 }}
@@ -170,7 +169,7 @@ const Materials = () => {
                 Cancel
               </CButton>
               <CButton
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc', color: 'white' }}
                 type="submit"
                 onClick={() => setVisible(!visible)}
               >
@@ -262,7 +261,7 @@ const Materials = () => {
                 Cancel
               </CButton>
               <CButton
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc', color: 'white' }}
                 type="submit"
                 onClick={() => setVisible(!visible)}
               >

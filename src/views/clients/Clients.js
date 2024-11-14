@@ -33,7 +33,7 @@ const Clients = () => {
               <CFormInput type="search" className="me-2" placeholder="Search for usernames" />
               <CButton
                 type="submit"
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc', color: 'white' }}
                 variant="outline"
               >
                 Search
@@ -46,7 +46,7 @@ const Clients = () => {
               />
               <CButton
                 type="submit"
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc', color: 'white' }}
                 variant="outline"
               >
                 Search
@@ -129,7 +129,7 @@ const Clients = () => {
               backgroundColor: 'green',
               marginRight: '10px',
               color: 'white',
-              borderColor: 'black',
+              
             }}
             onClick={() => setVisible(false)}
           >
@@ -140,7 +140,7 @@ const Clients = () => {
               backgroundColor: 'red',
               marginRight: '10px',
               color: 'white',
-              borderColor: 'black',
+              
             }}
             onClick={() => setVisible(false)}
           >
@@ -195,7 +195,7 @@ const Clients = () => {
               <CButton
                 style={{
                   backgroundColor: 'red',
-                  borderColor: 'black',
+                  
                   color: 'white',
                   marginBottom: '10px',
                 }}
@@ -205,7 +205,7 @@ const Clients = () => {
                 Cancel
               </CButton>
               <CButton
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc',  color: 'white' }}
                 type="submit"
                 onClick={() => setVisible(!visible)}
               >
@@ -217,7 +217,7 @@ const Clients = () => {
       </CModal>
       <CButton
         type="submit"
-        style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+        style={{ backgroundColor: '#107acc',  color: 'white' }}
         variant="outline"
         onClick={() => setVisibleNC(!visibleNC)}
       >
@@ -273,7 +273,7 @@ const Clients = () => {
         <CModalFooter>
           <CButton
             type="submit"
-            style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+            style={{ backgroundColor: '#107acc', color: 'white' }}
             variant="outline"
             onClick={() => setVisibleNC(false)}
           >

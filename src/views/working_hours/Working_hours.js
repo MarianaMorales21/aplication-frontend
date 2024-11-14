@@ -35,7 +35,7 @@ const Working_hours = () => {
               <CFormInput type="search" className="me-2" placeholder="Search for Driver" />
               <CButton
                 type="submit"
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc',  color: 'white' }}
                 variant="outline"
               >
                 Search
@@ -70,7 +70,7 @@ const Working_hours = () => {
                   backgroundColor: 'green',
                   marginRight: '10px',
                   color: 'white',
-                  borderColor: 'black',
+                  
                 }}
                 onClick={() => setVisibleLg(!visibleLg)}
               >
@@ -81,7 +81,7 @@ const Working_hours = () => {
                   backgroundColor: 'red',
                   marginRight: '10px',
                   color: 'white',
-                  borderColor: 'black',
+                  
                 }}
                 onClick={() => setVisible(true)}
               >
@@ -102,7 +102,7 @@ const Working_hours = () => {
                   backgroundColor: 'green',
                   marginRight: '10px',
                   color: 'white',
-                  borderColor: 'black',
+                  
                 }}
                 onClick={() => setVisibleLg(!visibleLg)}
               >
@@ -113,7 +113,7 @@ const Working_hours = () => {
                   backgroundColor: 'red',
                   marginRight: '10px',
                   color: 'white',
-                  borderColor: 'black',
+                  
                 }}
                 onClick={() => setVisible(true)}
               >
@@ -125,7 +125,7 @@ const Working_hours = () => {
       </CTable>
       <CButton
         type="submit"
-        style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+        style={{ backgroundColor: '#107acc', color: 'white' }}
         variant="outline"
         onClick={() => setVisibleXL(!visibleXL)}
       >
@@ -183,7 +183,6 @@ const Working_hours = () => {
               <CButton
                 style={{
                   backgroundColor: 'red',
-                  borderColor: 'black',
                   color: 'white',
                   marginRight: '10px',
                 }}
@@ -193,7 +192,7 @@ const Working_hours = () => {
                 Cancel
               </CButton>
               <CButton
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc',  color: 'white' }}
                 type="submit"
                 onClick={() => setVisible(!visible)}
               >
@@ -214,7 +213,7 @@ const Working_hours = () => {
               backgroundColor: 'green',
               marginRight: '10px',
               color: 'white',
-              borderColor: 'black',
+              
             }}
             onClick={() => setVisible(false)}
           >
@@ -225,7 +224,7 @@ const Working_hours = () => {
               backgroundColor: 'red',
               marginRight: '10px',
               color: 'white',
-              borderColor: 'black',
+              
             }}
             onClick={() => setVisible(false)}
           >
@@ -301,14 +300,13 @@ const Working_hours = () => {
               backgroundColor: 'red',
               marginRight: '10px',
               color: 'white',
-              borderColor: 'black',
             }}
             onClick={() => setVisibleXL(false)}
           >
             Close
           </CButton>
           <CButton
-            style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+            style={{ backgroundColor: '#107acc', color: 'white' }}
             onClick={() => setVisibleXL(false)}
           >
             Download invoice

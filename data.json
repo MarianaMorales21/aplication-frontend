@@ -1,0 +1,22 @@
+[
+    {
+        "id":"1",
+        "name":"Juan Perez",
+        "email":"juanperez12@gmail.com",
+        "role":"Driver",
+        "status":"Active",
+        "password":"juanjuan125",
+        "address":"Vereda los paramos",
+        "phone":"04121617297"
+    },
+    {
+        "id":"2",
+        "name":"Marta Diaz",
+        "email":"martadi125@gmail.com",
+        "role":"Client",
+        "status":"Active",
+        "password":"martadi125",
+        "address":"Vereda los rosos",
+        "phone":"04241617297"
+    }
+]

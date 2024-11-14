@@ -37,7 +37,7 @@ const Order_details = () => {
               <CFormInput type="search" className="me-2" placeholder="Search for client" />
               <CButton
                 type="submit"
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc', color: 'white' }}
                 variant="outline"
               >
                 Search
@@ -45,7 +45,7 @@ const Order_details = () => {
               <CFormInput type="date" className="me-2" style={{ marginLeft: '10px' }} />
               <CButton
                 type="submit"
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc', color: 'white' }}
                 variant="outline"
               >
                 Search
@@ -80,7 +80,7 @@ const Order_details = () => {
                   backgroundColor: '#fbb117',
                   marginRight: '10px',
                   color: 'white',
-                  borderColor: 'black',
+                  
                 }}
                 onClick={() => setVisibleXL(!visibleXL)}
               >
@@ -128,7 +128,7 @@ const Order_details = () => {
                                 backgroundColor: 'red',
                                 marginRight: '10px',
                                 color: 'white',
-                                borderColor: 'black',
+                                
                               }}
                               onClick={() => setVisibleMd(!visibleMd)}
                             >
@@ -150,7 +150,7 @@ const Order_details = () => {
                                 backgroundColor: 'red',
                                 marginRight: '10px',
                                 color: 'white',
-                                borderColor: 'black',
+                                
                               }}
                               onClick={() => setVisibleMd(!visibleMd)}
                             >
@@ -168,7 +168,7 @@ const Order_details = () => {
                       backgroundColor: 'green',
                       marginRight: '10px',
                       color: 'white',
-                      borderColor: 'black',
+                      
                     }}
                     onClick={() => setVisibleMd2(!visible)}
                   >
@@ -179,14 +179,14 @@ const Order_details = () => {
                       backgroundColor: 'red',
                       marginRight: '10px',
                       color: 'white',
-                      borderColor: 'black',
+                      
                     }}
                     onClick={() => setVisibleXL(false)}
                   >
                     Close
                   </CButton>
                   <CButton
-                    style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                    style={{ backgroundColor: '#107acc', color: 'white' }}
                     onClick={() => setVisibleXL(false)}
                   >
                     Add changes
@@ -200,7 +200,7 @@ const Order_details = () => {
                   backgroundColor: 'green',
                   marginRight: '10px',
                   color: 'white',
-                  borderColor: 'black',
+                  
                 }}
                 onClick={() => setVisibleSm(!visibleSm)}
               >
@@ -211,7 +211,7 @@ const Order_details = () => {
                   backgroundColor: 'red',
                   marginRight: '10px',
                   color: 'white',
-                  borderColor: 'black',
+                  
                 }}
                 onClick={() => setVisible(!visible)}
               >
@@ -231,7 +231,7 @@ const Order_details = () => {
                   backgroundColor: '#fbb117',
                   marginRight: '10px',
                   color: 'white',
-                  borderColor: 'black',
+                  
                 }}
                 onClick={() => setVisibleXL(!visibleXL)}
               >
@@ -244,7 +244,7 @@ const Order_details = () => {
                   backgroundColor: 'green',
                   marginRight: '10px',
                   color: 'white',
-                  borderColor: 'black',
+                  
                 }}
                 onClick={() => setVisibleSm(!visibleSm)}
               >
@@ -255,7 +255,7 @@ const Order_details = () => {
                   backgroundColor: 'red',
                   marginRight: '10px',
                   color: 'white',
-                  borderColor: 'black',
+                  
                 }}
                 onClick={() => setVisible(!visible)}
               >
@@ -267,7 +267,7 @@ const Order_details = () => {
       </CTable>
       <CButton
         type="submit"
-        style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+        style={{ backgroundColor: '#107acc',  color: 'white' }}
         variant="outline"
         onClick={() => setVisibleLg(!visibleLg)}
       >
@@ -346,7 +346,7 @@ const Order_details = () => {
               <CButton
                 style={{
                   backgroundColor: 'red',
-                  borderColor: 'black',
+                  
                   color: 'white',
                   marginRight: '10px',
                 }}
@@ -356,7 +356,7 @@ const Order_details = () => {
                 Cancel
               </CButton>
               <CButton
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc', color: 'white' }}
                 type="submit"
                 onClick={() => setVisibleLg(false)}
               >
@@ -377,7 +377,7 @@ const Order_details = () => {
               backgroundColor: 'green',
               marginRight: '10px',
               color: 'white',
-              borderColor: 'black',
+              
             }}
             onClick={() => setVisible(false)}
           >
@@ -388,7 +388,7 @@ const Order_details = () => {
               backgroundColor: 'red',
               marginRight: '10px',
               color: 'white',
-              borderColor: 'black',
+              
             }}
             onClick={() => setVisible(false)}
           >
@@ -434,7 +434,7 @@ const Order_details = () => {
               <CButton
                 style={{
                   backgroundColor: 'red',
-                  borderColor: 'black',
+                  
                   color: 'white',
                   marginBottom: '10px',
                 }}
@@ -444,7 +444,7 @@ const Order_details = () => {
                 Cancel
               </CButton>
               <CButton
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc',  color: 'white' }}
                 type="submit"
                 onClick={() => setVisibleSm(false)}
               >
@@ -465,7 +465,7 @@ const Order_details = () => {
               backgroundColor: 'green',
               marginRight: '10px',
               color: 'white',
-              borderColor: 'black',
+              
             }}
             onClick={() => setVisibleMd(false)}
           >
@@ -476,7 +476,7 @@ const Order_details = () => {
               backgroundColor: 'red',
               marginRight: '10px',
               color: 'white',
-              borderColor: 'black',
+              
             }}
             onClick={() => setVisibleMd(false)}
           >
@@ -528,7 +528,7 @@ const Order_details = () => {
               backgroundColor: 'green',
               marginRight: '10px',
               color: 'white',
-              borderColor: 'black',
+              
             }}
             onClick={() => setVisibleMd2(false)}
           >
@@ -539,7 +539,7 @@ const Order_details = () => {
               backgroundColor: 'red',
               marginRight: '10px',
               color: 'white',
-              borderColor: 'black',
+              
             }}
             onClick={() => setVisibleMd2(false)}
           >

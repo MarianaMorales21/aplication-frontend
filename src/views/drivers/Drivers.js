@@ -33,7 +33,7 @@ const Drivers = () => {
               <CFormInput type="search" className="me-2" placeholder="Search for usernames" />
               <CButton
                 type="submit"
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc', color: 'white' }}
                 variant="outline"
               >
                 Search
@@ -114,7 +114,7 @@ const Drivers = () => {
               backgroundColor: 'green',
               marginRight: '10px',
               color: 'white',
-              borderColor: 'black',
+              
             }}
             onClick={() => setVisible(false)}
           >
@@ -125,7 +125,7 @@ const Drivers = () => {
               backgroundColor: 'red',
               marginRight: '10px',
               color: 'white',
-              borderColor: 'black',
+              
             }}
             onClick={() => setVisible(false)}
           >
@@ -176,7 +176,7 @@ const Drivers = () => {
               <CButton
                 style={{
                   backgroundColor: 'red',
-                  borderColor: 'black',
+                  
                   color: 'white',
                   marginBottom: '10px',
                 }}
@@ -186,7 +186,7 @@ const Drivers = () => {
                 Cancel
               </CButton>
               <CButton
-                style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+                style={{ backgroundColor: '#107acc', color: 'white' }}
                 type="submit"
                 onClick={() => setVisible(!visible)}
               >
@@ -198,7 +198,7 @@ const Drivers = () => {
       </CModal>
       <CButton
         type="submit"
-        style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+        style={{ backgroundColor: '#107acc', color: 'white' }}
         variant="outline"
         onClick={() => setVisibleND(!visibleND)}
       >
@@ -283,7 +283,7 @@ const Drivers = () => {
         <CModalFooter>
           <CButton
             type="submit"
-            style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
+            style={{ backgroundColor: '#107acc', color: 'white' }}
             onClick={() => setVisibleND(false)}
             variant="outline"
           >

@@ -53,7 +53,7 @@ const Forgotpassword = () => {
                     />
                   </CInputGroup>
                   <div className="d-grid">
-                    <CButton style={{backgroundColor:'#107acc', borderColor:'black', color:'white'}}>Create new password</CButton>
+                    <CButton style={{backgroundColor:'#107acc', color:'white'}}>Create new password</CButton>
                   </div>
                 </CForm>
               </CCardBody>
