@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CTable,
   CTableBody,
@@ -7,200 +7,320 @@ import {
   CTableRow,
   CTableDataCell,
   CButton,
-  CNavbar,
-  CForm,
-  CFormInput,
-  CContainer,
   CModal,
   CModalHeader,
   CModalTitle,
   CModalBody,
-  CModalFooter,
   CCol,
+  CForm,
+  CFormInput,
   CFormSelect,
+  CModalFooter,
+  CNavbar,
+  CContainer,
 } from '@coreui/react'
+import { helpHttp } from '../../helpHttp'
+
 const Drivers = () => {
-  const [visible, setVisible] = useState(false)
-  const [visibleSm, setVisibleSm] = useState(false)
   const [visibleND, setVisibleND] = useState(false)
+  const [visibleSm, setVisibleSm] = useState(false)
+  const [confirmDeleteModalVisible, setConfirmDeleteModalVisible] = useState(false)
+  const [driverIdToDelete, setDriverIdToDelete] = useState(null)
+  const api = helpHttp()
+  const urlDrivers = 'http://localhost:8000/driver'
+  const urlUsers = 'http://localhost:8000/users'
+  const [drivers, setDrivers] = useState([])
+  const [users, setUsers] = useState([])
+  const [driver, setDriver] = useState({
+    id: '',
+    user_id: '',
+    limitations: '',
+    date_of_issue: '',
+    expiration_date: '',
+    sex: '',
+    grade_license: 'Fifth',
+  })
+  const [alert, setAlert] = useState({ show: false, message: '', color: '' })
+
+  useEffect(() => {
+    fetchDrivers()
+    fetchUsers()
+  }, [])
+
+  const fetchDrivers = async () => {
+    const response = await api.get(urlDrivers)
+    if (!response.err) {
+      setDrivers(response)
+    } else {
+      showAlert('Error fetching drivers. Please try again.', 'danger')
+    }
+  }
+
+  const fetchUsers = async () => {
+    const response = await api.get(urlUsers)
+    if (!response.err) {
+      setUsers(response)
+    } else {
+      showAlert('Error fetching users. Please try again.', 'danger')
+    }
+  }
+
+  const showAlert = (message, color) => {
+    setAlert({ show: true, message, color })
+    setTimeout(() => {
+      setAlert({ show: false, message: '', color: '' })
+    }, 3000)
+  }
+
+  const handleAddDriver = async (e) => {
+    e.preventDefault();
+    // Generate the driver ID based on user_id
+    const newDriver = {
+      ...driver,
+      id: `${driver.user_id}D`, // Generate ID by concatenating user_id with 'D'
+    };
+    
+    const driverResponse = await api.post(urlDrivers, { body: newDriver });
+    if (!driverResponse.err) {
+      setDrivers([...drivers, driverResponse]); // Add the new driver to the list
+      setVisibleND(false); // Close the modal
+      showAlert('Driver added successfully!', 'success'); // Show success message
+      resetForms(); // Reset the form
+    } else {
+      showAlert('Error adding driver. Please try again.', 'danger'); // Show error message
+    }
+  };
+
+  const resetForms = () => {
+    setDriver({
+      user_id: '',
+      limitations: '',
+      date_of_issue: '',
+      expiration_date: '',
+      sex: '',
+      grade_license: 'Fifth',
+      id: '', // Reset the ID
+    });
+  };
+
+  const handleDeleteDriver = (id) => {
+    setDriverIdToDelete(id)
+    setConfirmDeleteModalVisible(true)
+  }
+
+  const confirmDelete = async () => {
+    const driverToDelete = drivers.find(driver => driver.id === driverIdToDelete);
+    
+    if (driverToDelete) {
+      // Primero eliminamos el cliente
+      const responseDriver = await api.del(`${urlDrivers}/${driverIdToDelete}`);
+      if (!responseDriver.err) {
+        // Ahora eliminamos el usuario asociado al cliente
+        const userIdToDelete = driverToDelete.user_id; // Obtenemos el user_id del cliente
+        const responseUser  = await api.del (`${urlUsers}/${userIdToDelete}`);
+        if (!responseUser .err) {
+          // Si la eliminación del usuario fue exitosa, actualizamos el estado de los conductores y usuarios
+          setDrivers(drivers.filter(driver => driver.id !== driverIdToDelete));
+          setUsers(users.filter(user => user.id !== userIdToDelete));
+          showAlert('Driver and associated user deleted successfully!', 'success');
+        } else {
+          showAlert('Error deleting associated user. Please try again.', 'danger');
+        }
+      } else {
+        showAlert('Error deleting driver. Please try again.', 'danger');
+      }
+    }
+    
+    // Cierra el modal de confirmación
+    setConfirmDeleteModalVisible(false);
+  };
+
+  const filteredUsers = users.filter((user) => user.role === 'Driver')
+
+  const handleEditDriver = async (e) => {
+    e.preventDefault()
+    const response = await api.put(`${urlDrivers}/${driver.id}`, { body: driver })
+    if (!response.err) {
+      setDrivers(drivers.map((d) => (d.id === driver.id ? response : d)))
+      setVisibleSm(false)
+      showAlert('Driver updated successfully!', 'success')
+    } else {
+      showAlert('Error updating driver. Please try again.', 'danger')
+    }
+  }
+
   return (
     <div>
       <h1>List of Drivers</h1>
-      <div>
-        <CNavbar style={{ border: '1px solid gray', borderRadius: '10px', marginBottom: '10px' }}>
-          <CContainer style={{ display: 'flex' }}>
-            <CForm className="d-flex">
-              <CFormInput type="search" className="me-2" placeholder="Search for usernames" />
-              <CButton
-                type="submit"
-                style={{ backgroundColor: '#107acc', color: 'white' }}
-                variant="outline"
-              >
-                Search
-              </CButton>
-            </CForm>
-            <h6>Nro. Drivers: 2</h6>
-          </CContainer>
-        </CNavbar>
-      </div>
+      <CNavbar style={{ border: '1px solid gray', borderRadius: '10px', marginBottom: '10px' }}>
+        <CContainer style={{ display: 'flex' }}>
+          <CForm className="d-flex">
+            <CFormInput type="search" className="me-2" placeholder="Search for drivers" />
+            <CButton
+              type="submit"
+              style={{ backgroundColor: '#107acc', color: 'white' }}
+              variant="outline"
+            >
+              Search
+            </CButton>
+          </CForm>
+        </CContainer>
+      </CNavbar>
+
       <CTable style={{ border: '1px solid gray', borderRadius: '50px' }}>
         <CTableHead>
           <CTableRow>
-            <CTableHeaderCell>DNI</CTableHeaderCell>
             <CTableHeaderCell>Name</CTableHeaderCell>
-            <CTableHeaderCell>Email</CTableHeaderCell>
-            <CTableHeaderCell>Phone</CTableHeaderCell>
-            <CTableHeaderCell>Address</CTableHeaderCell>
-            <CTableHeaderCell>License Expiration Date</CTableHeaderCell>
+            <CTableHeaderCell>Limitations</CTableHeaderCell>
+            <CTableHeaderCell>Date License</CTableHeaderCell>
+            <CTableHeaderCell>Expiration Date License</CTableHeaderCell>
+            <CTableHeaderCell>Grade License</CTableHeaderCell>
+            <CTableHeaderCell>Sex</CTableHeaderCell>
             <CTableHeaderCell>Options</CTableHeaderCell>
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          <CTableRow>
-            <CTableDataCell>{'30781815'}</CTableDataCell>
-            <CTableDataCell>{'Mariana Morales'}</CTableDataCell>
-            <CTableDataCell>{'Marianamorales2110@gmail.com'}</CTableDataCell>
-            <CTableDataCell>{'0412-1617297'}</CTableDataCell>
-            <CTableDataCell>{'5ta Avenida de San Cristobal'}</CTableDataCell>
-            <CTableDataCell>{'21/10/2024'}</CTableDataCell>
-            <CTableDataCell>
-              <CButton
-                style={{ backgroundColor: 'green', marginRight: '10px', color: 'white' }}
-                onClick={() => setVisibleSm(!visibleSm)}
-              >
-                Edit
-              </CButton>
-              <CButton
-                style={{ backgroundColor: 'red', marginRight: '10px', color: 'white' }}
-                onClick={() => setVisible(!visible)}
-              >
-                Delete
-              </CButton>
-            </CTableDataCell>
-          </CTableRow>
-          <CTableRow>
-            <CTableDataCell>{'30781864'}</CTableDataCell>
-            <CTableDataCell>{'Jose Morales'}</CTableDataCell>
-            <CTableDataCell>{'Josemorales@gmail.com'}</CTableDataCell>
-            <CTableDataCell>{'0412-1617297'}</CTableDataCell>
-            <CTableDataCell>{'5ta Avenida de San Cristobal'}</CTableDataCell>
-            <CTableDataCell>{'21/10/2024'}</CTableDataCell>
-            <CTableDataCell>
-              <CButton
-                style={{ backgroundColor: 'green', marginRight: '10px', color: 'white' }}
-                onClick={() => setVisibleSm(!visibleSm)}
-              >
-                Edit
-              </CButton>
-              <CButton
-                style={{ backgroundColor: 'red', marginRight: '10px', color: 'white' }}
-                onClick={() => setVisible(!visible)}
-              >
-                Delete
-              </CButton>
-            </CTableDataCell>
-          </CTableRow>
+          {drivers.map((driver) => {
+            const user = users.find((user) => user.id === driver.user_id)
+            return (
+              <CTableRow key={driver.id}>
+                <CTableDataCell>{user ? user.name : 'Unknown'}</CTableDataCell>
+                <CTableDataCell>{driver.limitations}</CTableDataCell>
+                <CTableDataCell>{driver.date_of_issue}</CTableDataCell>
+                <CTableDataCell>{driver.expiration_date}</CTableDataCell>
+                <CTableDataCell>{driver.grade_license}</CTableDataCell>
+                <CTableDataCell>{driver.sex}</CTableDataCell>
+                <CTableDataCell>
+                  <CButton
+                    style={{ backgroundColor: 'green', marginRight: '10px', color: 'white' }}
+                    onClick={() => {
+                      setDriver(driver)
+                      setVisibleSm(true)
+                    }}
+                  >
+                    Edit
+                  </CButton>
+                  <CButton
+                    style={{ backgroundColor: 'red', marginRight: '10px', color: 'white' }}
+                    onClick={() => handleDeleteDriver(driver.id)}
+                  >
+                    Delete
+                  </CButton>
+                </CTableDataCell>
+              </CTableRow>
+            )
+          })}
         </CTableBody>
       </CTable>
 
-      <CModal visible={visible} onClose={() => setVisible(false)}>
+      <CModal
+        visible={confirmDeleteModalVisible}
+        onClose={() => setConfirmDeleteModalVisible(false)}
+      >
         <CModalHeader>
-          <CModalTitle>Attention</CModalTitle>
+          <CModalTitle>Confirm Deletion</CModalTitle>
         </CModalHeader>
-        <CModalBody>Are you sure to remove this driver from the system?</CModalBody>
+        <CModalBody>Are you sure you want to delete this driver?</CModalBody>
         <CModalFooter>
           <CButton
             style={{
               backgroundColor: 'green',
               marginRight: '10px',
               color: 'white',
-              
             }}
-            onClick={() => setVisible(false)}
+            onClick={() => setConfirmDeleteModalVisible(false)}
           >
             Cancel
           </CButton>
           <CButton
-            style={{
-              backgroundColor: 'red',
-              marginRight: '10px',
-              color: 'white',
-              
-            }}
-            onClick={() => setVisible(false)}
+            style={{ backgroundColor: 'red', marginRight: '10px', color: 'white' }}
+            onClick={confirmDelete}
           >
             Delete
           </CButton>
         </CModalFooter>
       </CModal>
+
       <CModal size="sm" visible={visibleSm} onClose={() => setVisibleSm(false)}>
         <CModalHeader>
           <CModalTitle>Edit Driver</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <h6>Nro. User: 5012</h6>
-          <h6>DNI: 30781815</h6>
-          <h6>Name Driver: Mariana Morales</h6>
-          <CForm className="row g-3">
-            <CCol>
-              <CFormSelect id="type" label="Limitations License" style={{ borderColor: 'black' }}>
-                <option>Choose...</option>
+          <CForm className="row g-3" onSubmit={handleEditDriver}>
+            <CCol md={12}>
+              <CFormSelect
+                id="limitationsLicense"
+                label="Limitations License"
+                value={driver.limitations}
+                onChange={(e) => setDriver({ ...driver, limitations: e.target.value })}
+                required
+              >
+                <option value="">Choose...</option>
                 <option>Spectacles</option>
                 <option>Cardiology</option>
               </CFormSelect>
-            </CCol>
-            <CCol md={6}>
-              <CFormInput
-                id="date"
-                label="Date of Issue License"
-                type="date"
-                style={{ borderColor: 'black' }}
-              />
-            </CCol>
-            <CCol md={6}>
-              <CFormInput
-                id="date"
-                label="Expiration Date"
-                type="date"
-                style={{ borderColor: 'black' }}
-              />
-            </CCol>
-            <CCol>
-              <CFormSelect id="sex" label="Sex" style={{ borderColor: 'black' }}>
-                <option>Choose...</option>
-                <option>Female</option>
-                <option>Male</option>
-              </CFormSelect>
-            </CCol>
-            <CCol md={6}>
+              <CCol md={12}>
+                <CFormInput
+                  id="dateIssue"
+                  label="Date of Issue License"
+                  type="date"
+                  value={driver.date_of_issue}
+                  onChange={(e) => setDriver({ ...driver, date_of_issue: e.target.value })}
+                  style={{ borderColor: 'black' }}
+                />
+              </CCol>
+              <CCol md={12}>
+                <CFormInput
+                  id="dateExpiration"
+                  label="Expiration Date"
+                  type="date"
+                  style={{ borderColor: 'black' }}
+                  value={driver.expiration_date}
+                  onChange={(e) => setDriver({ ...driver, expiration_date: e.target.value })}
+                />
+              </CCol>
+              <CCol md={12}>
+                <CFormSelect
+                  id="sex"
+                  label="Sex"
+                  style={{ borderColor: 'black' }}
+                  value={driver.sex}
+                  onChange={(e) => setDriver({ ...driver, sex: e.target.value })}
+                >
+                  <option value={""}>Choose...</option>
+                  <option>Female</option>
+                  <option>Male</option>
+                </CFormSelect>
+              </CCol>
               <CButton
                 style={{
                   backgroundColor: 'red',
-                  
                   color: 'white',
                   marginBottom: '10px',
+                  marginTop: '10px',
+                  marginRight: '5px',
                 }}
-                type="submit"
-                onClick={() => setVisibleLg(false)}
+                type="button"
+                onClick={() => setVisibleSm(false)}
               >
                 Cancel
               </CButton>
-              <CButton
-                style={{ backgroundColor: '#107acc', color: 'white' }}
-                type="submit"
-                onClick={() => setVisible(!visible)}
-              >
-                Add Changes
+              <CButton style={{ backgroundColor: '#107acc', color: 'white' }} type="submit">
+                Save Changes
               </CButton>
             </CCol>
           </CForm>
         </CModalBody>
       </CModal>
+
       <CButton
-        type="submit"
+        type="button"
         style={{ backgroundColor: '#107acc', color: 'white' }}
         variant="outline"
-        onClick={() => setVisibleND(!visibleND)}
+        onClick={() => {
+          setVisibleND(true)
+          resetForms()
+        }}
       >
         New Driver
       </CButton>
@@ -212,84 +332,93 @@ const Drivers = () => {
         aria-labelledby="modalTitle"
       >
         <CModalHeader>
-          <CModalTitle id="modalTitle">New Client</CModalTitle>
+          <CModalTitle id="modalTitle">New Driver</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <div>
-            <CNavbar>
-              <CContainer>
-                <CForm>
-                  <CCol md={12}>
-                    <CFormInput
-                      placeholder="Name User"
-                      id="Name"
-                      label="Name User"
-                      type="search"
-                      style={{ borderColor: 'black' }}
-                    />
-                  </CCol>
-                  <h6 style={{ marginTop: '15px' }}>Data Found:</h6>
-                  <p>
-                    Name:<br></br>
-                    DNI:
-                    <br />
-                    Email: <br />
-                    Phone:
-                    <br />
-                    Address:
-                    <br />
-                  </p>
-                  <div style={{ borderTop: '2px solid black', width: '800px' }}>
-                    <CCol md={4} style={{ marginTop: '10px' }}>
-                      <CFormSelect
-                        id="type"
-                        label="Limitations License"
-                        style={{ borderColor: 'black' }}
-                      >
-                        <option>Choose...</option>
-                        <option>Spectacles</option>
-                        <option>Cardiology</option>
-                      </CFormSelect>
-                    </CCol>
-                    <CCol md={6} style={{ marginTop: '10px' }}>
-                      <CFormInput
-                        id="date"
-                        label="Date of Issue License"
-                        type="date"
-                        style={{ borderColor: 'black' }}
-                      />
-                    </CCol>
-                    <CCol md={6} style={{ marginTop: '10px' }}>
-                      <CFormInput
-                        id="date"
-                        label="Expiration Date"
-                        type="date"
-                        style={{ borderColor: 'black' }}
-                      />
-                    </CCol>
-                    <CCol md={4} style={{ marginTop: '10px' }}>
-                      <CFormSelect id="sex" label="Sex" style={{ borderColor: 'black' }}>
-                        <option>Choose...</option>
-                        <option>Female</option>
-                        <option>Male</option>
-                      </CFormSelect>
-                    </CCol>
-                  </div>
-                </CForm>
-              </CContainer>
-            </CNavbar>
-          </div>
+          <CForm onSubmit={handleAddDriver}>
+            <CCol md={12}>
+              <CFormSelect
+                id="user_id"
+                label="Select User"
+                style={{ borderColor: 'black' }}
+                value={driver.user_id}
+                onChange={(e) => setDriver({ ...driver, user_id: e.target.value })}
+                required
+              >
+                <option value="">Choose...</option>
+                {filteredUsers.length > 0 ? (
+                  filteredUsers.map((user) => (
+                    <option key={user.id} value={user.id}>
+                      {user.name}, {user.role}
+                    </option>
+                  ))
+                ) : (
+                  <option>No se encontraron usuarios</option>
+                )}
+              </CFormSelect>
+            </CCol>
+            <CCol md={12}>
+              <CFormSelect 
+              id="type" 
+              label="Limitations License" 
+              style={{ borderColor: 'black' }}
+              value={driver.limitations}
+              onChange={(e) => setDriver({ ...driver, limitations: e.target.value })}>
+                <option value={""}>Choose...</option>
+                <option>Spectacles</option>
+                <option>Cardiology</option>
+              </CFormSelect>
+            </CCol>
+            <CCol md={12} style={{ marginTop: '10px' }}>
+              <CFormInput
+                id="dateIssue"
+                label="Date of Issue License"
+                type="date"
+                style={{ borderColor: 'black' }}
+                value={driver.date_of_issue}
+                onChange={(e) => setDriver({ ...driver, date_of_issue: e.target.value })}
+              />
+            </CCol>
+            <CCol md={12} style={{ marginTop: '10px' }}>
+              <CFormInput
+                id="dateExp"
+                label="Expiration Date"
+                type="date"
+                style={{ borderColor: 'black' }}
+                value={driver.expiration_date}
+                onChange={(e) => setDriver({ ...driver, expiration_date: e.target.value })}
+              />
+            </CCol>
+            <CCol md={12} style={{ marginTop: '10px' }}>
+              <CFormSelect
+                id="sex"
+                label="Sex"
+                style={{ borderColor: 'black' }}
+                value={driver.sex}
+                onChange={(e) => setDriver({ ...driver, sex: e.target.value })}
+              >
+                <option value={""}>Choose...</option>
+                <option>Female</option>
+                <option>Male</option>
+              </CFormSelect>
+            </CCol>
+            <CModalFooter>
+              <CButton
+                type="button"
+                style={{ backgroundColor: '#107acc', color: 'white' }}
+                onClick={() => {
+                  setVisibleND(false)
+                  resetForms()
+                }}
+              >
+                Cancel
+              </CButton>
+              <CButton type="submit" style={{ backgroundColor: '#107acc', color: 'white' }}>
+                Add New Driver
+              </CButton>
+            </CModalFooter>
+          </CForm>
         </CModalBody>
-        <CModalFooter>
-          <CButton
-            type="submit"
-            style={{ backgroundColor: '#107acc', color: 'white' }}
-            onClick={() => setVisibleND(false)}
-            variant="outline"
-          >
-            Add New Driver
-          </CButton>
-        </CModalFooter>
       </CModal>
     </div>
   )

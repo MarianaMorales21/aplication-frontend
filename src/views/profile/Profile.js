@@ -94,6 +94,14 @@ const UserProfile = () => {
                 <CForm className="row g-3">
                   <CCol md={6}>
                     <CFormInput
+                      placeholder="DNI"
+                      id="DNI"
+                      label="DNI"
+                      style={{ borderColor: 'black' }}
+                    />
+                  </CCol>
+                  <CCol md={6}>
+                    <CFormInput
                       placeholder="User Name"
                       id="username"
                       label="User Name"
@@ -130,13 +138,6 @@ const UserProfile = () => {
                     </CFormSelect>
                   </CCol>
                   <CCol md={6}>
-                    <CFormSelect id="Role" label="Role" style={{ borderColor: 'black' }}>
-                      <option>Choose...</option>
-                      <option>Driver</option>
-                      <option>Client</option>
-                    </CFormSelect>
-                  </CCol>
-                  <CCol md={6}>
                     <CFormInput
                       placeholder="Email"
                       id="email"
@@ -153,6 +154,7 @@ const UserProfile = () => {
                       style={{ borderColor: 'black' }}
                     />
                   </CCol>
+
                   <CCol md={6}>
                     <CFormInput
                       placeholder="Address"

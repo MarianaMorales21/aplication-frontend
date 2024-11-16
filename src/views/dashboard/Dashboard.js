@@ -50,11 +50,11 @@ import MainChart from './MainChart'
 
 const Dashboard = () => {
   const progressExample = [
-    { title: 'Visits', value: '29.703 Users', percent: 40, color: 'success' },
-    { title: 'Unique', value: '24.093 Users', percent: 20, color: 'info' },
-    { title: 'Pageviews', value: '78.706 Views', percent: 60, color: 'warning' },
-    { title: 'New Users', value: '22.123 Users', percent: 80, color: 'danger' },
-    { title: 'Bounce Rate', value: 'Average Rate', percent: 40.15, color: 'primary' },
+    { title: 'Users', value: '10 Users', percent: 20, color: 'success' },
+    { title: 'Clients', value: '5 Users', percent: 20, color: 'info' },
+    { title: 'Drivers', value: '2 Users Views', percent: 60, color: 'warning' },
+    { title: 'Orders', value: '5 Orders', percent: 80, color: 'danger' },
+    { title: 'Material', value: 'Average Rate', percent: 40.15, color: 'primary' },
   ]
   return (
     <>
@@ -66,7 +66,6 @@ const Dashboard = () => {
               <h4 id="traffic" className="card-title mb-0">
                 Traffic
               </h4>
-              <div className="small text-body-secondary">January - July 2023</div>
             </CCol>
             <CCol sm={7} className="d-none d-md-block">
               <CButton color="primary" className="float-end">
@@ -113,25 +112,24 @@ const Dashboard = () => {
           </CRow>
         </CCardFooter>
       </CCard>
-      <WidgetsBrand className="mb-4" withCharts />
-      <CRow>
+            <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>Traffic {' & '} Sales</CCardHeader>
+            <CCardHeader>Clients {' & '} Orders</CCardHeader>
             <CCardBody>
               <CRow>
                 <CCol xs={12} md={6} xl={6}>
                   <CRow>
                     <CCol xs={6}>
                       <div className="border-start border-start-4 border-start-info py-1 px-3">
-                        <div className="text-body-secondary text-truncate small">New Clients</div>
+                        <div className="text-body-secondary text-truncate small">Clients</div>
                         <div className="fs-5 fw-semibold">9,123</div>
                       </div>
                     </CCol>
                     <CCol xs={6}>
                       <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
                         <div className="text-body-secondary text-truncate small">
-                          Recurring Clients
+                          Orders
                         </div>
                         <div className="fs-5 fw-semibold">22,643</div>
                       </div>

@@ -41,7 +41,7 @@ const WidgetsDropdown = (props) => {
     <CRow className={props.className} xs={{ gutter: 4 }}>
       <CCol sm={6} xl={4} xxl={3}>
         <CWidgetStatsA
-          color="primary"
+          color="danger"
           value={
             <>
               26K{' '}
@@ -140,7 +140,7 @@ const WidgetsDropdown = (props) => {
               </span>
             </>
           }
-          title="Income"
+          title="Clients"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
@@ -220,7 +220,7 @@ const WidgetsDropdown = (props) => {
       </CCol>
       <CCol sm={6} xl={4} xxl={3}>
         <CWidgetStatsA
-          color="warning"
+          color="success"
           value={
             <>
               2.49%{' '}
@@ -229,7 +229,7 @@ const WidgetsDropdown = (props) => {
               </span>
             </>
           }
-          title="Conversion Rate"
+          title="Drivers"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="text-white p-0">
@@ -292,7 +292,7 @@ const WidgetsDropdown = (props) => {
       </CCol>
       <CCol sm={6} xl={4} xxl={3}>
         <CWidgetStatsA
-          color="danger"
+          color="warning"
           value={
             <>
               44K{' '}
@@ -301,7 +301,7 @@ const WidgetsDropdown = (props) => {
               </span>
             </>
           }
-          title="Sessions"
+          title="Trucks"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="text-white p-0">

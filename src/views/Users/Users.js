@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CTable,
   CTableBody,
@@ -7,169 +7,211 @@ import {
   CTableRow,
   CTableDataCell,
   CButton,
-  CNavbar,
-  CForm,
-  CFormInput,
-  CContainer,
   CModal,
   CModalHeader,
   CModalTitle,
   CModalBody,
-  CModalFooter,
   CCol,
+  CForm,
+  CFormInput,
   CFormSelect,
+  CAlert,
+  CModalFooter,
 } from '@coreui/react'
+import { helpHttp } from '../../helpHttp'
 
 const Users = () => {
-  const [visible, setVisible] = useState(false)
+  const api = helpHttp()
+  const url = 'http://localhost:8000/users'
+
+  const [users, setUsers] = useState([])
+  const [user, setUser] = useState({
+    name: '',
+    email: '',
+    role: '',
+    status: 'Active',
+    password: '',
+    address: '',
+    phone: '',
+  })
   const [visibleLg, setVisibleLg] = useState(false)
   const [visibleSm, setVisibleSm] = useState(false)
+  const [confirmDeleteModalVisible, setConfirmDeleteModalVisible] = useState(false)
+  const [userIdToDelete, setUserIdToDelete] = useState(null)
+  const [alert, setAlert] = useState({ show: false, message: '', color: '' })
+
+  useEffect(() => {
+    fetchUsers()
+  }, [])
+
+  const fetchUsers = async () => {
+    const response = await api.get(url)
+    if (!response.err) {
+      setUsers(response)
+    } else {
+      showAlert('Error fetching users. Please try again.', 'danger')
+    }
+  }
+
+  const handleAddUser = async (e) => {
+    e.preventDefault()
+    const response = await api.post(url, { body: user })
+    if (!response.err) {
+      setUsers([...users, response])
+      setVisibleLg(false)
+      showAlert('User added successfully!', 'success')
+      resetUserForm()
+    } else {
+      showAlert('Error adding user. Please try again.', 'danger')
+    }
+  }
+
+  const handleEditUser = async (e) => {
+    e.preventDefault()
+    const response = await api.put(`${url}/${user.id}`, { body: user })
+    if (!response.err) {
+      setUsers(users.map((u) => (u.id === user.id ? response : u)))
+      setVisibleSm(false)
+      showAlert('User updated successfully!', 'success')
+    } else {
+      showAlert('Error updating user. Please try again.', 'danger')
+    }
+  }
+
+  const handleDeleteUser = (id) => {
+    setUserIdToDelete(id)
+    setConfirmDeleteModalVisible(true)
+  }
+
+  const confirmDelete = async () => {
+    const response = await api.del(`${url}/${userIdToDelete}`)
+    if (!response.err) {
+      setUsers(users.filter((u) => u.id !== userIdToDelete))
+      showAlert('User  deleted successfully!', 'success')
+    } else {
+      showAlert('Error deleting user. Please try again.', 'danger')
+    }
+    setConfirmDeleteModalVisible(false)
+  }
+
+  const showAlert = (message, color) => {
+    setAlert({ show: true, message, color })
+    setTimeout(() => {
+      setAlert({ show: false, message: '', color: '' })
+    }, 3000)
+  }
+
+  const resetUserForm = () => {
+    setUser({
+      name: '',
+      email: '',
+      role: '',
+      status: 'Active',
+      password: '',
+      address: '',
+      phone: '',
+    })
+  }
+
   return (
     <div>
       <h1>List of users</h1>
-      <div>
-        <CNavbar style={{ border: '1px solid gray', borderRadius: '10px', marginBottom: '10px' }}>
-          <CContainer style={{ display: 'flex' }}>
-            <CForm className="d-flex">
-              <CFormInput type="search" className="me-2" placeholder="Search for usernames" />
-              <CButton
-                type="submit"
-                style={{ backgroundColor: '#107acc', color: 'white' }}
-                variant="outline"
-              >
-                Search
-              </CButton>
-              <CFormInput type="date" className="me-2" style={{ marginLeft: '15px' }} />
-              <CButton
-                type="submit"
-                style={{ backgroundColor: '#107acc', color: 'white' }}
-                variant="outline"
-              >
-                Search
-              </CButton>
-              <CFormInput
-                type="search"
-                className="me-2"
-                style={{ marginLeft: '15px' }}
-                placeholder="Search for role"
-              />
-              <CButton
-                type="submit"
-                style={{ backgroundColor: '#107acc', color: 'white' }}
-                variant="outline"
-              >
-                Search
-              </CButton>
-            </CForm>
-            <h6>Nro. Users: 2</h6>
-          </CContainer>
-        </CNavbar>
-      </div>
+      {alert.show && <CAlert color={alert.color}>{alert.message}</CAlert>}
       <CTable style={{ border: '1px solid gray', borderRadius: '50px' }}>
         <CTableHead>
           <CTableRow>
-            <CTableHeaderCell>ID</CTableHeaderCell>
-            <CTableHeaderCell>Name</CTableHeaderCell>
-            <CTableHeaderCell>Email</CTableHeaderCell>
-            <CTableHeaderCell>Rol</CTableHeaderCell>
-            <CTableHeaderCell>Status</CTableHeaderCell>
-            <CTableHeaderCell>Options</CTableHeaderCell>
+            <CTableHeaderCell scope="col">ID</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Name</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Email</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Role</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Status</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Options</CTableHeaderCell>
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          <CTableRow>
-            <CTableDataCell>{'1'}</CTableDataCell>
-            <CTableDataCell>{'Mariana Morales'}</CTableDataCell>
-            <CTableDataCell>{'Marianamorales2110@gmail.com'}</CTableDataCell>
-            <CTableDataCell>{'Driver'}</CTableDataCell>
-            <CTableDataCell>{'Active'}</CTableDataCell>
-            <CTableDataCell>
-              <CButton
-                style={{ backgroundColor: 'green', marginRight: '10px', color: 'white' }}
-                onClick={() => setVisibleSm(!visibleSm)}
-              >
-                Edit
-              </CButton>
-              <CButton
-                style={{ backgroundColor: 'red', marginRight: '10px', color: 'white' }}
-                onClick={() => setVisible(!visible)}
-              >
-                Delete
-              </CButton>
-            </CTableDataCell>
-          </CTableRow>
-          <CTableRow>
-            <CTableDataCell>{'2'}</CTableDataCell>
-            <CTableDataCell>{'Jose Morales'}</CTableDataCell>
-            <CTableDataCell>{'Josemorales@gmail.com'}</CTableDataCell>
-            <CTableDataCell>{'Client'}</CTableDataCell>
-            <CTableDataCell>{'Inactive'}</CTableDataCell>
-            <CTableDataCell>
-              <CButton
-                style={{ backgroundColor: 'green', marginRight: '10px', color: 'white' }}
-                onClick={() => setVisibleSm(!visibleSm)}
-              >
-                Edit
-              </CButton>
-              <CButton
-                style={{ backgroundColor: 'red', marginRight: '10px', color: 'white' }}
-                onClick={() => setVisible(!visible)}
-              >
-                Delete
-              </CButton>
-              <CModal visible={visible} onClose={() => setVisible(false)}>
-                <CModalHeader>
-                  <CModalTitle>Attention</CModalTitle>
-                </CModalHeader>
-                <CModalBody>Are you sure to remove this user from the system?</CModalBody>
-                <CModalFooter>
-                  <CButton
-                    style={{
-                      backgroundColor: 'green',
-                      marginRight: '10px',
-                      color: 'white',
-                    }}
-                    onClick={() => setVisible(false)}
-                  >
-                    Cancel
-                  </CButton>
-                  <CButton
-                    style={{
-                      backgroundColor: 'red',
-                      marginRight: '10px',
-                      color: 'white',
-                    }}
-                    onClick={() => setVisible(false)}
-                  >
-                    Delete
-                  </CButton>
-                </CModalFooter>
-              </CModal>
-            </CTableDataCell>
-          </CTableRow>
+          {users?.map((user) => (
+            <CTableRow key={user.id}>
+              <CTableDataCell>{user.id}</CTableDataCell>
+              <CTableDataCell>{user.name}</CTableDataCell>
+              <CTableDataCell>{user.email}</CTableDataCell>
+              <CTableDataCell>{user.role}</CTableDataCell>
+              <CTableDataCell>{user.status}</CTableDataCell>
+              <CTableDataCell>
+                <CButton
+                  style={{ backgroundColor: 'green', marginRight: '10px', color: 'white' }}
+                  onClick={() => {
+                    setUser(user)
+                    setVisibleSm(true)
+                  }}
+                >
+                  Edit
+                </CButton>
+                <CButton
+                  style={{ backgroundColor: 'red', marginRight: '10px', color: 'white' }}
+                  onClick={() => handleDeleteUser(user.id)}
+                >
+                  Delete
+                </CButton>
+              </CTableDataCell>
+            </CTableRow>
+          ))}
         </CTableBody>
       </CTable>
       <CButton
-        type="submit"
+        type="button"
         style={{ backgroundColor: '#107acc', color: 'white' }}
         variant="outline"
-        onClick={() => setVisibleLg(!visibleLg)}
+        onClick={() => {
+          setVisibleLg(true)
+          resetUserForm()
+        }}
       >
         New User
       </CButton>
+
+      <CModal
+        visible={confirmDeleteModalVisible}
+        onClose={() => setConfirmDeleteModalVisible(false)}
+      >
+        <CModalHeader>
+          <CModalTitle>Confirm Deletion</CModalTitle>
+        </CModalHeader>
+        <CModalBody>Are you sure you want to delete this user?</CModalBody>
+        <CModalFooter>
+          <CButton
+            style={{
+              backgroundColor: 'green',
+              marginRight: '10px',
+              color: 'white',
+            }}
+            onClick={() => setConfirmDeleteModalVisible(false)}
+          >
+            Cancel
+          </CButton>
+          <CButton
+            style={{ backgroundColor: 'red', marginRight: '10px', color: 'white' }}
+            onClick={confirmDelete}
+          >
+            Delete
+          </CButton>
+        </CModalFooter>
+      </CModal>
+
       <CModal size="lg" visible={visibleLg} onClose={() => setVisibleLg(false)}>
         <CModalHeader>
           <CModalTitle>New User</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <h6>Nro. User: 3</h6>
-          <CForm className="row g-3">
+          <CForm className="row g-3" onSubmit={handleAddUser}>
             <CCol md={6}>
               <CFormInput
                 placeholder="User Name"
                 id="username"
                 label="User Name"
                 style={{ borderColor: 'black' }}
+                value={user.name}
+                onChange={(e) => setUser({ ...user, name: e.target.value })}
+                required
               />
             </CCol>
             <CCol md={6}>
@@ -179,6 +221,9 @@ const Users = () => {
                 label="Password"
                 type="password"
                 style={{ borderColor: 'black' }}
+                value={user.password}
+                onChange={(e) => setUser({ ...user, password: e.target.value })}
+                required
               />
             </CCol>
             <CCol md={6}>
@@ -188,33 +233,33 @@ const Users = () => {
                 label="Confirm Password"
                 type="password"
                 style={{ borderColor: 'black' }}
+                required
               />
             </CCol>
             <CCol md={4}>
-              <CFormSelect id="Role" label="Role User" style={{ borderColor: 'black' }}>
-                <option>Choose...</option>
+              <CFormSelect
+                id="Role"
+                label="Role User"
+                style={{ borderColor: 'black' }}
+                value={user.role}
+                onChange={(e) => setUser({ ...user, role: e.target.value })}
+                required
+              >
+                <option value="">Choose...</option>
                 <option>Driver</option>
                 <option>Client</option>
                 <option>Administrator</option>
               </CFormSelect>
             </CCol>
             <CCol md={6}>
-              <CFormInput placeholder="DNI" id="DNI" label="DNI" style={{ borderColor: 'black' }} />
-            </CCol>
-            <CCol md={6}>
               <CFormInput
-                placeholder="Name"
-                id="name"
-                label="Name"
+                placeholder="DNI"
+                id="DNI"
+                label="DNI"
                 style={{ borderColor: 'black' }}
-              />
-            </CCol>
-            <CCol md={6}>
-              <CFormInput
-                placeholder="Last Name"
-                id="name"
-                label="Last Name"
-                style={{ borderColor: 'black' }}
+                value={user.dni}
+                onChange={(e) => setUser({ ...user, dni: e.target.value })}
+                required
               />
             </CCol>
             <CCol md={6}>
@@ -224,6 +269,9 @@ const Users = () => {
                 label="Email"
                 type="email"
                 style={{ borderColor: 'black' }}
+                value={user.email}
+                onChange={(e) => setUser({ ...user, email: e.target.value })}
+                required
               />
             </CCol>
             <CCol md={6}>
@@ -232,6 +280,9 @@ const Users = () => {
                 id="Phone"
                 label="Phone"
                 style={{ borderColor: 'black' }}
+                value={user.phone}
+                onChange={(e) => setUser({ ...user, phone: e.target.value })}
+                required
               />
             </CCol>
             <CCol md={6}>
@@ -240,9 +291,11 @@ const Users = () => {
                 id="Address"
                 label="Address"
                 style={{ borderColor: 'black' }}
+                value={user.address}
+                onChange={(e) => setUser({ ...user, address: e.target.value })}
+                required
               />
             </CCol>
-
             <CCol md={6}>
               <CButton
                 style={{
@@ -251,16 +304,12 @@ const Users = () => {
                   color: 'white',
                   marginRight: '10px',
                 }}
-                type="submit"
+                type="button"
                 onClick={() => setVisibleLg(false)}
               >
                 Cancel
               </CButton>
-              <CButton
-                style={{ backgroundColor: '#107acc', color: 'white' }}
-                type="submit"
-                onClick={() => setVisible(!visible)}
-              >
+              <CButton style={{ backgroundColor: '#107acc', color: 'white' }} type="submit">
                 Add User
               </CButton>
             </CCol>
@@ -273,49 +322,17 @@ const Users = () => {
           <CModalTitle>Edit User</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <h6>Nro. User: 5012</h6>
-          <h6>DNI: 30781815</h6>
-          <h6>Name User: Mariana Morales</h6>
-          <CForm className="row g-3">
+          <CForm className="row g-3" onSubmit={handleEditUser}>
             <CCol md={6}>
               <CFormInput
                 placeholder="User Name"
                 id="username"
                 label="User Name"
                 style={{ borderColor: 'black' }}
+                value={user.name}
+                onChange={(e) => setUser({ ...user, name: e.target.value })}
+                required
               />
-            </CCol>
-            <CCol md={6}>
-              <CFormInput
-                placeholder="Password"
-                id="Password"
-                label="Password"
-                type="password"
-                style={{ borderColor: 'black' }}
-              />
-            </CCol>
-            <CCol md={6}>
-              <CFormInput
-                placeholder="Confirm Password"
-                id="CPassword"
-                label="Confirm Password"
-                type="password"
-                style={{ borderColor: 'black' }}
-              />
-            </CCol>
-            <CCol md={6}>
-              <CFormSelect id="Status" label="Current User Status" style={{ borderColor: 'black' }}>
-                <option>Choose...</option>
-                <option>Active</option>
-                <option>Inactive</option>
-              </CFormSelect>
-            </CCol>
-            <CCol md={6}>
-              <CFormSelect id="Role" label="Role" style={{ borderColor: 'black' }}>
-                <option>Choose...</option>
-                <option>Driver</option>
-                <option>Client</option>
-              </CFormSelect>
             </CCol>
             <CCol md={6}>
               <CFormInput
@@ -324,6 +341,9 @@ const Users = () => {
                 label="Email"
                 type="email"
                 style={{ borderColor: 'black' }}
+                value={user.email}
+                onChange={(e) => setUser({ ...user, email: e.target.value })}
+                required
               />
             </CCol>
             <CCol md={6}>
@@ -332,6 +352,9 @@ const Users = () => {
                 id="Phone"
                 label="Phone"
                 style={{ borderColor: 'black' }}
+                value={user.phone}
+                onChange={(e) => setUser({ ...user, phone: e.target.value })}
+                required
               />
             </CCol>
             <CCol md={6}>
@@ -340,27 +363,41 @@ const Users = () => {
                 id="Address"
                 label="Address"
                 style={{ borderColor: 'black' }}
+                value={user.address}
+                onChange={(e) => setUser({ ...user, address: e.target.value })}
+                required
               />
             </CCol>
-
             <CCol md={6}>
+              <CCol md={12}>
+                <CFormSelect
+                  id="Status"
+                  label="Status User"
+                  style={{ borderColor: 'black' }}
+                  value={user.status}
+                  onChange={(e) => setUser({ ...user, status: e.target.value })}
+                  required
+                >
+                  <option value="">Choose...</option>
+                  <option>Active</option>
+                  <option>Inactive</option>
+                </CFormSelect>
+              </CCol>
+
               <CButton
                 style={{
                   backgroundColor: 'red',
                   color: 'white',
                   marginBottom: '10px',
+                  marginTop: '10px',
                 }}
-                type="submit"
-                onClick={() => setVisibleLg(false)}
+                type="button"
+                onClick={() => setVisibleSm(false)}
               >
                 Cancel
               </CButton>
-              <CButton
-                style={{ backgroundColor: '#107acc', color: 'white' }}
-                type="submit"
-                onClick={() => setVisible(!visible)}
-              >
-                Add Changes
+              <CButton style={{ backgroundColor: '#107acc', color: 'white' }} type="submit">
+                Save Changes
               </CButton>
             </CCol>
           </CForm>

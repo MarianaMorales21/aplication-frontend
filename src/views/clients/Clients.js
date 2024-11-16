@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import {
   CTable,
   CTableBody,
@@ -7,222 +7,281 @@ import {
   CTableRow,
   CTableDataCell,
   CButton,
-  CNavbar,
-  CForm,
-  CFormInput,
-  CContainer,
   CModal,
   CModalHeader,
   CModalTitle,
   CModalBody,
-  CModalFooter,
   CCol,
+  CForm,
+  CFormInput,
   CFormSelect,
-} from '@coreui/react'
+  CModalFooter,
+  CNavbar,
+  CContainer,
+} from '@coreui/react';
+import { helpHttp } from '../../helpHttp';
+
 const Clients = () => {
-  const [visible, setVisible] = useState(false)
+  const [visibleNC, setVisibleNC] = useState(false);
+  const api = helpHttp();
+  const urlClients = 'http://localhost:8000/client';
+  const urlUsers = 'http://localhost:8000/users';
+  const [clients, setClients] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [client, setClient] = useState({
+    type: '',
+    user_id: '', // Asegúrate de incluir el userId
+  });
+  const [alert, setAlert] = useState({ show: false, message: '', color: '' });
+  const [confirmDeleteModalVisible, setConfirmDeleteModalVisible] = useState(false)
+  const [clientIdToDelete, setClientIdToDelete] = useState(null)
   const [visibleSm, setVisibleSm] = useState(false)
-  const [visibleNC, setVisibleNC] = useState(false)
+  useEffect(() => {
+    fetchClients();
+    fetchUsers();
+  }, []);
+
+  const fetchClients = async () => {
+    const response = await api.get(urlClients);
+    if (!response.err) {
+      setClients(response);
+    } else {
+      showAlert('Error fetching clients. Please try again.', 'danger');
+    }
+  };
+
+  const fetchUsers = async () => {
+    const response = await api.get(urlUsers);
+    if (!response.err) {
+      setUsers(response);
+    } else {
+      showAlert('Error fetching users. Please try again.', 'danger');
+    }
+  };
+
+  const showAlert = (message, color) => {
+    setAlert({ show: true, message, color });
+    setTimeout(() => {
+      setAlert({ show: false, message: '', color: '' });
+    }, 3000);
+  };
+
+  const handleAddClient = async (e) => {
+    e.preventDefault(); // Evita el comportamiento predeterminado del formulario
+
+    const clientResponse = await api.post(urlClients, { body: client });
+    if (!clientResponse.err) {
+      setClients([...clients, clientResponse]); // Agrega el nuevo cliente a la lista
+      setVisibleNC(false); // Cierra el modal
+      showAlert('Client added successfully!', 'success'); // Muestra un mensaje de éxito
+      resetForms(); // Resetea los formularios
+    } else {
+      showAlert('Error adding client. Please try again.', 'danger'); // Muestra un mensaje de error
+    }
+  };
+
+  const resetForms = () => {
+    setClient({
+      type: '',
+      user_id: '',
+    });
+  };
+
+  const handleDeleteClient = (id) => {
+    setClientIdToDelete(id)
+    setConfirmDeleteModalVisible(true)
+  }
+
+  const confirmDelete = async () => {
+    // Encuentra el cliente que se va a eliminar
+    const clientToDelete = clients.find(client => client.id === clientIdToDelete);
+    
+    if (clientToDelete) {
+      // Primero eliminamos el cliente
+      const responseClient = await api.del(`${urlClients}/${clientIdToDelete}`);
+      if (!responseClient.err) {
+        // Ahora eliminamos el usuario asociado al cliente
+        const userIdToDelete = clientToDelete.user_id; // Obtenemos el user_id del cliente
+        const responseUser  = await api.del(`${urlUsers}/${userIdToDelete}`);
+        
+        if (!responseUser .err) {
+          // Si la eliminación del usuario fue exitosa, actualizamos el estado de los clientes
+          setClients(clients.filter(client => client.id !== clientIdToDelete));
+          setUsers(users.filter(user => user.id !== userIdToDelete)); // También actualizamos la lista de usuarios
+          showAlert('Client and associated user deleted successfully!', 'success');
+        } else {
+          showAlert('Error deleting associated user. Please try again.', 'danger');
+        }
+      } else {
+        showAlert('Error deleting client. Please try again.', 'danger');
+      }
+    }
+    
+    // Cierra el modal de confirmación
+    setConfirmDeleteModalVisible(false);
+  };
+  console.log(clientIdToDelete)
+  // Filtra los usuarios para mostrar solo aquellos con el rol "Client"
+  const filteredUsers = users.filter(user => user.role === 'Client');
+
+  const handleEditClient = async (e) => {
+    e.preventDefault();
+    const response = await api.put(`${urlClients}/${client.id}`, { body: client });
+    if (!response.err) {
+      setClients(clients.map((c) => (c.id === client.id ? response : c))); // Actualiza el estado de los clientes
+      setVisibleSm(false); // Cierra la modal
+      showAlert('Client updated successfully!', 'success');
+    } else {
+      showAlert('Error updating client. Please try again.', 'danger');
+    }
+  };
+
+
   return (
     <div>
       <h1>List of Clients</h1>
-      <div>
-        <CNavbar style={{ border: '1px solid gray', borderRadius: '10px', marginBottom: '10px' }}>
-          <CContainer style={{ display: 'flex' }}>
-            <CForm className="d-flex">
-              <CFormInput type="search" className="me-2" placeholder="Search for usernames" />
-              <CButton
-                type="submit"
-                style={{ backgroundColor: '#107acc', color: 'white' }}
-                variant="outline"
-              >
-                Search
-              </CButton>
-              <CFormInput
-                type="search"
-                className="me-2"
-                style={{ marginLeft: '15px' }}
-                placeholder="Search for type"
-              />
-              <CButton
-                type="submit"
-                style={{ backgroundColor: '#107acc', color: 'white' }}
-                variant="outline"
-              >
-                Search
-              </CButton>
-            </CForm>
-            <h6>Nro. Clients: 5</h6>
-          </CContainer>
-        </CNavbar>
-      </div>
+      <CNavbar style={{ border: '1px solid gray', borderRadius: '10px', marginBottom: '10px' }}>
+        <CContainer style={{ display: 'flex' }}>
+          <CForm className="d-flex">
+            <CFormInput type="search" className="me-2" placeholder="Search for usernames" />
+            <CButton
+              type="submit"
+              style={{ backgroundColor : '#107acc', color: 'white' }}
+              variant="outline"
+            >
+              Search
+            </CButton>
+          </CForm>
+        </CContainer>
+      </CNavbar>
+
       <CTable style={{ border: '1px solid gray', borderRadius: '50px' }}>
         <CTableHead>
           <CTableRow>
-            <CTableHeaderCell>DNI</CTableHeaderCell>
+            <CTableHeaderCell>ID </CTableHeaderCell>
             <CTableHeaderCell>Name</CTableHeaderCell>
             <CTableHeaderCell>Email</CTableHeaderCell>
             <CTableHeaderCell>Phone</CTableHeaderCell>
             <CTableHeaderCell>Address</CTableHeaderCell>
             <CTableHeaderCell>Type</CTableHeaderCell>
-            <CTableHeaderCell>Pending orders</CTableHeaderCell>
             <CTableHeaderCell>Options</CTableHeaderCell>
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          <CTableRow>
-            <CTableDataCell>{'30781815'}</CTableDataCell>
-            <CTableDataCell>{'Mariana Morales'}</CTableDataCell>
-            <CTableDataCell>{'Marianamorales2110@gmail.com'}</CTableDataCell>
-            <CTableDataCell>{'0412-1617297'}</CTableDataCell>
-            <CTableDataCell>{'5ta Avenida de San Cristobal'}</CTableDataCell>
-            <CTableDataCell>{'Empresa'}</CTableDataCell>
-            <CTableDataCell>{'2'}</CTableDataCell>
-            <CTableDataCell>
-              <CButton
-                style={{ backgroundColor: 'green', marginRight: '10px', color: 'white' }}
-                onClick={() => setVisibleSm(!visibleSm)}
-              >
-                Edit
-              </CButton>
-              <CButton
-                style={{ backgroundColor: 'red', marginRight: '10px', color: 'white' }}
-                onClick={() => setVisible(!visible)}
-              >
-                Delete
-              </CButton>
-            </CTableDataCell>
-          </CTableRow>
-          <CTableRow>
-            <CTableDataCell>{'30781864'}</CTableDataCell>
-            <CTableDataCell>{'Jose Morales'}</CTableDataCell>
-            <CTableDataCell>{'Josemorales@gmail.com'}</CTableDataCell>
-            <CTableDataCell>{'0412-1617297'}</CTableDataCell>
-            <CTableDataCell>{'5ta Avenida de San Cristobal'}</CTableDataCell>
-            <CTableDataCell>{'Persona'}</CTableDataCell>
-            <CTableDataCell>{'1'}</CTableDataCell>
-            <CTableDataCell>
-              <CButton
-                style={{ backgroundColor: 'green', marginRight: '10px', color: 'white' }}
-                onClick={() => setVisibleSm(!visibleSm)}
-              >
-                Edit
-              </CButton>
-              <CButton
-                style={{ backgroundColor: 'red', marginRight: '10px', color: 'white' }}
-                onClick={() => setVisible(!visible)}
-              >
-                Delete
-              </CButton>
-            </CTableDataCell>
-          </CTableRow>
+          {clients.map((client) => {
+            const user = users.find((user) => user.id === client.user_id);
+            return (
+              <CTableRow key={client.id}>
+                <CTableDataCell>{client.id}</CTableDataCell>
+                <CTableDataCell>{user ? user.name : 'Unknown'}</CTableDataCell>
+                <CTableDataCell>{user ? user.email : 'Unknown'}</CTableDataCell>
+                <CTableDataCell>{user ? user.phone : 'Unknown'}</CTableDataCell>
+                <CTableDataCell>{user ? user.address : 'Unknown'}</CTableDataCell>
+                <CTableDataCell>{client.type}</CTableDataCell>
+                <CTableDataCell>
+                  <CButton
+                    style={{ backgroundColor: 'green', marginRight: '10px', color: 'white' }}
+                    onClick={() => {
+                      setClient(client);
+                      setVisibleSm(true);
+                    }}
+                  >
+                    Edit
+                  </CButton>
+                  <CButton
+                    style={{ backgroundColor: 'red', marginRight: '10px', color: 'white' }}
+                    onClick={() => handleDeleteClient(client.id)}
+                  >
+                    Delete
+                  </CButton>
+                </CTableDataCell>
+              </CTableRow>
+            );
+          })}
         </CTableBody>
       </CTable>
-      <CModal visible={visible} onClose={() => setVisible(false)}>
+
+      <CModal
+        visible={confirmDeleteModalVisible}
+        onClose={() => setConfirmDeleteModalVisible(false)}
+      >
         <CModalHeader>
-          <CModalTitle>Attention</CModalTitle>
+          <CModalTitle>Confirm Deletion</CModalTitle>
         </CModalHeader>
-        <CModalBody>Are you sure to remove this client from the system?</CModalBody>
+        <CModalBody>Are you sure you want to delete this user?</CModalBody>
         <CModalFooter>
           <CButton
             style={{
               backgroundColor: 'green',
               marginRight: '10px',
               color: 'white',
-              
             }}
-            onClick={() => setVisible(false)}
+            onClick={() => setConfirmDeleteModalVisible(false)}
           >
             Cancel
           </CButton>
           <CButton
-            style={{
-              backgroundColor: 'red',
-              marginRight: '10px',
-              color: 'white',
-              
-            }}
-            onClick={() => setVisible(false)}
+            style={{ backgroundColor: 'red', marginRight: '10px', color: 'white' }}
+            onClick={confirmDelete}
           >
             Delete
           </CButton>
         </CModalFooter>
       </CModal>
+
       <CModal size="sm" visible={visibleSm} onClose={() => setVisibleSm(false)}>
         <CModalHeader>
-          <CModalTitle>Edit Client</CModalTitle>
+          <CModalTitle>Edit User</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <h6>Nro. User: 5012</h6>
-          <h6>DNI: 30781815</h6>
-          <h6>Name Client: Mariana Morales</h6>
-          <CForm className="row g-3">
-            <CCol>
-              <CFormSelect id="type" label="Client Type" style={{ borderColor: 'black' }}>
-                <option>Choose...</option>
+          <CForm className="row g-3" onSubmit={handleEditClient}>
+            <CCol md={6}>
+            <CFormSelect
+                id="type"
+                label="Client Type"
+                style={{ borderColor: 'black' }}
+                value={client.type}
+                onChange={(e) => setClient({ ...client, type: e.target.value })}
+                required
+              >
+                <option value="">Choose...</option>
                 <option>Enterprise</option>
                 <option>Person</option>
                 <option>Government</option>
               </CFormSelect>
-            </CCol>
-            <CCol md={6}>
-              <CFormInput
-                placeholder="Email"
-                id="email"
-                label="Email"
-                type="email"
-                style={{ borderColor: 'black' }}
-              />
-            </CCol>
-            <CCol md={6}>
-              <CFormInput
-                placeholder="Phone"
-                id="Phone"
-                label="Phone"
-                style={{ borderColor: 'black' }}
-              />
-            </CCol>
-            <CCol md={6}>
-              <CFormInput
-                placeholder="Address"
-                id="Address"
-                label="Address"
-                style={{ borderColor: 'black' }}
-              />
-            </CCol>
 
-            <CCol md={6}>
               <CButton
                 style={{
                   backgroundColor: 'red',
-                  
                   color: 'white',
                   marginBottom: '10px',
+                  marginTop: '10px',
                 }}
-                type="submit"
-                onClick={() => setVisibleLg(false)}
+                type="button"
+                onClick={() => setVisibleSm(false)}
               >
                 Cancel
               </CButton>
-              <CButton
-                style={{ backgroundColor: '#107acc',  color: 'white' }}
-                type="submit"
-                onClick={() => setVisible(!visible)}
-              >
-                Add Changes
+              <CButton style={{ backgroundColor: '#107acc', color: 'white' }} type="submit">
+                Save Changes
               </CButton>
             </CCol>
           </CForm>
         </CModalBody>
       </CModal>
+
       <CButton
-        type="submit"
-        style={{ backgroundColor: '#107acc',  color: 'white' }}
+        type="button"
+        style={{ backgroundColor: '#107acc', color: 'white' }}
         variant="outline"
-        onClick={() => setVisibleNC(!visibleNC)}
+        onClick={() => {
+          setVisibleNC(true);
+          resetForms();
+        }}
       >
         New Client
       </CButton>
+
       <CModal
         size="xl"
         visible={visibleNC}
@@ -232,57 +291,64 @@ const Clients = () => {
         <CModalHeader>
           <CModalTitle id="modalTitle">New Client</CModalTitle>
         </CModalHeader>
-        <div>
-          <CNavbar>
-            <CContainer>
-              <CForm>
-                <CCol md={12}>
-                  <CFormInput
-                    placeholder="Name User"
-                    id="Name"
-                    label="Name User"
-                    type="search"
-                    style={{ borderColor: 'black' }}
-                  />
-                </CCol>
-                <h6 style={{ marginTop: '15px' }}>Data Found:</h6>
-                <p>
-                  Name:<br></br>
-                  DNI:
-                  <br />
-                  Email: <br />
-                  Phone:
-                  <br />
-                  Address:
-                  <br />
-                </p>
-                <div style={{ borderTop: '2px solid black', width: '800px' }}>
-                  <CCol style={{ marginTop: '15px' }}>
-                    <CFormSelect id="type" label="Client Type" style={{ borderColor: 'black' }}>
-                      <option>Choose...</option>
-                      <option>Enterprise</option>
-                      <option>Person</option>
-                      <option>Government</option>
-                    </CFormSelect>
-                  </CCol>
-                </div>
-              </CForm>
-            </CContainer>
-          </CNavbar>
-        </div>
-        <CModalFooter>
-          <CButton
-            type="submit"
-            style={{ backgroundColor: '#107acc', color: 'white' }}
-            variant="outline"
-            onClick={() => setVisibleNC(false)}
-          >
-            Add New Client
-          </CButton>
-        </CModalFooter>
+        <CModalBody>
+          <CForm onSubmit={handleAddClient}>
+            <CCol md={12}>
+              <CFormSelect
+                id="user_id"
+                label="Select User"
+                style={{ borderColor: 'black' }}
+                value={client.user_id}
+                onChange={(e) => setClient({ ...client, user_id: e.target.value })}
+                required
+              >
+                <option value="">Choose...</option>
+                {filteredUsers.length > 0 ? (
+                  filteredUsers.map((user) => (
+                    <option key={user.id} value={user.id}>
+                      {user.name}, {user.role}
+                    </option>
+                  ))
+                ) : (
+                  <option>No se encontraron usuarios</option>
+                )}
+              </CFormSelect>
+            </CCol>
+            <CCol md={12}>
+              <CFormSelect
+                id="type"
+                label="Client Type"
+                style={{ borderColor: 'black' }}
+                value={client.type}
+                onChange={(e) => setClient({ ...client, type: e.target.value })}
+                required
+              >
+                <option value="">Choose...</option>
+                <option>Enterprise</option>
+                <option>Person</option>
+                <option>Government</option>
+              </CFormSelect>
+            </CCol>
+            <CModalFooter>
+              <CButton
+                type="button"
+                style={{ backgroundColor: '#107acc', color: 'white' }}
+                onClick={() => {
+                  setVisibleNC(false);
+                  resetForms();
+                }}
+              >
+                Cancel
+              </CButton>
+              <CButton type="submit" style={{ backgroundColor: '#107acc', color: 'white' }}>
+                Add New Client
+              </CButton>
+            </CModalFooter>
+          </CForm>
+        </CModalBody>
       </CModal>
-    </div>
-  )
-}
+    </ div>
+  );
+};
 
-export default Clients
+export default Clients;
