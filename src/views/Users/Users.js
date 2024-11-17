@@ -17,6 +17,8 @@ import {
   CFormSelect,
   CAlert,
   CModalFooter,
+  CNavbar,
+  CContainer
 } from '@coreui/react'
 import { helpHttp } from '../../helpHttp'
 
@@ -116,6 +118,11 @@ const Users = () => {
   return (
     <div>
       <h1>List of users</h1>
+      <CNavbar style={{ border: '1px solid gray', borderRadius: '10px', marginBottom: '10px' }}>
+        <CContainer style={{ display: 'flex' }}>
+        <h6>Current Fleet: {users.length}</h6>
+        </CContainer>
+      </CNavbar>
       {alert.show && <CAlert color={alert.color}>{alert.message}</CAlert>}
       <CTable style={{ border: '1px solid gray', borderRadius: '50px' }}>
         <CTableHead>

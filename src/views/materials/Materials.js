@@ -72,7 +72,7 @@ const Materials = () => {
   const handleEditMaterial = async (e) => {
     e.preventDefault();
     const response = await api.put(`${urlMaterial}/${material.id}`, { body: material });
-    console.log("Response from API:", response); // Debug log
+    console.log("Response from API:", response); 
 
     if (!response.err) {
       setMaterials(materials.map((m) => (m.id === material.id ? response : m)));
@@ -123,16 +123,7 @@ const Materials = () => {
       {alert.show && <CAlert color={alert.color}>{alert.message}</CAlert>}
       <CNavbar style={{ border: '1px solid gray', borderRadius: '10px', marginBottom: '10px' }}>
         <CContainer style={{ display: 'flex' }}>
-          <CForm className="d-flex">
-            <CFormInput type="search" className="me-2" placeholder="Search for name material" />
-            <CButton
-              type="submit"
-              style={{ backgroundColor: '#107acc', color: 'white' }}
-              variant="outline"
-            >
-              Search
-            </CButton>
-          </CForm>
+        <h6>Current Fleet: {materials.length}</h6>
         </CContainer>
       </CNavbar>
       <CTable style={{ border: '1px solid gray', borderRadius: '50px' }}>

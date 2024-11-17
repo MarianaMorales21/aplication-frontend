@@ -90,28 +90,6 @@ const _nav = [
      to: '/flota',
     icon: <CIcon icon={cilGrain} customClassName="nav-icon" />,
   },
-  {
-    component: CNavGroup,
-    name: 'Extra Options',
-    icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Login',
-        to: '/login',
-      },
-      {
-        component: CNavItem,
-        name: 'Register',
-        to: '/register',
-      },
-      {
-        component: CNavItem,
-        name: 'Forgot Password',
-        to: '/forgotpassword',
-      },
-    ],
-  },
 ]
 
 export default _nav

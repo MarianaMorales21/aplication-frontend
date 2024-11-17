@@ -78,6 +78,7 @@
     {
       "id": "6d5c",
       "name": "Mariana",
+      "username": "mariana12",
       "email": "park635-th@huskrm.com",
       "role": "Client",
       "status": "Active",
@@ -89,6 +90,7 @@
     {
       "id": "e035",
       "name": "Adrian",
+      "username": "adrian123",
       "email": "marianamorales2110@gmail.com",
       "role": "Driver",
       "status": "Active",
@@ -105,20 +107,26 @@
       "limitations": "Cardiology",
       "date_of_issue": "2024-10-27",
       "expiration_date": "2024-11-24",
-      "sex": "Male",
+      "sex": "Female",
       "grade_license": "Quinta"
     }
   ],
   "truck": [
     {
-      "id": "1",
-      "driver_id": 1,
-      "operational": "Operativo",
-      "usage_reports": "Mantenimiento preventivo realizado",
-      "mileage": 120000,
-      "model_id": 1,
-      "created_at": "CURRENT_TIMESTAMP",
-      "updated_at": "CURRENT_TIMESTAMP"
+      "id": "50228",
+      "driver_id": "e035D",
+      "operational": "Inactive",
+      "usage_reports": "Mantenimiento de frenos",
+      "mileage": "25",
+      "model_id": "2"
+    },
+    {
+      "id": "5555AD",
+      "driver_id": "e035D",
+      "operational": "Active",
+      "usage_reports": "MANTENIMEINTO",
+      "mileage": "500",
+      "model_id": "2"
     }
   ],
   "client": [

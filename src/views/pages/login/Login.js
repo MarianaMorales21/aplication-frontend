@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -15,9 +15,54 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import { helpHttp } from '../../../helpHttp'
+
+const api = helpHttp()
+
 const Login = () => {
+  const url = 'http://localhost:8000/users'
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem('user')
+    if (loggedInUser) {
+      navigate('/dashboard')
+    }
+  }, [navigate])
+
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    setErrorMessage('')
+
+    try {
+      const usersRes = await api.get(url)
+
+      if (!usersRes.err) {
+
+        const user = usersRes.find(
+          (user) => user.username === username && user.password === password,
+        )
+
+        if (user) {
+          console.log('Login successful:', user)
+          localStorage.setItem('user', JSON.stringify(user))
+          navigate('/dashboard')
+        } else {
+          setErrorMessage('Invalid username or password')
+        }
+      } else {
+        setErrorMessage('Error fetching user data')
+      }
+    } catch (error) {
+      setErrorMessage('An unexpected error occurred.')
+    }
+  }
+
   return (
-    <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center" >
+    <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
       <CContainer style={{ borderColor: 'black' }}>
         <CRow className="justify-content-center">
           <CCol md={8}>
@@ -27,16 +72,22 @@ const Login = () => {
                 style={{ backgroundColor: '#107acc', borderColor: 'black', color: 'white' }}
               >
                 <CCardBody>
-                  <CForm>
+                  <CForm onSubmit={handleLogin}>
                     <h1>Login</h1>
-                    <h5 className="text-body-secondary" style={{ Color: 'white' }}>
+                    <h5 className="text-body-secondary" style={{ color: 'white' }}>
                       Sign In to your account
                     </h5>
+                    {errorMessage && <div className="text-danger">{errorMessage}</div>}
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Username" autoComplete="username" />
+                      <CFormInput
+                        placeholder="Username"
+                        autoComplete="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                      />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
@@ -46,22 +97,23 @@ const Login = () => {
                         type="password"
                         placeholder="Password"
                         autoComplete="current-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                       />
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <Link to={'/Users'}>
-                          <CButton
-                            style={{
-                              backgroundColor: '#107acc',
-                              borderColor: 'black',
-                              color: 'white',
-                            }}
-                            className="px-4"
-                          >
-                            Login
-                          </CButton>
-                        </Link>
+                        <CButton
+                          type="submit"
+                          style={{
+                            backgroundColor: '#107acc',
+                            borderColor: 'black',
+                            color: 'white',
+                          }}
+                          className="px-4"
+                        >
+                          Login
+                        </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
                         <Link to="/forgotpassword">
@@ -79,8 +131,8 @@ const Login = () => {
                   <div>
                     <h2>Sign up</h2>
                     <p>
-                      You are not registered?, do it now and you will have access to all our
-                      services allowing you to have information instantly
+                      You are not registered? Do it now and you will have access to all our services
+                      allowing you to have information instantly.
                     </p>
                     <Link to="/register">
                       <CButton

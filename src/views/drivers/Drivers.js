@@ -74,20 +74,20 @@ const Drivers = () => {
 
   const handleAddDriver = async (e) => {
     e.preventDefault();
-    // Generate the driver ID based on user_id
+
     const newDriver = {
       ...driver,
-      id: `${driver.user_id}D`, // Generate ID by concatenating user_id with 'D'
+      id: `${driver.user_id}D`, 
     };
     
     const driverResponse = await api.post(urlDrivers, { body: newDriver });
     if (!driverResponse.err) {
-      setDrivers([...drivers, driverResponse]); // Add the new driver to the list
-      setVisibleND(false); // Close the modal
-      showAlert('Driver added successfully!', 'success'); // Show success message
-      resetForms(); // Reset the form
+      setDrivers([...drivers, driverResponse]); 
+      setVisibleND(false); 
+      showAlert('Driver added successfully!', 'success'); 
+      resetForms(); 
     } else {
-      showAlert('Error adding driver. Please try again.', 'danger'); // Show error message
+      showAlert('Error adding driver. Please try again.', 'danger'); 
     }
   };
 
@@ -99,7 +99,7 @@ const Drivers = () => {
       expiration_date: '',
       sex: '',
       grade_license: 'Fifth',
-      id: '', // Reset the ID
+      id: '', 
     });
   };
 
@@ -112,14 +112,14 @@ const Drivers = () => {
     const driverToDelete = drivers.find(driver => driver.id === driverIdToDelete);
     
     if (driverToDelete) {
-      // Primero eliminamos el cliente
+
       const responseDriver = await api.del(`${urlDrivers}/${driverIdToDelete}`);
       if (!responseDriver.err) {
-        // Ahora eliminamos el usuario asociado al cliente
-        const userIdToDelete = driverToDelete.user_id; // Obtenemos el user_id del cliente
+
+        const userIdToDelete = driverToDelete.user_id; 
         const responseUser  = await api.del (`${urlUsers}/${userIdToDelete}`);
         if (!responseUser .err) {
-          // Si la eliminación del usuario fue exitosa, actualizamos el estado de los conductores y usuarios
+
           setDrivers(drivers.filter(driver => driver.id !== driverIdToDelete));
           setUsers(users.filter(user => user.id !== userIdToDelete));
           showAlert('Driver and associated user deleted successfully!', 'success');
@@ -131,7 +131,6 @@ const Drivers = () => {
       }
     }
     
-    // Cierra el modal de confirmación
     setConfirmDeleteModalVisible(false);
   };
 
@@ -154,16 +153,7 @@ const Drivers = () => {
       <h1>List of Drivers</h1>
       <CNavbar style={{ border: '1px solid gray', borderRadius: '10px', marginBottom: '10px' }}>
         <CContainer style={{ display: 'flex' }}>
-          <CForm className="d-flex">
-            <CFormInput type="search" className="me-2" placeholder="Search for drivers" />
-            <CButton
-              type="submit"
-              style={{ backgroundColor: '#107acc', color: 'white' }}
-              variant="outline"
-            >
-              Search
-            </CButton>
-          </CForm>
+        <h6>Current Fleet: {drivers.length}</h6>
         </CContainer>
       </CNavbar>
 
@@ -424,4 +414,4 @@ const Drivers = () => {
   )
 }
 
-export default Drivers
+export default Drivers 

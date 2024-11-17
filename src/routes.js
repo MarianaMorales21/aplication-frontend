@@ -12,9 +12,9 @@ const Invoices= React.lazy(()=> import('./views/invoices/Invoices'))
 const Working_hours= React.lazy(()=> import('./views/working_hours/Working_hours'))
 const Order_details= React.lazy(()=> import('./views/order_details/Order_details'))
 const Profile= React.lazy(()=> import('./views/profile/Profile'))
-
+const Login= React.lazy (()=> import('./views/pages/login/Login'))
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
+  { path: '/', exact: true, name: 'Login', element: Login},
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/forgotpassword', name: 'forgotpassword', element: Forgotpassword},
   { path: '/Users', name: 'Users', element: Users},

@@ -30,7 +30,7 @@ const Clients = () => {
   const [users, setUsers] = useState([]);
   const [client, setClient] = useState({
     type: '',
-    user_id: '', // Asegúrate de incluir el userId
+    user_id: '', 
   });
   const [alert, setAlert] = useState({ show: false, message: '', color: '' });
   const [confirmDeleteModalVisible, setConfirmDeleteModalVisible] = useState(false)
@@ -67,16 +67,16 @@ const Clients = () => {
   };
 
   const handleAddClient = async (e) => {
-    e.preventDefault(); // Evita el comportamiento predeterminado del formulario
+    e.preventDefault(); 
 
     const clientResponse = await api.post(urlClients, { body: client });
     if (!clientResponse.err) {
-      setClients([...clients, clientResponse]); // Agrega el nuevo cliente a la lista
-      setVisibleNC(false); // Cierra el modal
-      showAlert('Client added successfully!', 'success'); // Muestra un mensaje de éxito
-      resetForms(); // Resetea los formularios
+      setClients([...clients, clientResponse]); 
+      setVisibleNC(false); 
+      showAlert('Client added successfully!', 'success');
+      resetForms(); 
     } else {
-      showAlert('Error adding client. Please try again.', 'danger'); // Muestra un mensaje de error
+      showAlert('Error adding client. Please try again.', 'danger'); 
     }
   };
 
@@ -93,21 +93,21 @@ const Clients = () => {
   }
 
   const confirmDelete = async () => {
-    // Encuentra el cliente que se va a eliminar
+
     const clientToDelete = clients.find(client => client.id === clientIdToDelete);
     
     if (clientToDelete) {
-      // Primero eliminamos el cliente
+
       const responseClient = await api.del(`${urlClients}/${clientIdToDelete}`);
       if (!responseClient.err) {
-        // Ahora eliminamos el usuario asociado al cliente
-        const userIdToDelete = clientToDelete.user_id; // Obtenemos el user_id del cliente
+
+        const userIdToDelete = clientToDelete.user_id;
         const responseUser  = await api.del(`${urlUsers}/${userIdToDelete}`);
         
         if (!responseUser .err) {
-          // Si la eliminación del usuario fue exitosa, actualizamos el estado de los clientes
+
           setClients(clients.filter(client => client.id !== clientIdToDelete));
-          setUsers(users.filter(user => user.id !== userIdToDelete)); // También actualizamos la lista de usuarios
+          setUsers(users.filter(user => user.id !== userIdToDelete)); 
           showAlert('Client and associated user deleted successfully!', 'success');
         } else {
           showAlert('Error deleting associated user. Please try again.', 'danger');
@@ -117,19 +117,19 @@ const Clients = () => {
       }
     }
     
-    // Cierra el modal de confirmación
+
     setConfirmDeleteModalVisible(false);
   };
   console.log(clientIdToDelete)
-  // Filtra los usuarios para mostrar solo aquellos con el rol "Client"
+
   const filteredUsers = users.filter(user => user.role === 'Client');
 
   const handleEditClient = async (e) => {
     e.preventDefault();
     const response = await api.put(`${urlClients}/${client.id}`, { body: client });
     if (!response.err) {
-      setClients(clients.map((c) => (c.id === client.id ? response : c))); // Actualiza el estado de los clientes
-      setVisibleSm(false); // Cierra la modal
+      setClients(clients.map((c) => (c.id === client.id ? response : c))); 
+      setVisibleSm(false); 
       showAlert('Client updated successfully!', 'success');
     } else {
       showAlert('Error updating client. Please try again.', 'danger');
@@ -142,16 +142,7 @@ const Clients = () => {
       <h1>List of Clients</h1>
       <CNavbar style={{ border: '1px solid gray', borderRadius: '10px', marginBottom: '10px' }}>
         <CContainer style={{ display: 'flex' }}>
-          <CForm className="d-flex">
-            <CFormInput type="search" className="me-2" placeholder="Search for usernames" />
-            <CButton
-              type="submit"
-              style={{ backgroundColor : '#107acc', color: 'white' }}
-              variant="outline"
-            >
-              Search
-            </CButton>
-          </CForm>
+        <h6>Current Fleet: {clients.length}</h6>
         </CContainer>
       </CNavbar>
 
