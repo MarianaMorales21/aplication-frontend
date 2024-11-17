@@ -35,6 +35,7 @@ const Users = () => {
     password: '',
     address: '',
     phone: '',
+    username: '',
   })
   const [visibleLg, setVisibleLg] = useState(false)
   const [visibleSm, setVisibleSm] = useState(false)
@@ -112,6 +113,7 @@ const Users = () => {
       password: '',
       address: '',
       phone: '',
+      username:'',
     })
   }
 
@@ -128,6 +130,7 @@ const Users = () => {
         <CTableHead>
           <CTableRow>
             <CTableHeaderCell scope="col">Name</CTableHeaderCell>
+            <CTableHeaderCell scope="col">Username</CTableHeaderCell>
             <CTableHeaderCell scope="col">Email</CTableHeaderCell>
             <CTableHeaderCell scope="col">Role</CTableHeaderCell>
             <CTableHeaderCell scope="col">Status</CTableHeaderCell>
@@ -138,6 +141,7 @@ const Users = () => {
           {users?.map((user) => (
             <CTableRow key={user.id}>
               <CTableDataCell>{user.name}</CTableDataCell>
+              <CTableDataCell>{user.username}</CTableDataCell>
               <CTableDataCell>{user.email}</CTableDataCell>
               <CTableDataCell>{user.role}</CTableDataCell>
               <CTableDataCell>{user.status}</CTableDataCell>
@@ -210,12 +214,23 @@ const Users = () => {
           <CForm className="row g-3" onSubmit={handleAddUser}>
             <CCol md={6}>
               <CFormInput
-                placeholder="User Name"
-                id="username"
-                label="User Name"
+                placeholder="Name"
+                id="Name"
+                label="Name"
                 style={{ borderColor: 'black' }}
                 value={user.name}
                 onChange={(e) => setUser({ ...user, name: e.target.value })}
+                required
+              />
+            </CCol>
+            <CCol md={6}>
+              <CFormInput
+                placeholder="Username"
+                id="username"
+                label="Username"
+                style={{ borderColor: 'black' }}
+                value={user.username}
+                onChange={(e) => setUser({ ...user, username: e.target.value })}
                 required
               />
             </CCol>
@@ -241,7 +256,7 @@ const Users = () => {
                 required
               />
             </CCol>
-            <CCol md={4}>
+            <CCol md={6}>
               <CFormSelect
                 id="Role"
                 label="Role User"
@@ -290,7 +305,7 @@ const Users = () => {
                 required
               />
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormInput
                 placeholder="Address"
                 id="Address"

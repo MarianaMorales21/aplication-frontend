@@ -116,6 +116,7 @@
       "password": "sdff",
       "address": "fuuf",
       "phone": "041255565",
+      "username": "marta125",
       "dni": "5000"
     },
     {
@@ -127,7 +128,20 @@
       "password": "papapapa",
       "address": "Cordero",
       "phone": "04121617297",
+      "username": "ricardo543",
       "dni": "30781815"
+    },
+    {
+      "id": "3ed1",
+      "name": "Jose Andres",
+      "email": "jose12@gmail.com",
+      "role": "Administrator",
+      "status": "Active",
+      "password": "12345",
+      "address": "Tariba",
+      "phone": "04147532683",
+      "username": "jose542",
+      "dni": "25754258"
     }
   ],
   "driver": [
