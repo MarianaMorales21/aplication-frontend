@@ -1,46 +1,62 @@
-import React, { useState } from 'react'
-import { CCard, CCardBody, CCardHeader, CCol, CRow, CAvatar, CButton } from '@coreui/react'
-import {
-  CTable,
-  CTableBody,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-  CTableDataCell,
-  CNavbar,
-  CForm,
-  CFormInput,
-  CContainer,
-  CModal,
-  CModalHeader,
-  CModalTitle,
-  CModalBody,
-  CModalFooter,
-  CFormSelect,
-} from '@coreui/react'
+import React, { useEffect, useState } from 'react';
+import { CCard, CCardBody, CCardHeader, CCol, CRow, CAvatar, CButton, CModal, CModalHeader, CModalTitle, CModalBody, CModalFooter, CForm, CFormInput, CAlert } from '@coreui/react';
+import { helpHttp } from '../../helpHttp';
+
 const UserProfile = () => {
-  const [visibleSm, setVisibleSm] = useState(false)
-  const userData = {
-    avatarUrl: './src/assets/images/avatars/8.jpg',
-    name: 'Juan Pérez',
-    role: 'Driver',
-    phone: '0412-1617297',
-    email: 'juanperez123@gmail.com',
-    address: 'San Cristobal',
-    dateRegister: '2024-10-10',
-    status: 'Active',
-  }
+  const api = helpHttp();
+  const url = 'http://localhost:8000/users'; 
+  const [visibleSm, setVisibleSm] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [alert, setAlert] = useState({ show: false, message: '', color: '' });
+
+  const loggedInUser  = JSON.parse(localStorage.getItem('user'));
+
+  useEffect(() => {
+    if (loggedInUser ) {
+      fetchUserData(loggedInUser.id);
+    }
+  }, [loggedInUser ]);
+
+  const fetchUserData = async (id) => {
+    const response = await api.get(`${url}/${id}`); 
+    if (!response.err) {
+      setUserData(response); 
+    } else {
+      showAlert('Error fetching user data. Please try again.', 'danger');
+    }
+  };
+
+  const handleEditUser  = async (e) => {
+    e.preventDefault();
+    const response = await api.put(`${url}/${userData.id}`, userData);
+    if (!response.err) {
+      setUserData((userData.map((u) => (u.id === userData.id ? response : u))));
+      setVisibleSm(false);
+      showAlert('User  updated successfully!', 'success');
+    } else {
+      showAlert('Error updating user. Please try again.', 'danger');
+    }
+  };
+
+  const showAlert = (message, color) => {
+    setAlert({ show: true, message, color });
+    setTimeout(() => {
+      setAlert({ show: false, message: '', color: '' });
+    }, 3000);
+  };
+
+  if (!userData) return <div>Loading...</div>; 
 
   return (
     <CRow className="justify-content-center">
       <CCol md="6">
         <CCard>
           <CCardHeader>
-            <h3>Profile User</h3>
+            <h3>User Profile</h3>
           </CCardHeader>
           <CCardBody>
             <div className="text-center mb-4">
-              <CAvatar src={userData.avatarUrl} size="lg" className="mb-3" />
+              <CAvatar src={userData.avatarUrl || './src/assets/images/avatars/8.jpg'} size="lg" className="mb-3" />
               <h4>{userData.name}</h4>
               <p>{userData.role}</p>
             </div>
@@ -66,132 +82,15 @@ const UserProfile = () => {
             </CRow>
             <CRow>
               <CCol xs="6">
-                <strong>Date Register:</strong>
-                <p>{new Date(userData.dateRegister).toLocaleDateString()}</p>
-              </CCol>
-              <CCol xs="6">
                 <strong>Status:</strong>
                 <p>{userData.status}</p>
               </CCol>
             </CRow>
-            <CButton
-              type="submit"
-              style={{ backgroundColor: '#107acc', color: 'white' }}
-              variant="outline"
-              onClick={() => setVisibleSm(!visibleSm)}
-            >
-              Edit Profile
-            </CButton>
-            <CModal size="sm" visible={visibleSm} onClose={() => setVisibleSm(false)}>
-              <CModalHeader>
-                <CModalTitle>Edit User</CModalTitle>
-              </CModalHeader>
-              <CModalBody>
-                <strong>User:</strong>
-                <h6>Name: {userData.name}</h6>
-                <h6>Role: {userData.role}</h6>
-                <h6>Phone: {userData.phone}</h6>
-                <CForm className="row g-3">
-                  <CCol md={6}>
-                    <CFormInput
-                      placeholder="DNI"
-                      id="DNI"
-                      label="DNI"
-                      style={{ borderColor: 'black' }}
-                    />
-                  </CCol>
-                  <CCol md={6}>
-                    <CFormInput
-                      placeholder="User Name"
-                      id="username"
-                      label="User Name"
-                      style={{ borderColor: 'black' }}
-                    />
-                  </CCol>
-                  <CCol md={6}>
-                    <CFormInput
-                      placeholder="Password"
-                      id="Password"
-                      label="Password"
-                      type="password"
-                      style={{ borderColor: 'black' }}
-                    />
-                  </CCol>
-                  <CCol md={6}>
-                    <CFormInput
-                      placeholder="Confirm Password"
-                      id="CPassword"
-                      label="Confirm Password"
-                      type="password"
-                      style={{ borderColor: 'black' }}
-                    />
-                  </CCol>
-                  <CCol md={6}>
-                    <CFormSelect
-                      id="Status"
-                      label="Current User Status"
-                      style={{ borderColor: 'black' }}
-                    >
-                      <option>Choose...</option>
-                      <option>Active</option>
-                      <option>Inactive</option>
-                    </CFormSelect>
-                  </CCol>
-                  <CCol md={6}>
-                    <CFormInput
-                      placeholder="Email"
-                      id="email"
-                      label="Email"
-                      type="email"
-                      style={{ borderColor: 'black' }}
-                    />
-                  </CCol>
-                  <CCol md={6}>
-                    <CFormInput
-                      placeholder="Phone"
-                      id="Phone"
-                      label="Phone"
-                      style={{ borderColor: 'black' }}
-                    />
-                  </CCol>
-
-                  <CCol md={6}>
-                    <CFormInput
-                      placeholder="Address"
-                      id="Address"
-                      label="Address"
-                      style={{ borderColor: 'black' }}
-                    />
-                  </CCol>
-
-                  <CCol md={6}>
-                    <CButton
-                      style={{
-                        backgroundColor: 'red',
-                        color: 'white',
-                        marginBottom: '10px',
-                      }}
-                      type="submit"
-                      onClick={() => setVisibleLg(false)}
-                    >
-                      Cancel
-                    </CButton>
-                    <CButton
-                      style={{ backgroundColor: '#107acc',  color: 'white' }}
-                      type="submit"
-                      onClick={() => setVisible(!visible)}
-                    >
-                      Add Changes
-                    </CButton>
-                  </CCol>
-                </CForm>
-              </CModalBody>
-            </CModal>
           </CCardBody>
         </CCard>
       </CCol>
     </CRow>
-  )
-}
+  );
+};
 
-export default UserProfile
+export default UserProfile;

@@ -149,7 +149,6 @@ const Clients = () => {
       <CTable style={{ border: '1px solid gray', borderRadius: '50px' }}>
         <CTableHead>
           <CTableRow>
-            <CTableHeaderCell>ID </CTableHeaderCell>
             <CTableHeaderCell>Name</CTableHeaderCell>
             <CTableHeaderCell>Email</CTableHeaderCell>
             <CTableHeaderCell>Phone</CTableHeaderCell>
@@ -163,7 +162,6 @@ const Clients = () => {
             const user = users.find((user) => user.id === client.user_id);
             return (
               <CTableRow key={client.id}>
-                <CTableDataCell>{client.id}</CTableDataCell>
                 <CTableDataCell>{user ? user.name : 'Unknown'}</CTableDataCell>
                 <CTableDataCell>{user ? user.email : 'Unknown'}</CTableDataCell>
                 <CTableDataCell>{user ? user.phone : 'Unknown'}</CTableDataCell>

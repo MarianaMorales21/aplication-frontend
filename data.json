@@ -15,6 +15,14 @@
       "cost_per_unit": "0.30",
       "cost_per_kilometer": "0.55",
       "status": "Available"
+    },
+    {
+      "id": "5652",
+      "name": "Arena",
+      "characteristics": "Arenosa",
+      "cost_per_unit": "0.90",
+      "cost_per_kilometer": "0.87",
+      "status": "Available"
     }
   ],
   "schedule": [
@@ -98,6 +106,28 @@
       "address": "dasdas",
       "phone": "1234213",
       "dni": "32433"
+    },
+    {
+      "id": "765c",
+      "name": "Marta",
+      "email": "pa@huskrm.com",
+      "role": "Driver",
+      "status": "Active",
+      "password": "sdff",
+      "address": "fuuf",
+      "phone": "041255565",
+      "dni": "5000"
+    },
+    {
+      "id": "be1b",
+      "name": "Ricardo ",
+      "email": "ricar2110@gmail.com",
+      "role": "Client",
+      "status": "Active",
+      "password": "papapapa",
+      "address": "Cordero",
+      "phone": "04121617297",
+      "dni": "30781815"
     }
   ],
   "driver": [
@@ -109,6 +139,15 @@
       "expiration_date": "2024-11-24",
       "sex": "Female",
       "grade_license": "Quinta"
+    },
+    {
+      "id": "765cD",
+      "user_id": "765c",
+      "limitations": "Spectacles",
+      "date_of_issue": "2024-11-06",
+      "expiration_date": "2024-12-07",
+      "sex": "Female",
+      "grade_license": "Fifth"
     }
   ],
   "truck": [
@@ -124,8 +163,16 @@
       "id": "5555AD",
       "driver_id": "e035D",
       "operational": "Active",
-      "usage_reports": "MANTENIMEINTO",
+      "usage_reports": "Cambio de aceite",
       "mileage": "500",
+      "model_id": "2"
+    },
+    {
+      "id": "5489RF",
+      "driver_id": "765cD",
+      "operational": "Active",
+      "usage_reports": "Totalmente Operacional",
+      "mileage": "250",
       "model_id": "2"
     }
   ],
@@ -134,17 +181,53 @@
       "id": "ba73",
       "type": "Person",
       "user_id": "6d5c"
+    },
+    {
+      "id": "cc29",
+      "type": "Government",
+      "user_id": "be1b"
     }
   ],
   "driver_schedule": [
     {
-      "id": "1",
-      "driver_id": 1,
-      "schedule_id": 1,
-      "day_id": 1,
-      "date": "2024-01-01",
-      "created_at": "CURRENT_TIMESTAMP",
-      "updated_at": "CURRENT_TIMESTAMP"
+      "id": "8d6b",
+      "entry_time": "08:00:00",
+      "exit_time": "17:00:00",
+      "day_id": "2",
+      "driver_id": "e035D",
+      "schedule_id": "2"
+    },
+    {
+      "id": "9de5",
+      "entry_time": "07:00:00",
+      "exit_time": "16:00:00",
+      "day_id": "3",
+      "driver_id": "e035D",
+      "schedule_id": "1"
+    },
+    {
+      "id": "e1a7",
+      "entry_time": "07:00:00",
+      "exit_time": "16:00:00",
+      "day_id": "1",
+      "driver_id": "e035D",
+      "schedule_id": "1"
+    },
+    {
+      "id": "1628",
+      "entry_time": "07:00:00",
+      "exit_time": "16:00:00",
+      "day_id": "2",
+      "driver_id": "765cD",
+      "schedule_id": "1"
+    },
+    {
+      "id": "2af2",
+      "entry_time": "07:00:00",
+      "exit_time": "16:00:00",
+      "day_id": "1",
+      "driver_id": "765cD",
+      "schedule_id": "1"
     }
   ],
   "order": [

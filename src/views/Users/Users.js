@@ -127,7 +127,6 @@ const Users = () => {
       <CTable style={{ border: '1px solid gray', borderRadius: '50px' }}>
         <CTableHead>
           <CTableRow>
-            <CTableHeaderCell scope="col">ID</CTableHeaderCell>
             <CTableHeaderCell scope="col">Name</CTableHeaderCell>
             <CTableHeaderCell scope="col">Email</CTableHeaderCell>
             <CTableHeaderCell scope="col">Role</CTableHeaderCell>
@@ -138,7 +137,6 @@ const Users = () => {
         <CTableBody>
           {users?.map((user) => (
             <CTableRow key={user.id}>
-              <CTableDataCell>{user.id}</CTableDataCell>
               <CTableDataCell>{user.name}</CTableDataCell>
               <CTableDataCell>{user.email}</CTableDataCell>
               <CTableDataCell>{user.role}</CTableDataCell>

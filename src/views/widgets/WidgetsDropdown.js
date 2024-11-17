@@ -1,6 +1,5 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
-
 import {
   CRow,
   CCol,
@@ -14,10 +13,40 @@ import { getStyle } from '@coreui/utils'
 import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
 import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
+import { helpHttp } from '../../helpHttp'
 
 const WidgetsDropdown = (props) => {
   const widgetChartRef1 = useRef(null)
   const widgetChartRef2 = useRef(null)
+  const [stats, setStats] = useState({
+    users: 0,
+    clients: 0,
+    drivers: 0,
+    trucks: 0,
+  })
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const api = helpHttp()
+      try {
+        const urlUsers = await api.get('http://localhost:8000/users')
+        const urlDriver = await api.get('http://localhost:8000/driver')
+        const urlOrder = await api.get('http://localhost:8000/order')
+        const urlTruck = await api.get('http://localhost:8000/truck')
+
+        setStats({
+          users: urlUsers.length,
+          clients: urlDriver.length,
+          drivers: urlOrder.length,
+          trucks: urlTruck.length,
+        })
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
+
+    fetchData()
+  }, [])
 
   useEffect(() => {
     document.documentElement.addEventListener('ColorSchemeChange', () => {
@@ -44,10 +73,7 @@ const WidgetsDropdown = (props) => {
           color="danger"
           value={
             <>
-              26K{' '}
-              <span className="fs-6 fw-normal">
-                (-12.4% <CIcon icon={cilArrowBottom} />)
-              </span>
+              {stats.users} <span className="fs-6 fw-normal"></span>
             </>
           }
           title="Users"
@@ -134,10 +160,7 @@ const WidgetsDropdown = (props) => {
           color="info"
           value={
             <>
-              $6.200{' '}
-              <span className="fs-6 fw-normal">
-                (40.9% <CIcon icon={cilArrowTop} />)
-              </span>
+              {stats.clients} <span className="fs-6 fw-normal"></span>
             </>
           }
           title="Clients"
@@ -223,10 +246,7 @@ const WidgetsDropdown = (props) => {
           color="success"
           value={
             <>
-              2.49%{' '}
-              <span className="fs-6 fw-normal">
-                (84.7% <CIcon icon={cilArrowTop} />)
-              </span>
+              {stats.drivers} <span className="fs-6 fw-normal"></span>
             </>
           }
           title="Drivers"
@@ -295,10 +315,7 @@ const WidgetsDropdown = (props) => {
           color="warning"
           value={
             <>
-              44K{' '}
-              <span className="fs-6 fw-normal">
-                (-23.6% <CIcon icon={cilArrowBottom} />)
-              </span>
+              {stats.trucks} <span className="fs-6 fw-normal"></span>
             </>
           }
           title="Trucks"
