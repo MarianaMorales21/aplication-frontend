@@ -62,8 +62,24 @@ const Login = () => {
   }
 
   return (
-    <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
-      <CContainer style={{ borderColor: 'black' }}>
+    <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center" 
+    style={{ 
+    backgroundImage: `url(https://hdp-au-prod-app-iecon-sunburyeco-files.s3.ap-southeast-2.amazonaws.com/7515/8812/6161/Komatsu-Hi-Quality-040.jpg)`, 
+    backgroundSize: 'cover', 
+    backgroundPosition: 'center', 
+    backgroundRepeat: 'no-repeat', 
+    }}>
+    <div style={{ 
+      position: 'absolute', 
+      top: 0, 
+      left: 0, 
+      right: 0, 
+      bottom: 0, 
+      backgroundColor: 'rgba(0, 0, 0, 0.6)',
+      zIndex: 1,
+    }}>
+    </div>
+      <CContainer style={{ zIndex: 2 }}>
         <CRow className="justify-content-center">
           <CCol md={8}>
             <CCardGroup>

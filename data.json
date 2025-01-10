@@ -23,6 +23,14 @@
       "cost_per_unit": "0.90",
       "cost_per_kilometer": "0.87",
       "status": "Available"
+    },
+    {
+      "id": "451A",
+      "name": "Arcilla",
+      "characteristics": "Blando",
+      "cost_per_unit": "5",
+      "cost_per_kilometer": "150",
+      "status": "Rough"
     }
   ],
   "schedule": [
@@ -92,7 +100,7 @@
       "status": "Active",
       "password": "zzz",
       "address": "sdfsdf",
-      "phone": "asas",
+      "phone": "04121617297",
       "dni": "asas"
     },
     {
@@ -193,7 +201,7 @@
   "client": [
     {
       "id": "ba73",
-      "type": "Person",
+      "type": "Enterprise",
       "user_id": "6d5c"
     },
     {
@@ -249,17 +257,24 @@
       "id": "1",
       "order_date": "2024-01-01",
       "total_delivery_date": "2024-01-10",
-      "status": "En Proceso",
-      "client_id": 1,
+      "status": "Canceled",
+      "client_id": "ba73",
       "created_at": "CURRENT_TIMESTAMP",
       "updated_at": "CURRENT_TIMESTAMP"
+    },
+    {
+      "id": "2",
+      "order_date": "2025-01-09",
+      "total_delivery_date": "2025-01-17",
+      "status": "In progress",
+      "client_id": "cc29"
     }
   ],
   "order_details": [
     {
       "id": "1",
-      "order_id": 1,
-      "material_id": 1,
+      "order_id": "1",
+      "material_id": "521S",
       "quantity_of_material": 5,
       "delivery_date": "2024-01-10",
       "created_at": "CURRENT_TIMESTAMP",
@@ -269,12 +284,12 @@
   "trips": [
     {
       "id": "1",
-      "truck_id": 1,
+      "truck_id": "1",
       "trip_duration": "02:30:00",
       "trip_description": "Entrega de arena",
       "distancia_to_travel": 150,
       "destination_address": "Calle 123, Ciudad A",
-      "order_details_id": 1,
+      "order_details_id": "1",
       "created_at": "CURRENT_TIMESTAMP",
       "updated_at": "CURRENT_TIMESTAMP"
     }
@@ -299,10 +314,11 @@
   "bill": [
     {
       "id": "1",
-      "order_id": 1,
+      "order_id": "1",
       "payment_date": "2024-01-10",
-      "payment_method_id": 1,
-      "amount_to_pay": 1500,
+      "payment_method_id": "2",
+      "amount_to_pay": "250",
+      "status": "Pending",
       "created_at": "CURRENT_TIMESTAMP",
       "updated_at": "CURRENT_TIMESTAMP"
     }
@@ -310,8 +326,8 @@
   "invoice_details": [
     {
       "id": "1",
-      "bill_id": 1,
-      "details_order_id": 1,
+      "bill_id": "1",
+      "details_order_id": "1",
       "transportation_cost": 500,
       "material_cost": 1000,
       "total_cost_of_the_trip": 1500,

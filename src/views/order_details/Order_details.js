@@ -1,4 +1,5 @@
-/*import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Change here
 import {
   CTable,
   CTableBody,
@@ -7,1118 +8,363 @@ import {
   CTableRow,
   CTableDataCell,
   CButton,
-  CNavbar,
-  CForm,
-  CFormInput,
-  CContainer,
+  CModal,
   CModalHeader,
   CModalTitle,
   CModalBody,
-  CModalFooter,
   CCol,
+  CForm,
+  CFormInput,
   CFormSelect,
-  CModal,
-} from '@coreui/react'
+  CModalFooter,
+  CNavbar,
+  CContainer,
+} from '@coreui/react';
+import { helpHttp } from '../../helpHttp';
 
-const Order_details = () => {
-  const [visibleXL, setVisibleXL] = useState(false)
-  const [visibleLg, setVisibleLg] = useState(false)
-  const [visible, setVisible] = useState(false)
-  const [visibleSm, setVisibleSm] = useState(false)
-  const [visibleMd, setVisibleMd] = useState(false)
-  const [visibleMd2, setVisibleMd2] = useState(false)
-  const api = helpHttp()
-  const urlOrders = 'http://localhost:8000/order'
-  const urlClients = 'http://localhost:8000/client'
-  const urlUsers = 'http://localhost:8000/users'
-  const [orders, setOrders] = useState([])
-  const [order, setOrder] = useState ({
+const OrderDetails = () => {
+  const navigate = useNavigate(); 
+  const [visibleND, setVisibleND] = useState(false);
+  const [visibleEdit, setVisibleEdit] = useState(false);
+  const [confirmDeleteModalVisible, setConfirmDeleteModalVisible] = useState(false);
+  const [orderIdToDelete, setOrderIdToDelete] = useState(null);
+  const [orders, setOrders] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [selectedOrder, setSelectedOrder] = useState({
     id: '',
     order_date: '',
     total_delivery_date: '',
     status: '',
     client_id: '',
-  })
-  const [alert, setAlert] = useState({ show: false, message: '', color: '' })
+  });
+
+  const api = helpHttp();
+  const urlOrders = 'http://localhost:8000/order';
+  const urlClients = 'http://localhost:8000/client';
+  const urlUsers = 'http://localhost:8000/users';
+
   useEffect(() => {
-    fetchOrder()
-    fetchClient()
-    fetchUsers()
-  })
-  const fetchOrder = async () => {
-    const response = await api.get(urlDrivers)
+    fetchOrders();
+    fetchClients();
+    fetchUsers();
+  }, []);
+
+  const fetchOrders = async () => {
+    const response = await api.get(urlOrders);
     if (!response.err) {
-      setDrivers(response)
-    } else {
-      showAlert('Error fetching drivers. Please try again.', 'danger')
+      setOrders(response);
     }
-  }
+  };
+
+  const fetchClients = async () => {
+    const response = await api.get(urlClients);
+    if (!response.err) {
+      setClients(response);
+    }
+  };
+
+  const fetchUsers = async () => {
+    const response = await api.get(urlUsers);
+    if (!response.err) {
+      setUsers(response);
+    }
+  };
+
+  const handleAddOrder = async (e) => {
+    e.preventDefault();
+    const response = await api.post(urlOrders, { body: selectedOrder });
+    if (!response.err) {
+      setOrders([...orders, response]);
+      setVisibleND(false);
+      resetForm();
+    }
+  };
+
+  const handleEditOrder = async (e) => {
+    e.preventDefault();
+    const response = await api.put(`${urlOrders}/${selectedOrder.id}`, { body: selectedOrder });
+    if (!response.err) {
+      setOrders(orders.map(order => (order.id === selectedOrder.id ? response : order)));
+      setVisibleEdit(false);
+    }
+  };
+
+  const handleDeleteOrder = (id) => {
+    setOrderIdToDelete(id);
+    setConfirmDeleteModalVisible(true);
+  };
+
+  const confirmDelete = async () => {
+    const response = await api.del(`${urlOrders}/${orderIdToDelete}`);
+    if (!response.err) {
+      setOrders(orders.filter(order => order.id !== orderIdToDelete));
+    }
+    setConfirmDeleteModalVisible(false);
+  };
+
+  const resetForm = () => {
+    setSelectedOrder({
+      id: '',
+      order_date: '',
+      total_delivery_date: '',
+      status: '',
+      client_id: '',
+    });
+  };
 
   return (
     <div>
       <h1>List of Orders</h1>
-      <div>
-        <CNavbar style={{ border: '1px solid gray', borderRadius: '10px', marginBottom: '10px' }}>
-          <CContainer style={{ display: 'flex' }}>
-            <CForm className="d-flex">
-              <CFormInput type="search" className="me-2" placeholder="Search for client" />
-              <CButton
-                type="submit"
-                style={{ backgroundColor: '#107acc', color: 'white' }}
-                variant="outline"
-              >
-                Search
-              </CButton>
-              <CFormInput type="date" className="me-2" style={{ marginLeft: '10px' }} />
-              <CButton
-                type="submit"
-                style={{ backgroundColor: '#107acc', color: 'white' }}
-                variant="outline"
-              >
-                Search
-              </CButton>
-            </CForm>
-            <h6>Current Orders: 2</h6>
-          </CContainer>
-        </CNavbar>
-      </div>
+      <CNavbar style={{ border: '1px solid gray', borderRadius: '10px', marginBottom: '10px' }}>
+        <CContainer style={{ display: 'flex' }}>
+          <h6>Current Orders: {orders.length}</h6>
+        </CContainer>
+      </CNavbar>
+
       <CTable style={{ border: '1px solid gray', borderRadius: '50px' }}>
         <CTableHead>
           <CTableRow>
             <CTableHeaderCell>Nro Order</CTableHeaderCell>
             <CTableHeaderCell>Name Client</CTableHeaderCell>
             <CTableHeaderCell>Order Date</CTableHeaderCell>
-            <CTableHeaderCell>Total delivery date</CTableHeaderCell>
+            <CTableHeaderCell>Total Delivery Date</CTableHeaderCell>
             <CTableHeaderCell>Order Status</CTableHeaderCell>
-            <CTableHeaderCell>Order Details</CTableHeaderCell>
             <CTableHeaderCell>Options</CTableHeaderCell>
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          <CTableRow>
-            <CTableDataCell>{'30781815'}</CTableDataCell>
-            <CTableDataCell>{'Mariana Morales'}</CTableDataCell>
-            <CTableDataCell>{'18/08/2024'}</CTableDataCell>
-            <CTableDataCell>{'12/10/2024'}</CTableDataCell>
-            <CTableDataCell>{'Completed'}</CTableDataCell>
-            <CTableDataCell>
-              <CButton
-                style={{
-                  backgroundColor: '#fbb117',
-                  marginRight: '10px',
-                  color: 'white',
-                  
-                }}
-                onClick={() => setVisibleXL(!visibleXL)}
-              >
-                Details
-              </CButton>
-              <CModal
-                size="xl"
-                visible={visibleXL}
-                onClose={() => setVisibleXL(false)}
-                aria-labelledby="modalTitle"
-              >
-                <CModalHeader>
-                  <CModalTitle id="modalTitle">Order Details</CModalTitle>
-                </CModalHeader>
-                <CModalBody>
-                  <div>
-                    <h3>Order Nro.1</h3>
-                    <h6>DNI: 30781815</h6>
-                    <h6>Name Client: Mariana Morales</h6>
-                    <CTable style={{ border: '1px solid black', borderRadius: '50px' }}>
-                      <CTableHead>
-                        <CTableRow>
-                          <CTableHeaderCell>Matrial</CTableHeaderCell>
-                          <CTableHeaderCell>Quantity</CTableHeaderCell>
-                          <CTableHeaderCell>Delivery Date</CTableHeaderCell>
-                          <CTableHeaderCell>Total Cost</CTableHeaderCell>
-                          <CTableHeaderCell>Address</CTableHeaderCell>
-                          <CTableHeaderCell>Delete Material</CTableHeaderCell>
-                        </CTableRow>
-                      </CTableHead>
-                      <CTableBody>
-                        <CTableRow>
-                          <CTableDataCell>{'Grava'}</CTableDataCell>
-                          <CTableDataCell>{'5M'}</CTableDataCell>
-                          <CTableDataCell>{'21/10/2024'}</CTableDataCell>
-                          <CTableDataCell>{'500$'}</CTableDataCell>
-                          <CTableDataCell>{'Avenida las flores. Calle 2'}</CTableDataCell>
-                          <CTableDataCell>
-                            <CButton
-                              style={{
-                                backgroundColor: 'red',
-                                marginRight: '10px',
-                                color: 'white',
-                                
-                              }}
-                              onClick={() => setVisibleMd(!visibleMd)}
-                            >
-                              Delete
-                            </CButton>
-                          </CTableDataCell>
-                        </CTableRow>
-                        <CTableRow>
-                          <CTableDataCell>{'Arena Roja'}</CTableDataCell>
-                          <CTableDataCell>{'6M'}</CTableDataCell>
-                          <CTableDataCell>{'18/10/2024'}</CTableDataCell>
-                          <CTableDataCell>{'100$'}</CTableDataCell>
-                          <CTableDataCell>{'Avenida las flores. Calle 2'}</CTableDataCell>
-                          <CTableDataCell>
-                            <CButton
-                              style={{
-                                backgroundColor: 'red',
-                                marginRight: '10px',
-                                color: 'white',
-                                
-                              }}
-                              onClick={() => setVisibleMd(!visibleMd)}
-                            >
-                              Delete
-                            </CButton>
-                          </CTableDataCell>
-                        </CTableRow>
-                      </CTableBody>
-                    </CTable>
-                  </div>
-                </CModalBody>
-                <CModalFooter>
-                  <CButton
+          {orders.map((order) => {
+            const client = clients.find(client => client.id === order.client_id);
+            return (
+              <CTableRow key={order.id}>
+                <CTableDataCell>{order.id}</CTableDataCell>
+                <CTableDataCell>{client ? users.find(user => user.id === client.user_id)?.name : 'Unknown'}</CTableDataCell>
+                <CTableDataCell>{order.order_date}</CTableDataCell>
+                <CTableDataCell>{order.total_delivery_date}</CTableDataCell>
+                <CTableDataCell>{order.status}</CTableDataCell>
+                <CTableDataCell>
+                <CButton
                     style={{
-                      backgroundColor: 'green',
+                      backgroundColor: 'blue',
                       marginRight: '10px',
                       color: 'white',
-                      
                     }}
-                    onClick={() => setVisibleMd2(!visible)}
+                    onClick={() => navigate(`/details/${order.id}`)}
                   >
-                    Add New Material
+                    Details
                   </CButton>
                   <CButton
-                    style={{
-                      backgroundColor: 'red',
-                      marginRight: '10px',
-                      color: 'white',
-                      
+                    style={{ backgroundColor: 'green', marginRight: '10px', color: 'white' }}
+                    onClick={() => {
+                      setSelectedOrder(order);
+                      setVisibleEdit(true);
                     }}
-                    onClick={() => setVisibleXL(false)}
                   >
-                    Close
+                    Edit
                   </CButton>
                   <CButton
-                    style={{ backgroundColor: '#107acc', color: 'white' }}
-                    onClick={() => setVisibleXL(false)}
+                    style={{ backgroundColor: 'red', marginRight: '10px', color: 'white' }}
+                    onClick={() => handleDeleteOrder(order.id)}
                   >
-                    Add changes
+                    Delete
                   </CButton>
-                </CModalFooter>
-              </CModal>
-            </CTableDataCell>
-            <CTableDataCell>
-              <CButton
-                style={{
-                  backgroundColor: 'green',
-                  marginRight: '10px',
-                  color: 'white',
-                  
-                }}
-                onClick={() => setVisibleSm(!visibleSm)}
-              >
-                Edit
-              </CButton>
-              <CButton
-                style={{
-                  backgroundColor: 'red',
-                  marginRight: '10px',
-                  color: 'white',
-                  
-                }}
-                onClick={() => setVisible(!visible)}
-              >
-                Delete
-              </CButton>
-            </CTableDataCell>
-          </CTableRow>
-          <CTableRow>
-            <CTableDataCell>{'30781864'}</CTableDataCell>
-            <CTableDataCell>{'Jose Morales'}</CTableDataCell>
-            <CTableDataCell>{'28/10/2024'}</CTableDataCell>
-            <CTableDataCell>{'15/11/2024'}</CTableDataCell>
-            <CTableDataCell>{'In process'}</CTableDataCell>
-            <CTableDataCell>
-              <CButton
-                style={{
-                  backgroundColor: '#fbb117',
-                  marginRight: '10px',
-                  color: 'white',
-                  
-                }}
-                onClick={() => setVisibleXL(!visibleXL)}
-              >
-                Details
-              </CButton>
-            </CTableDataCell>
-            <CTableDataCell>
-              <CButton
-                style={{
-                  backgroundColor: 'green',
-                  marginRight: '10px',
-                  color: 'white',
-                  
-                }}
-                onClick={() => setVisibleSm(!visibleSm)}
-              >
-                Edit
-              </CButton>
-              <CButton
-                style={{
-                  backgroundColor: 'red',
-                  marginRight: '10px',
-                  color: 'white',
-                  
-                }}
-                onClick={() => setVisible(!visible)}
-              >
-                Delete
-              </CButton>
-            </CTableDataCell>
-          </CTableRow>
+                </CTableDataCell>
+              </CTableRow>
+            );
+          })}
         </CTableBody>
       </CTable>
+
       <CButton
-        type="submit"
-        style={{ backgroundColor: '#107acc',  color: 'white' }}
-        variant="outline"
-        onClick={() => setVisibleLg(!visibleLg)}
+        type="button"
+        style={{ backgroundColor: '#107acc', color: 'white', marginLeft: '10px' }}
+        onClick={() => {
+          setVisibleND(true);
+          resetForm();
+        }}
       >
         New Order
       </CButton>
-      <CModal size="lg" visible={visibleLg} onClose={() => setVisibleLg(false)}>
+
+      <CModal size="lg" visible={visibleND} onClose={() => setVisibleND(false)}>
         <CModalHeader>
-          <CModalTitle>New Order</CModalTitle>
+          <CModalTitle>Add New Order</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <CForm className="row g-3">
-            <CCol md={6}>
+          <CForm onSubmit={handleAddOrder}>
+            <CCol md={12}>
               <CFormInput
-                placeholder="DNI Client"
-                id="Clientid"
-                label="DNI Client"
-                style={{ borderColor: 'black' }}
+                placeholder="Order ID"
+                label="Order ID"
+                value={selectedOrder.id}
+                onChange={(e) => setSelectedOrder({ ...selectedOrder, id: e.target.value })}
+                required
               />
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
+              <CFormSelect
+                label="Select Client"
+                value={selectedOrder.client_id}
+                onChange={(e) => setSelectedOrder({ ...selectedOrder, client_id: e.target.value })}
+                required
+              >
+                <option value="">Choose...</option>
+                {clients.map(client => (
+                  <option key={client.id} value={client.id}>
+                    {users.find(user => user.id === client.user_id)?.name}, 
+                    {users.find(user => user.id === client.user_id)?.id}
+                  </option>
+                ))}
+              </CFormSelect>
+            </CCol>
+            <CCol md={12}>
               <CFormInput
-                id="date"
+                type="date"
                 label="Order Date"
-                type="date"
-                style={{ borderColor: 'black' }}
+                value={selectedOrder.order_date}
+                onChange={(e) => setSelectedOrder({ ...selectedOrder, order_date: e.target.value })}
+                required
               />
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormInput
-                id="dateD"
-                label="Total Delivery Date"
                 type="date"
-                style={{ borderColor: 'black' }}
+                label="Total Delivery Date"
+                value={selectedOrder.total_delivery_date}
+                onChange={(e) => setSelectedOrder({ ...selectedOrder, total_delivery_date: e.target.value })}
+                required
               />
             </CCol>
-            <CCol md={6}>
-              <CFormSelect id="OrderStatus" label="Order Status" style={{ borderColor: 'black' }}>
-                <option>Choose...</option>
-                <option>Completed</option>
+            <CCol md={12}>
+              <CFormSelect
+                label="Order Status"
+                value={selectedOrder.status}
+                onChange={(e) => setSelectedOrder({ ...selectedOrder, status: e.target.value })}
+                required
+              >
+                <option value="">Choose...</option>
+                <option > Completed</option>
                 <option>In progress</option>
                 <option>Canceled</option>
               </CFormSelect>
             </CCol>
-            <CCol md={6}>
-              <CFormSelect id="Materials" label="Order Material" style={{ borderColor: 'black' }}>
-                <option>Choose...</option>
-                <option>Grava</option>
-                <option>Arena</option>
-              </CFormSelect>
-            </CCol>
-            <CCol md={6}>
-              <CFormInput
-                placeholder="Amount of material"
-                id="Materialid"
-                label="Amount of material"
-                style={{ borderColor: 'black' }}
-              />
-            </CCol>
-            <CCol md={12}>
-              <CFormInput
-                id="dateD"
-                label="Material delivery date"
-                type="date"
-                style={{ borderColor: 'black' }}
-              />
-            </CCol>
-            <CCol md={12}>
-              <CFormInput
-                placeholder="Address"
-                id="Address"
-                label="Address"
-                style={{ borderColor: 'black' }}
-              />
-            </CCol>
-            <CCol md={6}>
+            <CModalFooter>
               <CButton
-                style={{
-                  backgroundColor: 'red',
-                  
-                  color: 'white',
-                  marginRight: '10px',
-                }}
-                type="submit"
-                onClick={() => setVisibleLg(false)}
+                type="button"
+                style={{ backgroundColor: 'red', color: 'white' }}
+                onClick={() => setVisibleND(false)}
               >
                 Cancel
               </CButton>
-              <CButton
-                style={{ backgroundColor: '#107acc', color: 'white' }}
-                type="submit"
-                onClick={() => setVisibleLg(false)}
-              >
+              <CButton type="submit" style={{ backgroundColor: '#107acc', color: 'white' }}>
                 Add Order
               </CButton>
-            </CCol>
+            </CModalFooter>
           </CForm>
         </CModalBody>
       </CModal>
-      <CModal visible={visible} onClose={() => setVisible(false)}>
-        <CModalHeader>
-          <CModalTitle>Attention</CModalTitle>
-        </CModalHeader>
-        <CModalBody>Are you sure to remove this order from the system?</CModalBody>
-        <CModalFooter>
-          <CButton
-            style={{
-              backgroundColor: 'green',
-              marginRight: '10px',
-              color: 'white',
-              
-            }}
-            onClick={() => setVisible(false)}
-          >
-            Cancel
-          </CButton>
-          <CButton
-            style={{
-              backgroundColor: 'red',
-              marginRight: '10px',
-              color: 'white',
-              
-            }}
-            onClick={() => setVisible(false)}
-          >
-            Delete
-          </CButton>
-        </CModalFooter>
-      </CModal>
 
-      <CModal size="sm" visible={visibleSm} onClose={() => setVisibleSm(false)}>
+      <CModal size="lg" visible={visibleEdit} onClose={() => setVisibleEdit(false)}>
         <CModalHeader>
           <CModalTitle>Edit Order</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <h6>Nro. Order: 5012</h6>
-          <h6>DNI: 30781815</h6>
-          <h6>Name Client: Mariana Morales</h6>
-          <CForm className="row g-3">
+          <CForm onSubmit={handleEditOrder}>
             <CCol md={12}>
-              <CFormSelect id="OrderStatus" label="Order Status" style={{ borderColor: 'black' }}>
-                <option>Choose...</option>
+              <CFormInput
+                placeholder="Order ID"
+                label="Order ID"
+                value={selectedOrder.id}
+                onChange={(e) => setSelectedOrder({ ...selectedOrder, id: e.target.value })}
+                required
+              />
+            </CCol>
+            <CCol md={12}>
+              <CFormSelect
+                label="Select Client"
+                value={selectedOrder.client_id}
+                onChange={(e) => setSelectedOrder({ ...selectedOrder, client_id: e.target.value })}
+                required
+              >
+                <option value="">Choose...</option>
+                {clients.map(client => (
+                  <option key={client.id} value={client.id}>
+                    {users.find(user => user.id === client.user_id)?.name}, 
+                    {users.find(user => user.id === client.user_id)?.id}
+                  </option>
+                ))}
+              </CFormSelect>
+            </CCol>
+            <CCol md={12}>
+              <CFormInput
+                type="date"
+                label="Order Date"
+                value={selectedOrder.order_date}
+                onChange={(e) => setSelectedOrder({ ...selectedOrder, order_date: e.target.value })}
+                required
+              />
+            </CCol>
+            <CCol md={12}>
+              <CFormInput
+                type="date"
+                label="Total Delivery Date"
+                value={selectedOrder.total_delivery_date}
+                onChange={(e) => setSelectedOrder({ ...selectedOrder, total_delivery_date: e.target.value })}
+                required
+              />
+            </CCol>
+            <CCol md={12}>
+              <CFormSelect
+                label="Order Status"
+                value={selectedOrder.status}
+                onChange={(e) => setSelectedOrder({ ...selectedOrder, status: e.target.value })}
+                required
+              >
+                <option value="">Choose...</option>
                 <option>Completed</option>
                 <option>In progress</option>
                 <option>Canceled</option>
               </CFormSelect>
             </CCol>
-            <CCol md={12}>
-              <CFormInput
-                id="dateD"
-                label="Total Delivery Date"
-                type="date"
-                style={{ borderColor: 'black' }}
-              />
-            </CCol>
-            <CCol md={12}>
-              <CFormInput
-                placeholder="Address"
-                id="Address"
-                label="Address"
-                style={{ borderColor: 'black' }}
-              />
-            </CCol>
-            <CCol md={6}>
+            <CModalFooter>
               <CButton
-                style={{
-                  backgroundColor: 'red',
-                  
-                  color: 'white',
-                  marginBottom: '10px',
-                }}
-                type="submit"
-                onClick={() => setVisibleSm(false)}
+                type="button"
+                style={{ backgroundColor: 'red', color: 'white' }}
+                onClick={() => setVisibleEdit(false)}
               >
                 Cancel
               </CButton>
-              <CButton
-                style={{ backgroundColor: '#107acc',  color: 'white' }}
-                type="submit"
-                onClick={() => setVisibleSm(false)}
-              >
-                Add Changes
+              <CButton type="submit" style={{ backgroundColor: '#107acc', color: 'white' }}>
+                Save Changes
               </CButton>
-            </CCol>
+            </CModalFooter>
           </CForm>
         </CModalBody>
       </CModal>
-      <CModal fullscreen="md" visible={visibleMd} onClose={() => setVisibleMd(false)}>
-        <CModalHeader>
-          <CModalTitle>Attention</CModalTitle>
-        </CModalHeader>
-        <CModalBody>Are you sure to remove this material from your order?</CModalBody>
-        <CModalFooter>
-          <CButton
-            style={{
-              backgroundColor: 'green',
-              marginRight: '10px',
-              color: 'white',
-              
-            }}
-            onClick={() => setVisibleMd(false)}
-          >
-            Cancel
-          </CButton>
-          <CButton
-            style={{
-              backgroundColor: 'red',
-              marginRight: '10px',
-              color: 'white',
-              
-            }}
-            onClick={() => setVisibleMd(false)}
-          >
-            Delete
-          </CButton>
-        </CModalFooter>
-      </CModal>
 
-      <CModal fullscreen="md" visible={visibleMd2} onClose={() => setVisibleMd2(false)}>
+      <CModal visible={confirmDeleteModalVisible} onClose={() => setConfirmDeleteModalVisible(false)}>
         <CModalHeader>
-          <CModalTitle>New Material</CModalTitle>
+          <CModalTitle>Confirm Deletion</CModalTitle>
         </CModalHeader>
-        <CModalBody>
-          <CCol md={6}>
-            <CFormSelect id="Materials" label="Order Material" style={{ borderColor: 'black' }}>
-              <option>Choose...</option>
-              <option>Grava</option>
-              <option>Arena</option>
-            </CFormSelect>
-          </CCol>
-          <CCol md={6}>
-            <CFormInput
-              placeholder="Amount of material"
-              id="Materialid"
-              label="Amount of material"
-              style={{ borderColor: 'black' }}
-            />
-          </CCol>
-          <CCol md={12}>
-            <CFormInput
-              id="dateD"
-              label="Material delivery date"
-              type="date"
-              style={{ borderColor: 'black' }}
-            />
-          </CCol>
-          <CCol md={6}>
-            <CFormInput
-              placeholder="Address"
-              id="Address"
-              label="Address"
-              style={{ borderColor: 'black' }}
-            />
-          </CCol>
-        </CModalBody>
+        <CModalBody>Are you sure you want to delete this order?</CModalBody>
         <CModalFooter>
           <CButton
-            style={{
-              backgroundColor: 'green',
-              marginRight: '10px',
-              color: 'white',
-              
-            }}
-            onClick={() => setVisibleMd2(false)}
+            style={{ backgroundColor: 'green', marginRight: '10px', color: 'white' }}
+            onClick={() => setConfirmDeleteModalVisible(false)}
           >
             Cancel
           </CButton>
           <CButton
-            style={{
-              backgroundColor: 'red',
-              marginRight: '10px',
-              color: 'white',
-              
-            }}
-            onClick={() => setVisibleMd2(false)}
+            style={{ backgroundColor: 'red', marginRight: '10px', color: 'white' }}
+            onClick={confirmDelete}
           >
             Delete
           </CButton>
         </CModalFooter>
       </CModal>
     </div>
-  )
-}
+  );
+};
 
-export default Order_details
-*/
-import React, { useState } from 'react'
-import {
-  CTable,
-  CTableBody,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
-  CTableDataCell,
-  CButton,
-  CNavbar,
-  CForm,
-  CFormInput,
-  CContainer,
-  CModalHeader,
-  CModalTitle,
-  CModalBody,
-  CModalFooter,
-  CCol,
-  CFormSelect,
-  CModal,
-} from '@coreui/react'
-
-const Order_details = () => {
-  const [visibleXL, setVisibleXL] = useState(false)
-  const [visibleLg, setVisibleLg] = useState(false)
-  const [visible, setVisible] = useState(false)
-  const [visibleSm, setVisibleSm] = useState(false)
-  const [visibleMd, setVisibleMd] = useState(false)
-  const [visibleMd2, setVisibleMd2] = useState(false)
-  return (
-    <div>
-      <h1>List of Orders</h1>
-      <div>
-        <CNavbar style={{ border: '1px solid gray', borderRadius: '10px', marginBottom: '10px' }}>
-          <CContainer style={{ display: 'flex' }}>
-            <CForm className="d-flex">
-              <CFormInput type="search" className="me-2" placeholder="Search for client" />
-              <CButton
-                type="submit"
-                style={{ backgroundColor: '#107acc', color: 'white' }}
-                variant="outline"
-              >
-                Search
-              </CButton>
-              <CFormInput type="date" className="me-2" style={{ marginLeft: '10px' }} />
-              <CButton
-                type="submit"
-                style={{ backgroundColor: '#107acc', color: 'white' }}
-                variant="outline"
-              >
-                Search
-              </CButton>
-            </CForm>
-            <h6>Current Orders: 2</h6>
-          </CContainer>
-        </CNavbar>
-      </div>
-      <CTable style={{ border: '1px solid gray', borderRadius: '50px' }}>
-        <CTableHead>
-          <CTableRow>
-            <CTableHeaderCell>Nro Order</CTableHeaderCell>
-            <CTableHeaderCell>Name Client</CTableHeaderCell>
-            <CTableHeaderCell>Order Date</CTableHeaderCell>
-            <CTableHeaderCell>Total delivery date</CTableHeaderCell>
-            <CTableHeaderCell>Order Status</CTableHeaderCell>
-            <CTableHeaderCell>Order Details</CTableHeaderCell>
-            <CTableHeaderCell>Options</CTableHeaderCell>
-          </CTableRow>
-        </CTableHead>
-        <CTableBody>
-          <CTableRow>
-            <CTableDataCell>{'30781815'}</CTableDataCell>
-            <CTableDataCell>{'Mariana Morales'}</CTableDataCell>
-            <CTableDataCell>{'18/08/2024'}</CTableDataCell>
-            <CTableDataCell>{'12/10/2024'}</CTableDataCell>
-            <CTableDataCell>{'Completed'}</CTableDataCell>
-            <CTableDataCell>
-              <CButton
-                style={{
-                  backgroundColor: '#fbb117',
-                  marginRight: '10px',
-                  color: 'white',
-                  
-                }}
-                onClick={() => setVisibleXL(!visibleXL)}
-              >
-                Details
-              </CButton>
-              <CModal
-                size="xl"
-                visible={visibleXL}
-                onClose={() => setVisibleXL(false)}
-                aria-labelledby="modalTitle"
-              >
-                <CModalHeader>
-                  <CModalTitle id="modalTitle">Order Details</CModalTitle>
-                </CModalHeader>
-                <CModalBody>
-                  <div>
-                    <h3>Order Nro.1</h3>
-                    <h6>DNI: 30781815</h6>
-                    <h6>Name Client: Mariana Morales</h6>
-                    <CTable style={{ border: '1px solid black', borderRadius: '50px' }}>
-                      <CTableHead>
-                        <CTableRow>
-                          <CTableHeaderCell>Matrial</CTableHeaderCell>
-                          <CTableHeaderCell>Quantity</CTableHeaderCell>
-                          <CTableHeaderCell>Delivery Date</CTableHeaderCell>
-                          <CTableHeaderCell>Total Cost</CTableHeaderCell>
-                          <CTableHeaderCell>Address</CTableHeaderCell>
-                          <CTableHeaderCell>Delete Material</CTableHeaderCell>
-                        </CTableRow>
-                      </CTableHead>
-                      <CTableBody>
-                        <CTableRow>
-                          <CTableDataCell>{'Grava'}</CTableDataCell>
-                          <CTableDataCell>{'5M'}</CTableDataCell>
-                          <CTableDataCell>{'21/10/2024'}</CTableDataCell>
-                          <CTableDataCell>{'500$'}</CTableDataCell>
-                          <CTableDataCell>{'Avenida las flores. Calle 2'}</CTableDataCell>
-                          <CTableDataCell>
-                            <CButton
-                              style={{
-                                backgroundColor: 'red',
-                                marginRight: '10px',
-                                color: 'white',
-                                
-                              }}
-                              onClick={() => setVisibleMd(!visibleMd)}
-                            >
-                              Delete
-                            </CButton>
-                          </CTableDataCell>
-                        </CTableRow>
-                        <CTableRow>
-                          <CTableDataCell>{'Arena Roja'}</CTableDataCell>
-                          <CTableDataCell>{'6M'}</CTableDataCell>
-                          <CTableDataCell>{'18/10/2024'}</CTableDataCell>
-                          <CTableDataCell>{'100$'}</CTableDataCell>
-                          <CTableDataCell>{'Avenida las flores. Calle 2'}</CTableDataCell>
-                          <CTableDataCell>
-                            <CButton
-                              style={{
-                                backgroundColor: 'red',
-                                marginRight: '10px',
-                                color: 'white',
-                                
-                              }}
-                              onClick={() => setVisibleMd(!visibleMd)}
-                            >
-                              Delete
-                            </CButton>
-                          </CTableDataCell>
-                        </CTableRow>
-                      </CTableBody>
-                    </CTable>
-                  </div>
-                </CModalBody>
-                <CModalFooter>
-                  <CButton
-                    style={{
-                      backgroundColor: 'green',
-                      marginRight: '10px',
-                      color: 'white',
-                      
-                    }}
-                    onClick={() => setVisibleMd2(!visible)}
-                  >
-                    Add New Material
-                  </CButton>
-                  <CButton
-                    style={{
-                      backgroundColor: 'red',
-                      marginRight: '10px',
-                      color: 'white',
-                      
-                    }}
-                    onClick={() => setVisibleXL(false)}
-                  >
-                    Close
-                  </CButton>
-                  <CButton
-                    style={{ backgroundColor: '#107acc', color: 'white' }}
-                    onClick={() => setVisibleXL(false)}
-                  >
-                    Add changes
-                  </CButton>
-                </CModalFooter>
-              </CModal>
-            </CTableDataCell>
-            <CTableDataCell>
-              <CButton
-                style={{
-                  backgroundColor: 'green',
-                  marginRight: '10px',
-                  color: 'white',
-                  
-                }}
-                onClick={() => setVisibleSm(!visibleSm)}
-              >
-                Edit
-              </CButton>
-              <CButton
-                style={{
-                  backgroundColor: 'red',
-                  marginRight: '10px',
-                  color: 'white',
-                  
-                }}
-                onClick={() => setVisible(!visible)}
-              >
-                Delete
-              </CButton>
-            </CTableDataCell>
-          </CTableRow>
-          <CTableRow>
-            <CTableDataCell>{'30781864'}</CTableDataCell>
-            <CTableDataCell>{'Jose Morales'}</CTableDataCell>
-            <CTableDataCell>{'28/10/2024'}</CTableDataCell>
-            <CTableDataCell>{'15/11/2024'}</CTableDataCell>
-            <CTableDataCell>{'In process'}</CTableDataCell>
-            <CTableDataCell>
-              <CButton
-                style={{
-                  backgroundColor: '#fbb117',
-                  marginRight: '10px',
-                  color: 'white',
-                  
-                }}
-                onClick={() => setVisibleXL(!visibleXL)}
-              >
-                Details
-              </CButton>
-            </CTableDataCell>
-            <CTableDataCell>
-              <CButton
-                style={{
-                  backgroundColor: 'green',
-                  marginRight: '10px',
-                  color: 'white',
-                  
-                }}
-                onClick={() => setVisibleSm(!visibleSm)}
-              >
-                Edit
-              </CButton>
-              <CButton
-                style={{
-                  backgroundColor: 'red',
-                  marginRight: '10px',
-                  color: 'white',
-                  
-                }}
-                onClick={() => setVisible(!visible)}
-              >
-                Delete
-              </CButton>
-            </CTableDataCell>
-          </CTableRow>
-        </CTableBody>
-      </CTable>
-      <CButton
-        type="submit"
-        style={{ backgroundColor: '#107acc',  color: 'white' }}
-        variant="outline"
-        onClick={() => setVisibleLg(!visibleLg)}
-      >
-        New Order
-      </CButton>
-      <CModal size="lg" visible={visibleLg} onClose={() => setVisibleLg(false)}>
-        <CModalHeader>
-          <CModalTitle>New Order</CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <CForm className="row g-3">
-            <CCol md={6}>
-              <CFormInput
-                placeholder="DNI Client"
-                id="Clientid"
-                label="DNI Client"
-                style={{ borderColor: 'black' }}
-              />
-            </CCol>
-            <CCol md={6}>
-              <CFormInput
-                id="date"
-                label="Order Date"
-                type="date"
-                style={{ borderColor: 'black' }}
-              />
-            </CCol>
-            <CCol md={6}>
-              <CFormInput
-                id="dateD"
-                label="Total Delivery Date"
-                type="date"
-                style={{ borderColor: 'black' }}
-              />
-            </CCol>
-            <CCol md={6}>
-              <CFormSelect id="OrderStatus" label="Order Status" style={{ borderColor: 'black' }}>
-                <option>Choose...</option>
-                <option>Completed</option>
-                <option>In progress</option>
-                <option>Canceled</option>
-              </CFormSelect>
-            </CCol>
-            <CCol md={6}>
-              <CFormSelect id="Materials" label="Order Material" style={{ borderColor: 'black' }}>
-                <option>Choose...</option>
-                <option>Grava</option>
-                <option>Arena</option>
-              </CFormSelect>
-            </CCol>
-            <CCol md={6}>
-              <CFormInput
-                placeholder="Amount of material"
-                id="Materialid"
-                label="Amount of material"
-                style={{ borderColor: 'black' }}
-              />
-            </CCol>
-            <CCol md={12}>
-              <CFormInput
-                id="dateD"
-                label="Material delivery date"
-                type="date"
-                style={{ borderColor: 'black' }}
-              />
-            </CCol>
-            <CCol md={12}>
-              <CFormInput
-                placeholder="Address"
-                id="Address"
-                label="Address"
-                style={{ borderColor: 'black' }}
-              />
-            </CCol>
-            <CCol md={6}>
-              <CButton
-                style={{
-                  backgroundColor: 'red',
-                  
-                  color: 'white',
-                  marginRight: '10px',
-                }}
-                type="submit"
-                onClick={() => setVisibleLg(false)}
-              >
-                Cancel
-              </CButton>
-              <CButton
-                style={{ backgroundColor: '#107acc', color: 'white' }}
-                type="submit"
-                onClick={() => setVisibleLg(false)}
-              >
-                Add Order
-              </CButton>
-            </CCol>
-          </CForm>
-        </CModalBody>
-      </CModal>
-      <CModal visible={visible} onClose={() => setVisible(false)}>
-        <CModalHeader>
-          <CModalTitle>Attention</CModalTitle>
-        </CModalHeader>
-        <CModalBody>Are you sure to remove this order from the system?</CModalBody>
-        <CModalFooter>
-          <CButton
-            style={{
-              backgroundColor: 'green',
-              marginRight: '10px',
-              color: 'white',
-              
-            }}
-            onClick={() => setVisible(false)}
-          >
-            Cancel
-          </CButton>
-          <CButton
-            style={{
-              backgroundColor: 'red',
-              marginRight: '10px',
-              color: 'white',
-              
-            }}
-            onClick={() => setVisible(false)}
-          >
-            Delete
-          </CButton>
-        </CModalFooter>
-      </CModal>
-
-      <CModal size="sm" visible={visibleSm} onClose={() => setVisibleSm(false)}>
-        <CModalHeader>
-          <CModalTitle>Edit Order</CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <h6>Nro. Order: 5012</h6>
-          <h6>DNI: 30781815</h6>
-          <h6>Name Client: Mariana Morales</h6>
-          <CForm className="row g-3">
-            <CCol md={12}>
-              <CFormSelect id="OrderStatus" label="Order Status" style={{ borderColor: 'black' }}>
-                <option>Choose...</option>
-                <option>Completed</option>
-                <option>In progress</option>
-                <option>Canceled</option>
-              </CFormSelect>
-            </CCol>
-            <CCol md={12}>
-              <CFormInput
-                id="dateD"
-                label="Total Delivery Date"
-                type="date"
-                style={{ borderColor: 'black' }}
-              />
-            </CCol>
-            <CCol md={12}>
-              <CFormInput
-                placeholder="Address"
-                id="Address"
-                label="Address"
-                style={{ borderColor: 'black' }}
-              />
-            </CCol>
-            <CCol md={6}>
-              <CButton
-                style={{
-                  backgroundColor: 'red',
-                  
-                  color: 'white',
-                  marginBottom: '10px',
-                }}
-                type="submit"
-                onClick={() => setVisibleSm(false)}
-              >
-                Cancel
-              </CButton>
-              <CButton
-                style={{ backgroundColor: '#107acc',  color: 'white' }}
-                type="submit"
-                onClick={() => setVisibleSm(false)}
-              >
-                Add Changes
-              </CButton>
-            </CCol>
-          </CForm>
-        </CModalBody>
-      </CModal>
-      <CModal fullscreen="md" visible={visibleMd} onClose={() => setVisibleMd(false)}>
-        <CModalHeader>
-          <CModalTitle>Attention</CModalTitle>
-        </CModalHeader>
-        <CModalBody>Are you sure to remove this material from your order?</CModalBody>
-        <CModalFooter>
-          <CButton
-            style={{
-              backgroundColor: 'green',
-              marginRight: '10px',
-              color: 'white',
-              
-            }}
-            onClick={() => setVisibleMd(false)}
-          >
-            Cancel
-          </CButton>
-          <CButton
-            style={{
-              backgroundColor: 'red',
-              marginRight: '10px',
-              color: 'white',
-              
-            }}
-            onClick={() => setVisibleMd(false)}
-          >
-            Delete
-          </CButton>
-        </CModalFooter>
-      </CModal>
-
-      <CModal fullscreen="md" visible={visibleMd2} onClose={() => setVisibleMd2(false)}>
-        <CModalHeader>
-          <CModalTitle>New Material</CModalTitle>
-        </CModalHeader>
-        <CModalBody>
-          <CCol md={6}>
-            <CFormSelect id="Materials" label="Order Material" style={{ borderColor: 'black' }}>
-              <option>Choose...</option>
-              <option>Grava</option>
-              <option>Arena</option>
-            </CFormSelect>
-          </CCol>
-          <CCol md={6}>
-            <CFormInput
-              placeholder="Amount of material"
-              id="Materialid"
-              label="Amount of material"
-              style={{ borderColor: 'black' }}
-            />
-          </CCol>
-          <CCol md={12}>
-            <CFormInput
-              id="dateD"
-              label="Material delivery date"
-              type="date"
-              style={{ borderColor: 'black' }}
-            />
-          </CCol>
-          <CCol md={6}>
-            <CFormInput
-              placeholder="Address"
-              id="Address"
-              label="Address"
-              style={{ borderColor: 'black' }}
-            />
-          </CCol>
-        </CModalBody>
-        <CModalFooter>
-          <CButton
-            style={{
-              backgroundColor: 'green',
-              marginRight: '10px',
-              color: 'white',
-              
-            }}
-            onClick={() => setVisibleMd2(false)}
-          >
-            Cancel
-          </CButton>
-          <CButton
-            style={{
-              backgroundColor: 'red',
-              marginRight: '10px',
-              color: 'white',
-              
-            }}
-            onClick={() => setVisibleMd2(false)}
-          >
-            Delete
-          </CButton>
-        </CModalFooter>
-      </CModal>
-    </div>
-  )
-}
-
-export default Order_details
+export default OrderDetails;

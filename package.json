@@ -1,14 +1,15 @@
 {
   "name": "@coreui/coreui-free-react-admin-template",
   "version": "5.2.0",
+  "type": "module",
   "description": "CoreUI Free React Admin Template",
-  "homepage": ".",
+  "homepage": "http://.",
   "bugs": {
     "url": "https://github.com/coreui/coreui-free-react-admin-template/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:coreui/coreui-free-react-admin-template.git"
+    "url": "git+ssh://git@github.com/coreui/coreui-free-react-admin-template.git"
   },
   "license": "MIT",
   "author": "The CoreUI Team (https://github.com/orgs/coreui/people)",
@@ -16,7 +17,8 @@
     "build": "vite build",
     "lint": "eslint \"src/**/*.js\"",
     "serve": "vite preview",
-    "start": "vite"
+    "start": "vite",
+    "dev": "node --watch src/index.js"
   },
   "dependencies": {
     "@coreui/chartjs": "^4.0.0",
@@ -51,5 +53,7 @@
     "prettier": "3.3.3",
     "sass": "^1.79.3",
     "vite": "^5.4.8"
-  }
+  },
+  "main": ".eslintrc.js",
+  "keywords": []
 }
