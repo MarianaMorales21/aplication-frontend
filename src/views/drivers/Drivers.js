@@ -77,17 +77,17 @@ const Drivers = () => {
 
     const newDriver = {
       ...driver,
-      id: `${driver.user_id}D`, 
+      id: `${driver.user_id}D`,
     };
-    
+
     const driverResponse = await api.post(urlDrivers, { body: newDriver });
     if (!driverResponse.err) {
-      setDrivers([...drivers, driverResponse]); 
-      setVisibleND(false); 
-      showAlert('Driver added successfully!', 'success'); 
-      resetForms(); 
+      setDrivers([...drivers, driverResponse]);
+      setVisibleND(false);
+      showAlert('Driver added successfully!', 'success');
+      resetForms();
     } else {
-      showAlert('Error adding driver. Please try again.', 'danger'); 
+      showAlert('Error adding driver. Please try again.', 'danger');
     }
   };
 
@@ -99,7 +99,7 @@ const Drivers = () => {
       expiration_date: '',
       sex: '',
       grade_license: 'Fifth',
-      id: '', 
+      id: '',
     });
   };
 
@@ -110,15 +110,15 @@ const Drivers = () => {
 
   const confirmDelete = async () => {
     const driverToDelete = drivers.find(driver => driver.id === driverIdToDelete);
-    
+
     if (driverToDelete) {
 
       const responseDriver = await api.del(`${urlDrivers}/${driverIdToDelete}`);
       if (!responseDriver.err) {
 
-        const userIdToDelete = driverToDelete.user_id; 
-        const responseUser  = await api.del (`${urlUsers}/${userIdToDelete}`);
-        if (!responseUser .err) {
+        const userIdToDelete = driverToDelete.user_id;
+        const responseUser = await api.del(`${urlUsers}/${userIdToDelete}`);
+        if (!responseUser.err) {
 
           setDrivers(drivers.filter(driver => driver.id !== driverIdToDelete));
           setUsers(users.filter(user => user.id !== userIdToDelete));
@@ -130,7 +130,7 @@ const Drivers = () => {
         showAlert('Error deleting driver. Please try again.', 'danger');
       }
     }
-    
+
     setConfirmDeleteModalVisible(false);
   };
 
@@ -151,11 +151,17 @@ const Drivers = () => {
   return (
     <div>
       <h1>List of Drivers</h1>
-      <CNavbar style={{ border: '1px solid gray', borderRadius: '10px', marginBottom: '10px' }}>
-        <CContainer style={{ display: 'flex' }}>
-        <h6>Current Fleet: {drivers.length}</h6>
-        </CContainer>
-      </CNavbar>
+      <CButton
+        type="button"
+        style={{ backgroundColor: '#107acc', color: 'white', marginBottom: '15px' }}
+        variant="outline"
+        onClick={() => {
+          setVisibleND(true)
+          resetForms()
+        }}
+      >
+        New Driver
+      </CButton>
 
       <CTable style={{ border: '1px solid gray', borderRadius: '50px' }}>
         <CTableHead>
@@ -303,18 +309,6 @@ const Drivers = () => {
         </CModalBody>
       </CModal>
 
-      <CButton
-        type="button"
-        style={{ backgroundColor: '#107acc', color: 'white' }}
-        variant="outline"
-        onClick={() => {
-          setVisibleND(true)
-          resetForms()
-        }}
-      >
-        New Driver
-      </CButton>
-
       <CModal
         size="xl"
         visible={visibleND}
@@ -348,12 +342,12 @@ const Drivers = () => {
               </CFormSelect>
             </CCol>
             <CCol md={12}>
-              <CFormSelect 
-              id="type" 
-              label="Limitations License" 
-              style={{ borderColor: 'black' }}
-              value={driver.limitations}
-              onChange={(e) => setDriver({ ...driver, limitations: e.target.value })}>
+              <CFormSelect
+                id="type"
+                label="Limitations License"
+                style={{ borderColor: 'black' }}
+                value={driver.limitations}
+                onChange={(e) => setDriver({ ...driver, limitations: e.target.value })}>
                 <option value={""}>Choose...</option>
                 <option>Spectacles</option>
                 <option>Cardiology</option>

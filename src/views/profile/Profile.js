@@ -4,29 +4,29 @@ import { helpHttp } from '../../helpHttp';
 
 const UserProfile = () => {
   const api = helpHttp();
-  const url = 'http://localhost:8000/users'; 
+  const url = 'http://localhost:8000/users';
   const [visibleSm, setVisibleSm] = useState(false);
   const [userData, setUserData] = useState(null);
   const [alert, setAlert] = useState({ show: false, message: '', color: '' });
 
-  const loggedInUser  = JSON.parse(localStorage.getItem('user'));
+  const loggedInUser = JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
-    if (loggedInUser ) {
+    if (loggedInUser) {
       fetchUserData(loggedInUser.id);
     }
-  }, [loggedInUser ]);
+  }, [loggedInUser]);
 
   const fetchUserData = async (id) => {
-    const response = await api.get(`${url}/${id}`); 
+    const response = await api.get(`${url}/${id}`);
     if (!response.err) {
-      setUserData(response); 
+      setUserData(response);
     } else {
       showAlert('Error fetching user data. Please try again.', 'danger');
     }
   };
 
-  const handleEditUser  = async (e) => {
+  const handleEditUser = async (e) => {
     e.preventDefault();
     const response = await api.put(`${url}/${userData.id}`, userData);
     if (!response.err) {
@@ -45,7 +45,7 @@ const UserProfile = () => {
     }, 3000);
   };
 
-  if (!userData) return <div>Loading...</div>; 
+  if (!userData) return <div>Loading...</div>;
 
   return (
     <CRow className="justify-content-center">

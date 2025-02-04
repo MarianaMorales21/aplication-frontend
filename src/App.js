@@ -1,15 +1,13 @@
 import React, { Suspense, useEffect } from 'react'
-import {BrowserRouter,Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import { CSpinner, useColorModes } from '@coreui/react'
 import './scss/style.scss'
 import Forgotpassword from './views/pages/forgotpassword/forgotpassword'
 
-// Containers
 const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
 
-// Pages
 const Login = React.lazy(() => import('./views/pages/login/Login'))
 const Register = React.lazy(() => import('./views/pages/register/Register'))
 const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
@@ -31,7 +29,7 @@ const App = () => {
     }
 
     setColorMode(storedTheme)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <BrowserRouter>
@@ -47,8 +45,8 @@ const App = () => {
           <Route exact path="/register" name="Register Page" element={<Register />} />
           <Route exact path="/404" name="Page 404" element={<Page404 />} />
           <Route exact path="/500" name="Page 500" element={<Page500 />} />
-          <Route path="*" name="Home" element={<DefaultLayout/>} />
-          <Route exact path='/forgotpassword' name="Forgot Password" element={<Forgotpassword/>}></Route>
+          <Route path="*" name="Home" element={<DefaultLayout />} />
+          <Route exact path='/forgotpassword' name="Forgot Password" element={<Forgotpassword />}></Route>
 
         </Routes>
       </Suspense>

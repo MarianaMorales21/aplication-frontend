@@ -30,7 +30,7 @@ const Clients = () => {
   const [users, setUsers] = useState([]);
   const [client, setClient] = useState({
     type: '',
-    user_id: '', 
+    user_id: '',
   });
   const [alert, setAlert] = useState({ show: false, message: '', color: '' });
   const [confirmDeleteModalVisible, setConfirmDeleteModalVisible] = useState(false)
@@ -67,16 +67,16 @@ const Clients = () => {
   };
 
   const handleAddClient = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
 
     const clientResponse = await api.post(urlClients, { body: client });
     if (!clientResponse.err) {
-      setClients([...clients, clientResponse]); 
-      setVisibleNC(false); 
+      setClients([...clients, clientResponse]);
+      setVisibleNC(false);
       showAlert('Client added successfully!', 'success');
-      resetForms(); 
+      resetForms();
     } else {
-      showAlert('Error adding client. Please try again.', 'danger'); 
+      showAlert('Error adding client. Please try again.', 'danger');
     }
   };
 
@@ -95,19 +95,19 @@ const Clients = () => {
   const confirmDelete = async () => {
 
     const clientToDelete = clients.find(client => client.id === clientIdToDelete);
-    
+
     if (clientToDelete) {
 
       const responseClient = await api.del(`${urlClients}/${clientIdToDelete}`);
       if (!responseClient.err) {
 
         const userIdToDelete = clientToDelete.user_id;
-        const responseUser  = await api.del(`${urlUsers}/${userIdToDelete}`);
-        
-        if (!responseUser .err) {
+        const responseUser = await api.del(`${urlUsers}/${userIdToDelete}`);
+
+        if (!responseUser.err) {
 
           setClients(clients.filter(client => client.id !== clientIdToDelete));
-          setUsers(users.filter(user => user.id !== userIdToDelete)); 
+          setUsers(users.filter(user => user.id !== userIdToDelete));
           showAlert('Client and associated user deleted successfully!', 'success');
         } else {
           showAlert('Error deleting associated user. Please try again.', 'danger');
@@ -116,7 +116,7 @@ const Clients = () => {
         showAlert('Error deleting client. Please try again.', 'danger');
       }
     }
-    
+
 
     setConfirmDeleteModalVisible(false);
   };
@@ -128,8 +128,8 @@ const Clients = () => {
     e.preventDefault();
     const response = await api.put(`${urlClients}/${client.id}`, { body: client });
     if (!response.err) {
-      setClients(clients.map((c) => (c.id === client.id ? response : c))); 
-      setVisibleSm(false); 
+      setClients(clients.map((c) => (c.id === client.id ? response : c)));
+      setVisibleSm(false);
       showAlert('Client updated successfully!', 'success');
     } else {
       showAlert('Error updating client. Please try again.', 'danger');
@@ -140,11 +140,18 @@ const Clients = () => {
   return (
     <div>
       <h1>List of Clients</h1>
-      <CNavbar style={{ border: '1px solid gray', borderRadius: '10px', marginBottom: '10px' }}>
-        <CContainer style={{ display: 'flex' }}>
-        <h6>Current Fleet: {clients.length}</h6>
-        </CContainer>
-      </CNavbar>
+
+      <CButton
+        type="button"
+        style={{ backgroundColor: '#107acc', color: 'white', marginBottom: '15px' }}
+        variant="outline"
+        onClick={() => {
+          setVisibleNC(true);
+          resetForms();
+        }}
+      >
+        New Client
+      </CButton>
 
       <CTable style={{ border: '1px solid gray', borderRadius: '50px' }}>
         <CTableHead>
@@ -225,7 +232,7 @@ const Clients = () => {
         <CModalBody>
           <CForm className="row g-3" onSubmit={handleEditClient}>
             <CCol md={6}>
-            <CFormSelect
+              <CFormSelect
                 id="type"
                 label="Client Type"
                 style={{ borderColor: 'black' }}
@@ -259,17 +266,6 @@ const Clients = () => {
         </CModalBody>
       </CModal>
 
-      <CButton
-        type="button"
-        style={{ backgroundColor: '#107acc', color: 'white' }}
-        variant="outline"
-        onClick={() => {
-          setVisibleNC(true);
-          resetForms();
-        }}
-      >
-        New Client
-      </CButton>
 
       <CModal
         size="xl"

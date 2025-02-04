@@ -72,7 +72,7 @@ const Materials = () => {
   const handleEditMaterial = async (e) => {
     e.preventDefault();
     const response = await api.put(`${urlMaterial}/${material.id}`, { body: material });
-    console.log("Response from API:", response); 
+    console.log("Response from API:", response);
 
     if (!response.err) {
       setMaterials(materials.map((m) => (m.id === material.id ? response : m)));
@@ -104,7 +104,7 @@ const Materials = () => {
     setTimeout(() => {
       setAlert({ show: false, message: '', color: '' });
     }, 3000);
- };
+  };
 
   const resetMaterialForm = () => {
     setMaterial({
@@ -121,11 +121,17 @@ const Materials = () => {
     <div>
       <h1>List of Materials</h1>
       {alert.show && <CAlert color={alert.color}>{alert.message}</CAlert>}
-      <CNavbar style={{ border: '1px solid gray', borderRadius: '10px', marginBottom: '10px' }}>
-        <CContainer style={{ display: 'flex' }}>
-        <h6>Current Fleet: {materials.length}</h6>
-        </CContainer>
-      </CNavbar>
+      <CButton
+        type="button"
+        style={{ backgroundColor: '#107acc', color: 'white', marginBottom: '15px' }}
+        variant="outline"
+        onClick={() => {
+          setVisibleLg(true);
+          resetMaterialForm();
+        }}
+      >
+        New Material
+      </CButton>
       <CTable style={{ border: '1px solid gray', borderRadius: '50px' }}>
         <CTableHead>
           <CTableRow>
@@ -166,17 +172,7 @@ const Materials = () => {
           ))}
         </CTableBody>
       </CTable>
-      <CButton
-        type="button"
-        style={{ backgroundColor: '#107acc', color: 'white' }}
-        variant="outline"
-        onClick={() => {
-          setVisibleLg(true);
-          resetMaterialForm();
-        }}
-      >
-        New Material
-      </CButton>
+
 
       <CModal size="lg" visible={visibleLg} onClose={() => setVisibleLg(false)}>
         <CModalHeader>
@@ -184,7 +180,7 @@ const Materials = () => {
         </CModalHeader>
         <CModalBody>
           <CForm className="row g-3" onSubmit={handleAddMaterial}>
-          <CCol md={6}>
+            <CCol md={6}>
               <CFormInput
                 placeholder="ID"
                 id="ID"
@@ -373,7 +369,7 @@ const Materials = () => {
                   marginBottom: '10px',
                 }}
                 type="button"
-                onClick={() => setVisibleSm(false )}
+                onClick={() => setVisibleSm(false)}
               >
                 Cancel
               </CButton>
@@ -391,5 +387,5 @@ const Materials = () => {
   );
 };
 
-export default Materials; 
+export default Materials;
 

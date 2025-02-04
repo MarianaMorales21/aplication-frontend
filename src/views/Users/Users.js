@@ -113,19 +113,25 @@ const Users = () => {
       password: '',
       address: '',
       phone: '',
-      username:'',
+      username: '',
     })
   }
 
   return (
     <div>
       <h1>List of users</h1>
-      <CNavbar style={{ border: '1px solid gray', borderRadius: '10px', marginBottom: '10px' }}>
-        <CContainer style={{ display: 'flex' }}>
-        <h6>Current Fleet: {users.length}</h6>
-        </CContainer>
-      </CNavbar>
       {alert.show && <CAlert color={alert.color}>{alert.message}</CAlert>}
+      <CButton
+        type="button"
+        style={{ backgroundColor: '#107acc', color: 'white', marginBottom: '15px' }}
+        variant="outline"
+        onClick={() => {
+          setVisibleLg(true)
+          resetUserForm()
+        }}
+      >
+        New User
+      </CButton>
       <CTable style={{ border: '1px solid gray', borderRadius: '50px' }}>
         <CTableHead>
           <CTableRow>
@@ -166,17 +172,7 @@ const Users = () => {
           ))}
         </CTableBody>
       </CTable>
-      <CButton
-        type="button"
-        style={{ backgroundColor: '#107acc', color: 'white' }}
-        variant="outline"
-        onClick={() => {
-          setVisibleLg(true)
-          resetUserForm()
-        }}
-      >
-        New User
-      </CButton>
+
 
       <CModal
         visible={confirmDeleteModalVisible}

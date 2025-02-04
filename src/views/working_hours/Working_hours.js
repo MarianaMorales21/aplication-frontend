@@ -19,31 +19,31 @@ import {
   CNavbar,
   CContainer
 } from '@coreui/react';
-import { helpHttp } from '../../helpHttp'; 
+import { helpHttp } from '../../helpHttp';
 const Working_hours = () => {
   const [visibleEdit, setVisibleEdit] = useState(false);
   const [visibleDelete, setVisibleDelete] = useState(false);
   const [visibleAdd, setVisibleAdd] = useState(false);
   const [workingHours, setWorkingHours] = useState([]);
   const [drivers, setDrivers] = useState([]);
-  const [users, setUsers] = useState([]); 
-  const [schedules, setSchedules] = useState([]); 
-  const [day, setDay] = useState([]); 
+  const [users, setUsers] = useState([]);
+  const [schedules, setSchedules] = useState([]);
+  const [day, setDay] = useState([]);
   const [selectedHour, setSelectedHour] = useState(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const api = helpHttp();
-  const urlWorkingHours = 'http://localhost:8000/driver_schedule'; 
+  const urlWorkingHours = 'http://localhost:8000/driver_schedule';
   const urlDrivers = 'http://localhost:8000/driver';
-  const urlUsers = 'http://localhost:8000/users'; 
-  const urlSchedules = 'http://localhost:8000/schedule'; 
+  const urlUsers = 'http://localhost:8000/users';
+  const urlSchedules = 'http://localhost:8000/schedule';
   const urlDay = 'http://localhost:8000/day';
 
   useEffect(() => {
     fetchWorkingHours();
     fetchDrivers();
-    fetchUsers(); 
-    fetchSchedules(); 
- fetchDay();
+    fetchUsers();
+    fetchSchedules();
+    fetchDay();
   }, []);
 
   const fetchWorkingHours = async () => {
@@ -63,19 +63,19 @@ const Working_hours = () => {
   const fetchDay = async () => {
     const response = await api.get(urlDay);
     if (!response.err) {
-      setDay(response); 
+      setDay(response);
     }
   };
 
   const fetchUsers = async () => {
-    const response = await api.get(urlUsers); 
+    const response = await api.get(urlUsers);
     if (!response.err) {
       setUsers(response);
     }
   };
 
   const fetchSchedules = async () => {
-    const response = await api.get(urlSchedules); 
+    const response = await api.get(urlSchedules);
     if (!response.err) {
       setSchedules(response);
     }
@@ -137,12 +137,14 @@ const Working_hours = () => {
   return (
     <div>
       <h1>List of Working Hours</h1>
-      
-      <CNavbar style={{ border: '1px solid gray', borderRadius: '10px', marginBottom: '10px' }}>
-        <CContainer style={{ display: 'flex' }}>
-          <h6>Current Fleet: {workingHours.length}</h6>
-        </CContainer>
-      </CNavbar>
+
+      <CButton
+        type="button"
+        style={{ backgroundColor: '#107acc', color: 'white', marginBottom: '15px' }}
+        onClick={openAddModal}
+      >
+        New Working Hours
+      </CButton>
 
       <CTable style={{ border: '1px solid gray', borderRadius: '50px' }}>
         <CTableHead>
@@ -158,14 +160,14 @@ const Working_hours = () => {
           {workingHours.map((hour) => {
             const driver = drivers.find(driver => driver.id === hour.driver_id);
             const user = driver ? users.find(user => user.id === driver.user_id) : null;
-            const dayItem = day.find(day => day.id === hour.day_id); 
+            const dayItem = day.find(day => day.id === hour.day_id);
 
             return (
               <CTableRow key={hour.id}>
                 <CTableDataCell>{user ? user.name : 'Unknown'}</CTableDataCell>
                 <CTableDataCell>{hour.entry_time}</CTableDataCell>
                 <CTableDataCell>{hour.exit_time}</CTableDataCell>
-                <CTableDataCell>{dayItem ? dayItem.name : 'Unknown'}</CTableDataCell> 
+                <CTableDataCell>{dayItem ? dayItem.name : 'Unknown'}</CTableDataCell>
                 <CTableDataCell>
                   <CButton
                     style={{ backgroundColor: 'green', marginRight: '10px', color: 'white' }}
@@ -186,13 +188,7 @@ const Working_hours = () => {
         </CTableBody>
       </CTable>
 
-      <CButton
-        type="button"
-        style={{ backgroundColor: '#107acc', color: 'white' }}
-        onClick={openAddModal}
-      >
-        New Working Hours
-      </CButton>
+
 
       <CModal size="lg" visible={visibleAdd} onClose={() => setVisibleAdd(false)}>
         <CModalHeader>

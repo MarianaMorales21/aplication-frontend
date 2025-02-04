@@ -101,7 +101,7 @@
       "password": "zzz",
       "address": "sdfsdf",
       "phone": "04121617297",
-      "dni": "asas"
+      "dni": "30781815"
     },
     {
       "id": "e035",
@@ -263,9 +263,9 @@
       "updated_at": "CURRENT_TIMESTAMP"
     },
     {
-      "id": "2",
-      "order_date": "2025-01-09",
-      "total_delivery_date": "2025-01-17",
+      "id": "7fc0",
+      "order_date": "2025-02-05",
+      "total_delivery_date": "2025-02-22",
       "status": "In progress",
       "client_id": "cc29"
     }
@@ -274,22 +274,14 @@
     {
       "id": "1",
       "order_id": "1",
-      "material_id": "521S",
-      "quantity_of_material": 5,
+      "material_id": "58SA",
+      "quantity_of_material": "2",
       "delivery_date": "2024-01-10",
-      "created_at": "CURRENT_TIMESTAMP",
-      "updated_at": "CURRENT_TIMESTAMP"
-    }
-  ],
-  "trips": [
-    {
-      "id": "1",
-      "truck_id": "1",
+      "status": "Delivered",
+      "truck_id": "5555AD",
       "trip_duration": "02:30:00",
-      "trip_description": "Entrega de arena",
-      "distancia_to_travel": 150,
+      "distancia_to_travel": "150",
       "destination_address": "Calle 123, Ciudad A",
-      "order_details_id": "1",
       "created_at": "CURRENT_TIMESTAMP",
       "updated_at": "CURRENT_TIMESTAMP"
     }
@@ -316,23 +308,24 @@
       "id": "1",
       "order_id": "1",
       "payment_date": "2024-01-10",
-      "payment_method_id": "2",
-      "amount_to_pay": "250",
+      "payment_method_id": "3",
       "status": "Pending",
+      "transportation_cost": "500",
+      "material_cost": "1000",
+      "total_cost_of_the_trip": " 1500",
       "created_at": "CURRENT_TIMESTAMP",
       "updated_at": "CURRENT_TIMESTAMP"
-    }
-  ],
-  "invoice_details": [
+    },
     {
-      "id": "1",
-      "bill_id": "1",
-      "details_order_id": "1",
-      "transportation_cost": 500,
-      "material_cost": 1000,
-      "total_cost_of_the_trip": 1500,
-      "created_at": "CURRENT_TIMESTAMP",
-      "updated_at": "CURRENT_TIMESTAMP"
+      "id": "2",
+      "order_id": "1",
+      "payment_method_id": "1",
+      "amount_to_pay": "",
+      "status": "Pending",
+      "payment_date": "2025-01-31",
+      "transportation_cost": "500",
+      "material_cost": "100",
+      "total_cost_of_the_trip": "600"
     }
   ]
 }

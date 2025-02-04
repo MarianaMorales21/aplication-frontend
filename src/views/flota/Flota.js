@@ -19,7 +19,7 @@ import {
   CNavbar,
   CContainer,
 } from '@coreui/react';
-import { helpHttp } from '../../helpHttp'; 
+import { helpHttp } from '../../helpHttp';
 
 const Flota = () => {
   const [visibleND, setVisibleND] = useState(false);
@@ -43,13 +43,13 @@ const Flota = () => {
   const urlTrucks = 'http://localhost:8000/truck';
   const urlUsers = 'http://localhost:8000/users';
   const urlDrivers = 'http://localhost:8000/driver';
-  const urlModels = 'http://localhost:8000/model'; 
+  const urlModels = 'http://localhost:8000/model';
 
   useEffect(() => {
     fetchTrucks();
     fetchUsers();
     fetchDrivers();
-    fetchModels(); 
+    fetchModels();
   }, []);
 
   const fetchTrucks = async () => {
@@ -126,12 +126,17 @@ const Flota = () => {
   return (
     <div>
       <h1>List of Trucks</h1>
-      <CNavbar style={{ border: '1px solid gray', borderRadius: '10px', marginBottom: '10px' }}>
-        <CContainer style={{ display: 'flex' }}>
-          <h6>Current Fleet: {trucks.length}</h6>
-        </CContainer>
-      </CNavbar>
 
+      <CButton
+        type="button"
+        style={{ backgroundColor: '#107acc', color: 'white', marginBottom: '15px' }}
+        onClick={() => {
+          setVisibleND(true);
+          resetForm();
+        }}
+      >
+        New Truck
+      </CButton>
       <CTable style={{ border: '1px solid gray', borderRadius: '50px' }}>
         <CTableHead>
           <CTableRow>
@@ -200,16 +205,6 @@ const Flota = () => {
         </CModalFooter>
       </CModal>
 
-      <CButton
-            type="button"
-            style={{ backgroundColor: '#107acc', color: 'white', marginLeft: '10px' }}
-            onClick={() => {
-              setVisibleND(true);
-              resetForm();
-            }}
-          >
-            New Truck
-          </CButton>
 
       <CModal size="lg" visible={visibleND} onClose={() => setVisibleND(false)}>
         <CModalHeader>
