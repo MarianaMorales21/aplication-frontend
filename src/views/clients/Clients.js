@@ -24,8 +24,8 @@ import { helpHttp } from '../../helpHttp';
 const Clients = () => {
   const [visibleNC, setVisibleNC] = useState(false);
   const api = helpHttp();
-  const urlClients = 'http://localhost:8000/client';
-  const urlUsers = 'http://localhost:8000/users';
+  const urlClients = 'http://localhost:8080/clients';
+  const urlUsers = 'http://localhost:8080/ormusers';
   const [clients, setClients] = useState([]);
   const [users, setUsers] = useState([]);
   const [client, setClient] = useState({
@@ -68,8 +68,7 @@ const Clients = () => {
 
   const handleAddClient = async (e) => {
     e.preventDefault();
-
-    const clientResponse = await api.post(urlClients, { body: client });
+    const clientResponse = await api.post(urlClients, { body: { user_id: client.user_id, type: client.type } });
     if (!clientResponse.err) {
       setClients([...clients, clientResponse]);
       setVisibleNC(false);

@@ -18,18 +18,18 @@ import { helpHttp } from '../../helpHttp';
 
 const Dashboard = () => {
   const [progressExample, setProgressExample] = useState([]);
-  const api = helpHttp(); 
+  const api = helpHttp();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const urlMaterial = await api.get('http://localhost:8000/material'); 
-        const urlUsers = await api.get('http://localhost:8000/users'); 
-        const urlDriver = await api.get('http://localhost:8000/driver');
-        const urlOrder = await api.get('http://localhost:8000/order');
-        const urlTruck = await api.get('http://localhost:8000/truck');
+        const urlMaterial = await api.get('http://localhost:8080/material');
+        const urlUsers = await api.get('http://localhost:8080/ormusers');
+        const urlDriver = await api.get('http://localhost:8080/ormdriver');
+        const urlOrder = await api.get('http://localhost:8080/orders');
+        const urlTruck = await api.get('http://localhost:8080/trucks');
 
         const processedData = [
-          { title: 'Materials', value: `${urlMaterial.length } Materials`, percent: 100, color: 'success' },
+          { title: 'Materials', value: `${urlMaterial.length} Materials`, percent: 100, color: 'success' },
           { title: 'Users', value: `${urlUsers.length} Users`, percent: 100, color: 'info' },
           { title: 'Drivers', value: `${urlDriver.length} Drivers`, percent: 60, color: 'warning' },
           { title: 'Orders', value: `${urlOrder.length} Orders`, percent: 80, color: 'danger' },

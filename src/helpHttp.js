@@ -18,9 +18,16 @@ export const helpHttp = () => {
     const controller = new AbortController();
     options.signal = controller.signal;
     options.method = options.method || 'GET';
-    options.headers = options.headers
-      ? { ...defaultHeaders, ...options.headers }
-      : defaultHeaders;
+
+    const token = localStorage.getItem('token');
+    if (token) {
+      options.headers = {
+        ...defaultHeaders,
+        "Authorization": `Bearer ${token}`
+      };
+    } else {
+      options.headers = defaultHeaders;
+    }
 
     if (options.body) {
       options.body = JSON.stringify(options.body);
@@ -37,7 +44,7 @@ export const helpHttp = () => {
       if (err.name === 'AbortError') {
         return { err: true, status: '408', statusText: 'Request timed out' };
       }
-      return err;
+      return { err: true, status: '500', statusText: 'Internal Server Error' };
     }
   };
 

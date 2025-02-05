@@ -16,10 +16,9 @@ import {
   CFormInput,
   CFormSelect,
   CModalFooter,
-  CNavbar,
-  CContainer
 } from '@coreui/react';
 import { helpHttp } from '../../helpHttp';
+
 const Working_hours = () => {
   const [visibleEdit, setVisibleEdit] = useState(false);
   const [visibleDelete, setVisibleDelete] = useState(false);
@@ -27,22 +26,19 @@ const Working_hours = () => {
   const [workingHours, setWorkingHours] = useState([]);
   const [drivers, setDrivers] = useState([]);
   const [users, setUsers] = useState([]);
-  const [schedules, setSchedules] = useState([]);
   const [day, setDay] = useState([]);
   const [selectedHour, setSelectedHour] = useState(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const api = helpHttp();
-  const urlWorkingHours = 'http://localhost:8000/driver_schedule';
-  const urlDrivers = 'http://localhost:8000/driver';
-  const urlUsers = 'http://localhost:8000/users';
-  const urlSchedules = 'http://localhost:8000/schedule';
-  const urlDay = 'http://localhost:8000/day';
+  const urlWorkingHours = 'http://localhost:8080/schedules';
+  const urlDrivers = 'http://localhost:8080/ormdriver';
+  const urlUsers = 'http://localhost:8080/ormusers';
+  const urlDay = 'http://localhost:8080/days';
 
   useEffect(() => {
     fetchWorkingHours();
     fetchDrivers();
     fetchUsers();
-    fetchSchedules();
     fetchDay();
   }, []);
 
@@ -74,28 +70,35 @@ const Working_hours = () => {
     }
   };
 
-  const fetchSchedules = async () => {
-    const response = await api.get(urlSchedules);
+  const handleAddWorkingHour = async (e) => {
+    e.preventDefault();
+
+    if (!selectedHour.driver_id || !selectedHour.day_id) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    console.log(selectedHour);
+
+    const response = await api.post(urlWorkingHours, { body: selectedHour });
     if (!response.err) {
-      setSchedules(response);
+      setWorkingHours([...workingHours, response]);
+      setVisibleAdd(false);
     }
   };
 
   const handleEditWorkingHour = async (e) => {
     e.preventDefault();
+
+    if (!selectedHour.driver_id || !selectedHour.day_id) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
     const response = await api.put(`${urlWorkingHours}/${selectedHour.id}`, { body: selectedHour });
     if (!response.err) {
       setWorkingHours(workingHours.map(hour => (hour.id === selectedHour.id ? response : hour)));
       setVisibleEdit(false);
-    }
-  };
-
-  const handleAddWorkingHour = async (e) => {
-    e.preventDefault();
-    const response = await api.post(urlWorkingHours, { body: selectedHour });
-    if (!response.err) {
-      setWorkingHours([...workingHours, response]);
-      setVisibleAdd(false);
     }
   };
 
@@ -118,20 +121,8 @@ const Working_hours = () => {
   };
 
   const openAddModal = () => {
-    setSelectedHour({ entry_time: '', exit_time: '', day_id: '', driver_id: '', schedule_id: '' });
+    setSelectedHour({ entry_time: '', exit_time: '', day_id: '', driver_id: '' });
     setVisibleAdd(true);
-  };
-
-  const handleScheduleChange = (scheduleId) => {
-    const selectedSchedule = schedules.find(schedule => schedule.id === scheduleId);
-    if (selectedSchedule) {
-      setSelectedHour(prev => ({
-        ...prev,
-        entry_time: selectedSchedule.entry_time,
-        exit_time: selectedSchedule.exit_time,
-        schedule_id: scheduleId,
-      }));
-    }
   };
 
   return (
@@ -188,8 +179,6 @@ const Working_hours = () => {
         </CTableBody>
       </CTable>
 
-
-
       <CModal size="md" visible={visibleAdd} onClose={() => setVisibleAdd(false)}>
         <CModalHeader>
           <CModalTitle>Add Working Hour</CModalTitle>
@@ -205,18 +194,8 @@ const Working_hours = () => {
               >
                 <option value="">Choose...</option>
                 {drivers.map(driver => (
-                  <option key={driver.id} value={driver.id}>{users.find(user => user.id === driver.user_id)?.name || 'Unknown'}</option>
-                ))}
-              </CFormSelect>
-              <CFormSelect
-                label="Select Schedule"
-                onChange={(e) => handleScheduleChange(e.target.value)}
-                required
-              >
-                <option value="">Choose...</option>
-                {schedules.map(schedule => (
-                  <option key={schedule.id} value={schedule.id}>
-                    {`Schedule ${schedule.id}: ${schedule.entry_time} - ${schedule.exit_time}`}
+                  <option key={driver.id} value={driver.id}>
+                    {users.find(user => user.id === driver.user_id)?.name || 'Unknown'}
                   </option>
                 ))}
               </CFormSelect>
@@ -224,6 +203,7 @@ const Working_hours = () => {
             <CCol md={12}>
               <CFormInput
                 label="Entry Time"
+                type="time"
                 value={selectedHour?.entry_time}
                 onChange={(e) => setSelectedHour({ ...selectedHour, entry_time: e.target.value })}
                 required
@@ -232,6 +212,7 @@ const Working_hours = () => {
             <CCol md={12}>
               <CFormInput
                 label="Exit Time"
+                type="time"
                 value={selectedHour?.exit_time}
                 onChange={(e) => setSelectedHour({ ...selectedHour, exit_time: e.target.value })}
                 required
@@ -243,7 +224,6 @@ const Working_hours = () => {
                 value={selectedHour?.day_id}
                 onChange={(e) => setSelectedHour({ ...selectedHour, day_id: e.target.value })}
                 required
-                style={{ marginBottom: '10px' }}
               >
                 <option value="">Choose...</option>
                 {day.map(dayItem => (
@@ -269,20 +249,21 @@ const Working_hours = () => {
 
       <CModal size="sm" visible={visibleEdit} onClose={() => setVisibleEdit(false)}>
         <CModalHeader>
-          <CModalTitle>Edit Working Hours</CModalTitle>
+          <CModalTitle> Edit Working Hours</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CForm onSubmit={handleEditWorkingHour}>
             <CCol md={12}>
               <CFormSelect
-                label="Select Schedule"
-                onChange={(e) => handleScheduleChange(e.target.value)}
+                label="Select Driver"
+                value={selectedHour?.driver_id}
+                onChange={(e) => setSelectedHour({ ...selectedHour, driver_id: e.target.value })}
                 required
               >
                 <option value="">Choose...</option>
-                {schedules.map(schedule => (
-                  <option key={schedule.id} value={schedule.id}>
-                    {`Schedule ${schedule.id}: ${schedule.entry_time} - ${schedule.exit_time}`}
+                {drivers.map(driver => (
+                  <option key={driver.id} value={driver.id}>
+                    {users.find(user => user.id === driver.user_id)?.name || 'Unknown'}
                   </option>
                 ))}
               </CFormSelect>
@@ -290,6 +271,7 @@ const Working_hours = () => {
             <CCol md={12}>
               <CFormInput
                 label="Entry Time"
+                type="time"
                 value={selectedHour?.entry_time}
                 onChange={(e) => setSelectedHour({ ...selectedHour, entry_time: e.target.value })}
                 required
@@ -298,6 +280,7 @@ const Working_hours = () => {
             <CCol md={12}>
               <CFormInput
                 label="Exit Time"
+                type="time"
                 value={selectedHour?.exit_time}
                 onChange={(e) => setSelectedHour({ ...selectedHour, exit_time: e.target.value })}
                 required
@@ -320,7 +303,7 @@ const Working_hours = () => {
               <CButton
                 type="button"
                 style={{ backgroundColor: 'red', color: 'white' }}
-                onClick={() => setVisibleAdd(false)}
+                onClick={() => setVisibleEdit(false)}
               >
                 Cancel
               </CButton>
@@ -331,7 +314,6 @@ const Working_hours = () => {
           </CForm>
         </CModalBody>
       </CModal>
-
 
       <CModal visible={visibleDelete} onClose={() => setVisibleDelete(false)}>
         <CModalHeader>
@@ -353,7 +335,7 @@ const Working_hours = () => {
           </CButton>
         </CModalFooter>
       </CModal>
-    </div>
+    </div >
   );
 };
 

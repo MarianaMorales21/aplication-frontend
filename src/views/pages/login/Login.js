@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   CButton,
   CCard,
@@ -12,54 +12,49 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
-import { helpHttp } from '../../../helpHttp'
-
-const api = helpHttp()
+} from '@coreui/react';
+import CIcon from '@coreui/icons-react';
+import { cilLockLocked, cilUser } from '@coreui/icons';
+import axios from 'axios';
 
 const Login = () => {
-  const url = 'http://localhost:8000/users'
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
-  const navigate = useNavigate()
+  const url = 'http://localhost:8080/login';
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const loggedInUser = localStorage.getItem('user')
+    const loggedInUser = localStorage.getItem('user');
     if (loggedInUser) {
-      navigate('/dashboard')
+      navigate('/dashboard');
     }
-  }, [navigate])
+  }, [navigate]);
 
   const handleLogin = async (e) => {
-    e.preventDefault()
-    setErrorMessage('')
+    e.preventDefault();
+    setErrorMessage('');
+
+    console.log('Username:', username);
+    console.log('Password:', password);
 
     try {
-      const usersRes = await api.get(url)
+      const response = await axios.post(url, {
+        username: username,
+        password: password,
+      });
 
-      if (!usersRes.err) {
-
-        const user = usersRes.find(
-          (user) => user.username === username && user.password === password,
-        )
-
-        if (user) {
-          console.log('Login successful:', user)
-          localStorage.setItem('user', JSON.stringify(user))
-          navigate('/dashboard')
-        } else {
-          setErrorMessage('Invalid username or password')
-        }
-      } else {
-        setErrorMessage('Error fetching user data')
+      if (response.status === 200) {
+        console.log('Login successful:', response.data);
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        navigate('/dashboard');
       }
     } catch (error) {
-      setErrorMessage('An unexpected error occurred.')
+      console.error('Error during login:', error);
+      setErrorMessage('Invalid username or password');
     }
-  }
+  };
 
   return (
     <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center"
@@ -168,7 +163,7 @@ const Login = () => {
         </CRow>
       </CContainer>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

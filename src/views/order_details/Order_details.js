@@ -51,13 +51,13 @@ const Order_details = () => {
   const [drivers, setDrivers] = useState([]);
   const [trucks, setTruck] = useState([]);
   const api = helpHttp();
-  const urlOrders = 'http://localhost:8000/order';
-  const urlOrderDetails = 'http://localhost:8000/order_details';
-  const urlMaterials = 'http://localhost:8000/material';
-  const urlClients = 'http://localhost:8000/client';
-  const urlUsers = 'http://localhost:8000/users';
-  const urlDrivers = 'http://localhost:8000/driver';
-  const urlTruck = 'http://localhost:8000/truck';
+  const urlOrders = 'http://localhost:8080/orders';
+  const urlOrderDetails = 'http://localhost:8080/orders-details';
+  const urlMaterials = 'http://localhost:8080/material';
+  const urlClients = 'http://localhost:8080/clients';
+  const urlUsers = 'http://localhost:8080/ormusers';
+  const urlDrivers = 'http://localhost:8080/ormdriver';
+  const urlTruck = 'http://localhost:8080/trucks';
 
   const fetchOrders = async () => {
     const response = await api.get(urlOrders);
@@ -164,7 +164,6 @@ const Order_details = () => {
       showAlert('Error updating order. Please try again.', 'danger');
     }
   };
-
   const handleDeleteOrderDetail = async (id) => {
     const response = await api.del(`${urlOrderDetails}/${id}`);
     if (!response.err) {
@@ -174,7 +173,6 @@ const Order_details = () => {
       showAlert('Error deleting order detail. Please try again.', 'danger');
     }
   };
-
   const handleEditOrderDetail = async (e) => {
     e.preventDefault();
     const updatedDetail = {
@@ -306,7 +304,6 @@ const Order_details = () => {
               <CTableDataCell>{order.order_date}</CTableDataCell>
               <CTableDataCell>{order.total_delivery_date}</CTableDataCell>
               <CTableDataCell>{order.status}</CTableDataCell>
-
               <CTableDataCell>
                 <CButton style={{ backgroundColor: '#107acc', marginRight: '10px', color: 'white' }} onClick={() => handleDetailsClick(order)}>Details</CButton>
                 <CButton style={{ backgroundColor: 'green', marginRight: '10px', color: 'white' }} onClick={() => {
@@ -321,7 +318,7 @@ const Order_details = () => {
       </CTable>
 
 
-      <CModal size="md" visible={visibleLg} onClose={() => setVisibleLg(false)}>
+      <CModal size="xl" visible={visibleLg} onClose={() => setVisibleLg(false)}>
         <CModalHeader>
           <CModalTitle>New Order</CModalTitle>
         </CModalHeader>
@@ -360,7 +357,7 @@ const Order_details = () => {
         </CModalBody>
       </CModal>
 
-      <CModal size="md" visible={visibleSm} onClose={() => setVisibleSm(false)}>
+      <CModal size="lg" visible={visibleSm} onClose={() => setVisibleSm(false)}>
         <CModalHeader>
           <CModalTitle>Edit Order</CModalTitle>
         </CModalHeader>
@@ -444,7 +441,7 @@ const Order_details = () => {
         </CModalFooter>
       </CModal>
 
-      <CModal size="md" visible={visibleEditDetail} onClose={() => setVisibleEditDetail(false)}>
+      <CModal size="sm" visible={visibleEditDetail} onClose={() => setVisibleEditDetail(false)}>
         <CModalHeader>
           <CModalTitle>Edit Order Detail</CModalTitle>
         </CModalHeader>
@@ -547,7 +544,7 @@ const Order_details = () => {
         </CModalBody>
       </CModal>
 
-      <CModal size="md" visible={visibleMd2} onClose={() => setVisibleMd2(false)}>
+      <CModal size="sm" visible={visibleMd2} onClose={() => setVisibleMd2(false)}>
         <CModalHeader>
           <CModalTitle>Add Order Detail</CModalTitle>
         </CModalHeader>
@@ -620,6 +617,7 @@ const Order_details = () => {
               <CFormInput
                 placeholder="Trip Duration (HH:MM:SS)"
                 label="Trip Duration"
+                type="text"
                 value={newOrderDetail.trip_duration}
                 onChange={(e) => setNewOrderDetail({ ...newOrderDetail, trip_duration: e.target.value })}
                 required

@@ -27,7 +27,7 @@ const Materials = () => {
   const [visibleSm, setVisibleSm] = useState(false);
   const [visibleLg, setVisibleLg] = useState(false);
   const api = helpHttp();
-  const urlMaterial = 'http://localhost:8000/material';
+  const urlMaterial = 'http://localhost:8080/material';
 
   const [materials, setMaterials] = useState([]);
   const [material, setMaterial] = useState({

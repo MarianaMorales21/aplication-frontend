@@ -40,10 +40,10 @@ const Flota = () => {
   });
 
   const api = helpHttp();
-  const urlTrucks = 'http://localhost:8000/truck';
-  const urlUsers = 'http://localhost:8000/users';
-  const urlDrivers = 'http://localhost:8000/driver';
-  const urlModels = 'http://localhost:8000/model';
+  const urlTrucks = 'http://localhost:8080/trucks';
+  const urlUsers = 'http://localhost:8080/ormusers';
+  const urlDrivers = 'http://localhost:8080/ormdriver';
+  const urlModels = 'http://localhost:8080/model';
 
   useEffect(() => {
     fetchTrucks();

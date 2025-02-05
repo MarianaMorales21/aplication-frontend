@@ -4,7 +4,7 @@ import { helpHttp } from '../../helpHttp';
 
 const UserProfile = () => {
   const api = helpHttp();
-  const url = 'http://localhost:8000/users';
+  const url = 'http://localhost:8080/ormusers';
   const [visibleSm, setVisibleSm] = useState(false);
   const [userData, setUserData] = useState(null);
   const [alert, setAlert] = useState({ show: false, message: '', color: '' });

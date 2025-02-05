@@ -42,11 +42,11 @@ const Invoices = () => {
   });
 
   const api = helpHttp();
-  const urlInvoices = 'http://localhost:8000/bill';
-  const urlClients = 'http://localhost:8000/client';
-  const urlPaymentMethods = 'http://localhost:8000/payment_method';
-  const urlUsers = 'http://localhost:8000/users';
-  const urlOrders = 'http://localhost:8000/order';
+  const urlInvoices = 'http://localhost:8080/bills';
+  const urlClients = 'http://localhost:8080/clients';
+  const urlPaymentMethods = 'http://localhost:8080/payment_method';
+  const urlUsers = 'http://localhost:8080/ormusers';
+  const urlOrders = 'http://localhost:8080/orders';
 
   useEffect(() => {
     fetchInvoices();
@@ -93,9 +93,16 @@ const Invoices = () => {
 
   const handleAddInvoice = async (e) => {
     e.preventDefault();
-    const maxId = invoices.length > 0 ? Math.max(...invoices.map(invoice => parseInt(invoice.id))) : 0;
-    const newId = maxId + 1;
-    const newInvoice = { ...selectedInvoice, id: newId.toString() };
+    const newInvoice = {
+      order_id: parseInt(selectedInvoice.order_id, 10),
+      payment_date: selectedInvoice.payment_date,
+      payment_method_id: parseInt(selectedInvoice.payment_method_id, 10),
+      amount_to_pay: parseFloat(selectedInvoice.amount_to_pay),
+      status: selectedInvoice.status,
+      transportation_cost: parseFloat(selectedInvoice.transportation_cost),
+      material_cost: parseFloat(selectedInvoice.material_cost),
+      total_cost_of_the_trip: parseFloat(selectedInvoice.total_cost_of_the_trip)
+    };
 
     const response = await api.post(urlInvoices, { body: newInvoice });
     if (!response.err) {
@@ -107,6 +114,7 @@ const Invoices = () => {
       showAlert('Error adding bill. Please try again.', 'danger');
     }
   };
+
   const handleEditInvoice = async (e) => {
     e.preventDefault();
     const response = await api.put(`${urlInvoices}/${selectedInvoice.id}`, { body: selectedInvoice });

@@ -27,8 +27,8 @@ const Drivers = () => {
   const [confirmDeleteModalVisible, setConfirmDeleteModalVisible] = useState(false)
   const [driverIdToDelete, setDriverIdToDelete] = useState(null)
   const api = helpHttp()
-  const urlDrivers = 'http://localhost:8000/driver'
-  const urlUsers = 'http://localhost:8000/users'
+  const urlDrivers = 'http://localhost:8080/ormdriver'
+  const urlUsers = 'http://localhost:8080/ormusers'
   const [drivers, setDrivers] = useState([])
   const [users, setUsers] = useState([])
   const [driver, setDriver] = useState({
@@ -76,8 +76,12 @@ const Drivers = () => {
     e.preventDefault();
 
     const newDriver = {
-      ...driver,
-      id: `${driver.user_id}D`,
+      user_id: driver.user_id,
+      limitations: driver.limitations,
+      date_of_issue: driver.date_of_issue,
+      expiration_date: driver.expiration_date,
+      sex: driver.sex,
+      grade_license: driver.grade_license,
     };
 
     const driverResponse = await api.post(urlDrivers, { body: newDriver });
@@ -308,9 +312,8 @@ const Drivers = () => {
           </CForm>
         </CModalBody>
       </CModal>
-
       <CModal
-        size="md"
+        size="sm"
         visible={visibleND}
         onClose={() => setVisibleND(false)}
         aria-labelledby="modalTitle"
