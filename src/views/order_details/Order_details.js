@@ -137,6 +137,7 @@ const Order_details = () => {
     };
 
     const response = await api.post(urlOrders, { body: newOrder });
+    window.location.reload()
     if (!response.err) {
       setOrders([...orders, response]);
       setVisibleLg(false);
@@ -156,6 +157,7 @@ const Order_details = () => {
     };
 
     const response = await api.put(`${urlOrders}/${selectedOrder.id}`, { body: updatedOrder });
+    window.location.reload()
     if (!response.err) {
       setOrders(orders.map(order => (order.id === selectedOrder.id ? response : order)));
       setVisibleSm(false);
@@ -188,6 +190,7 @@ const Order_details = () => {
     };
 
     const response = await api.put(`${urlOrderDetails}/${selectedDetail.id}`, { body: updatedDetail });
+    window.location.reload()
     if (!response.err) {
       setOrderDetails(orderDetails.map(detail => (detail.id === selectedDetail.id ? response : detail)));
       setVisibleEditDetail(false);
@@ -222,6 +225,7 @@ const Order_details = () => {
     };
 
     const response = await api.post(urlOrderDetails, { body: newDetail });
+    window.location.reload()
     if (!response.err) {
       setOrderDetails([...orderDetails, response]);
       setVisibleMd2(false);

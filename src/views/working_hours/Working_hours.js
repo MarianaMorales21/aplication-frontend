@@ -81,6 +81,7 @@ const Working_hours = () => {
     console.log(selectedHour);
 
     const response = await api.post(urlWorkingHours, { body: selectedHour });
+    window.location.reload()
     if (!response.err) {
       setWorkingHours([...workingHours, response]);
       setVisibleAdd(false);
@@ -96,6 +97,7 @@ const Working_hours = () => {
     }
 
     const response = await api.put(`${urlWorkingHours}/${selectedHour.id}`, { body: selectedHour });
+    window.location.reload()
     if (!response.err) {
       setWorkingHours(workingHours.map(hour => (hour.id === selectedHour.id ? response : hour)));
       setVisibleEdit(false);
