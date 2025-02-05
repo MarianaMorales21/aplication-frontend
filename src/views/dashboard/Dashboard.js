@@ -1,24 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import {
-  CButton,
-  CButtonGroup,
   CCard,
   CCardBody,
   CCardFooter,
   CCol,
-  CProgress,
   CRow,
+  CTable,
+  CTableBody,
+  CTableHead,
+  CTableHeaderCell,
+  CTableRow,
+  CProgress,
+  CTableDataCell
 } from '@coreui/react';
-import CIcon from '@coreui/icons-react';
-import { cilCloudDownload } from '@coreui/icons';
 import WidgetsDropdown from '../widgets/WidgetsDropdown';
 import MainChart from './MainChart';
 import { helpHttp } from '../../helpHttp';
 
 const Dashboard = () => {
   const [progressExample, setProgressExample] = useState([]);
+  const [usersWithDrivers, setUsersWithDrivers] = useState([]);
+  const [driversWithUsers, setDriversWithUsers] = useState([]);
   const api = helpHttp();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -27,6 +32,8 @@ const Dashboard = () => {
         const urlDriver = await api.get('http://localhost:8080/ormdriver');
         const urlOrder = await api.get('http://localhost:8080/orders');
         const urlTruck = await api.get('http://localhost:8080/trucks');
+        const urlUsersWithDrivers = await api.get('http://localhost:8080/users-with-drivers');
+        const urlDriversWithUsers = await api.get('http://localhost:8080/drivers-with-users');
 
         const processedData = [
           { title: 'Materials', value: `${urlMaterial.length} Materials`, percent: 100, color: 'success' },
@@ -37,6 +44,8 @@ const Dashboard = () => {
         ];
 
         setProgressExample(processedData);
+        setUsersWithDrivers(urlUsersWithDrivers);
+        setDriversWithUsers(urlDriversWithUsers);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -44,6 +53,22 @@ const Dashboard = () => {
 
     fetchData();
   }, []);
+
+  const usersWithDriverDetails = usersWithDrivers.map(user => {
+    return {
+      ...user,
+      limitations: user.driver ? user.driver.limitations : 'N/A'
+    };
+  });
+
+  const driversWithUserDetails = driversWithUsers.map(driver => {
+    const user = usersWithDrivers.find(user => user.id === driver.user_id);
+    return {
+      ...driver,
+      userName: user ? user.name : 'Unknown',
+      userDni: user ? user.dni : 'N/A'
+    };
+  });
 
   return (
     <>
@@ -58,6 +83,56 @@ const Dashboard = () => {
             </CCol>
           </CRow>
           <MainChart />
+
+          <CRow className="mt-4">
+            <CCol sm={6}>
+              <h5>Users with Drivers</h5>
+              <CTable striped>
+                <CTableHead>
+                  <CTableRow>
+                    <CTableHeaderCell>User ID</CTableHeaderCell>
+                    <CTableHeaderCell>User Name</CTableHeaderCell>
+                    <CTableHeaderCell>Status</CTableHeaderCell>
+                    <CTableHeaderCell>DNI</CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {usersWithDriverDetails.map((user) => (
+                    <CTableRow key={user.id}>
+                      <CTableDataCell>{user.id}</CTableDataCell>
+                      <CTableDataCell>{user.name}</CTableDataCell>
+                      <CTableDataCell>{user.status}</CTableDataCell>
+                      <CTableDataCell>{user.dni}</CTableDataCell>
+                    </CTableRow>
+                  ))}
+                </CTableBody>
+              </CTable>
+            </CCol>
+
+            <CCol sm={6}>
+              <h5>Drivers with Users</h5>
+              <CTable striped>
+                <CTableHead>
+                  <CTableRow>
+                    <CTableHeaderCell>Driver ID</CTableHeaderCell>
+                    <CTableHeaderCell>Driver Name</CTableHeaderCell>
+                    <CTableHeaderCell>Limitations</CTableHeaderCell>
+                    <CTableHeaderCell>User DNI</CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {driversWithUserDetails.map((driver) => (
+                    <CTableRow key={driver.id}>
+                      <CTableDataCell>{driver.id}</CTableDataCell>
+                      <CTableDataCell>{driver.userName}</CTableDataCell>
+                      <CTableDataCell>{driver.limitations}</CTableDataCell>
+                      <CTableDataCell>{driver.userDni}</CTableDataCell>
+                    </CTableRow>
+                  ))}
+                </CTableBody>
+              </CTable>
+            </CCol>
+          </CRow>
         </CCardBody>
         <CCardFooter>
           <CRow

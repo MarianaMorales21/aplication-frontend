@@ -14,30 +14,51 @@ import {
   CModalHeader,
   CModalTitle,
   CModalBody,
-  CModalFooter,
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import { cilLockLocked } from '@coreui/icons';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const ForgotPassword = () => {
   const [isResetting, setIsResetting] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [token, setToken] = useState('');
+  const [email, setEmail] = useState('');
   const navigate = useNavigate();
 
-  const handleSendResetLink = (e) => {
+  const handleSendResetLink = async (e) => {
     e.preventDefault();
     setIsResetting(true);
+
+    try {
+      const response = await axios.post('http://localhost:8080/request-password-reset', { email });
+      alert(response.data);
+      setIsResetting(false);
+      setIsResetting(true);
+    } catch (error) {
+      console.error(error);
+      alert('Error al enviar el enlace de restablecimiento.');
+      setIsResetting(false);
+    }
   };
 
-  const handleResetPassword = (e) => {
+  const handleResetPassword = async (e) => {
     e.preventDefault();
     setModalVisible(true);
-    setTimeout(() => {
+
+    try {
+      const newPassword = e.target[1].value;
+      const response = await axios.post('http://localhost:8080/reset-password', { token, newPassword });
+      setTimeout(() => {
+        setModalVisible(false);
+        navigate('/');
+      }, 2000);
+    } catch (error) {
+      console.error(error);
+      alert('Error al restablecer la contraseña.');
       setModalVisible(false);
-      navigate('/');
-    }, 2000);
+    }
   };
 
   return (
@@ -119,6 +140,8 @@ const ForgotPassword = () => {
                         <CFormInput
                           type="email"
                           placeholder="Email Address"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
                           required
                         />
                       </CInputGroup>

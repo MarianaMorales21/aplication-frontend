@@ -42,12 +42,11 @@ const Login = () => {
       const response = await axios.post(url, {
         username: username,
         password: password,
-      });
+      }, { withCredentials: true });
 
       if (response.status === 200) {
         console.log('Login successful:', response.data);
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
+        localStorage.setItem('user', JSON.stringify(response.data));
         navigate('/dashboard');
       }
     } catch (error) {
