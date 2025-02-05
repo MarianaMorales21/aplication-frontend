@@ -321,19 +321,19 @@ const Order_details = () => {
       </CTable>
 
 
-      <CModal size="lg" visible={visibleLg} onClose={() => setVisibleLg(false)}>
+      <CModal size="md" visible={visibleLg} onClose={() => setVisibleLg(false)}>
         <CModalHeader>
           <CModalTitle>New Order</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CForm onSubmit={handleAddOrder}>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormInput placeholder="Order Date" id="order_date" label="Order Date" type="date" required />
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormInput placeholder="Total Delivery Date" id="total_delivery_date" label="Total Delivery Date" type="date" required />
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormSelect id="status" label="Order Status" required>
                 <option>Choose...</option>
                 <option>Completed</option>
@@ -341,7 +341,7 @@ const Order_details = () => {
                 <option>Canceled</option>
               </CFormSelect>
             </CCol>
-            <CFormSelect id="client_id" label="Client" required>
+            <CFormSelect id="client_id" label="Client" required style={{ marginBottom: '10px' }}>
               <option value="">Choose...</option>
               {clients.map(client => {
                 const clientInfo = getClientInfo(client.id);
@@ -360,20 +360,20 @@ const Order_details = () => {
         </CModalBody>
       </CModal>
 
-      <CModal size="lg" visible={visibleSm} onClose={() => setVisibleSm(false)}>
+      <CModal size="md" visible={visibleSm} onClose={() => setVisibleSm(false)}>
         <CModalHeader>
           <CModalTitle>Edit Order</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CForm onSubmit={handleEditOrder}>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormInput placeholder="Order Date" id="order_date" label="Order Date" type="date" defaultValue={selectedOrder?.order_date} required />
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormInput placeholder="Total Delivery Date" id="total_delivery_date" label="Total Delivery Date" type="date" defaultValue={selectedOrder?.total_delivery_date} required />
             </CCol>
-            <CCol md={6}>
-              <CFormSelect id="status" label="Order Status" defaultValue={selectedOrder?.status} required>
+            <CCol md={12}>
+              <CFormSelect id="status" label="Order Status" style={{ marginBottom: '10px' }} defaultValue={selectedOrder?.status} required>
                 <option>Choose...</option>
                 <option>Completed</option>
                 <option>In progress</option>
@@ -444,13 +444,13 @@ const Order_details = () => {
         </CModalFooter>
       </CModal>
 
-      <CModal size="lg" visible={visibleEditDetail} onClose={() => setVisibleEditDetail(false)}>
+      <CModal size="md" visible={visibleEditDetail} onClose={() => setVisibleEditDetail(false)}>
         <CModalHeader>
           <CModalTitle>Edit Order Detail</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CForm onSubmit={handleEditOrderDetail}>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormSelect
                 label="Material ID"
                 defaultValue={selectedDetail?.material_id}
@@ -463,7 +463,7 @@ const Order_details = () => {
                 ))}
               </CFormSelect>
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormInput
                 placeholder="Quantity of Material"
                 label="Quantity of Material"
@@ -473,7 +473,7 @@ const Order_details = () => {
                 required
               />
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormInput
                 placeholder="Delivery Date"
                 label="Delivery Date"
@@ -483,7 +483,7 @@ const Order_details = () => {
                 required
               />
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormSelect
                 label="Status"
                 defaultValue={selectedDetail?.status}
@@ -495,7 +495,7 @@ const Order_details = () => {
                 <option>Canceled</option>
               </CFormSelect>
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormSelect
                 label="Truck"
                 name="truck_id"
@@ -510,7 +510,7 @@ const Order_details = () => {
                 ))}
               </CFormSelect>
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormInput
                 placeholder="Trip Duration (HH:MM:SS)"
                 label="Trip Duration"
@@ -519,7 +519,7 @@ const Order_details = () => {
                 required
               />
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormInput
                 placeholder="Distance to Travel (in km)"
                 label="Distance to Travel"
@@ -529,11 +529,12 @@ const Order_details = () => {
                 required
               />
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormInput
                 placeholder="Destination Address"
                 label="Destination Address"
                 name="destination_address"
+                style={{ marginBottom: '10px' }}
                 defaultValue={selectedDetail?.destination_address}
                 required
               />
@@ -546,14 +547,13 @@ const Order_details = () => {
         </CModalBody>
       </CModal>
 
-      <CModal size="lg" visible={visibleMd2} onClose={() => setVisibleMd2(false)}>
+      <CModal size="md" visible={visibleMd2} onClose={() => setVisibleMd2(false)}>
         <CModalHeader>
           <CModalTitle>Add Order Detail</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <h6>Add information order details</h6>
           <CForm onSubmit={handleAddOrderDetail}>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormSelect
                 label="Material ID"
                 value={newOrderDetail.material_id}
@@ -566,7 +566,7 @@ const Order_details = () => {
                 ))}
               </CFormSelect>
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormInput
                 placeholder="Quantity of Material"
                 label="Quantity of Material"
@@ -576,7 +576,7 @@ const Order_details = () => {
                 required
               />
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormInput
                 placeholder="Delivery Date"
                 label="Delivery Date"
@@ -586,7 +586,7 @@ const Order_details = () => {
                 required
               />
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormSelect
                 label="Status"
                 value={newOrderDetail.status}
@@ -598,7 +598,7 @@ const Order_details = () => {
                 <option>Canceled</option>
               </CFormSelect>
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormSelect
                 label="Truck"
                 required
@@ -616,7 +616,7 @@ const Order_details = () => {
                 })}
               </CFormSelect>
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormInput
                 placeholder="Trip Duration (HH:MM:SS)"
                 label="Trip Duration"
@@ -625,7 +625,7 @@ const Order_details = () => {
                 required
               />
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormInput
                 placeholder="Distance to Travel (in km)"
                 label="Distance to Travel"
@@ -635,10 +635,11 @@ const Order_details = () => {
                 required
               />
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormInput
                 placeholder="Destination Address"
                 label="Destination Address"
+                style={{ marginBottom: '10px' }}
                 value={newOrderDetail.destination_address}
                 onChange={(e) => setNewOrderDetail({ ...newOrderDetail, destination_address: e.target.value })}
                 required

@@ -235,7 +235,7 @@ const Clients = () => {
               <CFormSelect
                 id="type"
                 label="Client Type"
-                style={{ borderColor: 'black' }}
+
                 value={client.type}
                 onChange={(e) => setClient({ ...client, type: e.target.value })}
                 required
@@ -282,7 +282,7 @@ const Clients = () => {
               <CFormSelect
                 id="user_id"
                 label="Select User"
-                style={{ borderColor: 'black' }}
+
                 value={client.user_id}
                 onChange={(e) => setClient({ ...client, user_id: e.target.value })}
                 required
@@ -303,7 +303,7 @@ const Clients = () => {
               <CFormSelect
                 id="type"
                 label="Client Type"
-                style={{ borderColor: 'black' }}
+
                 value={client.type}
                 onChange={(e) => setClient({ ...client, type: e.target.value })}
                 required

@@ -297,6 +297,7 @@ const Invoices = () => {
               <CFormSelect
                 label="Status"
                 value={selectedInvoice.status}
+                style={{ marginBottom: '10px' }}
                 onChange={(e) => setSelectedInvoice({ ...selectedInvoice, status: e.target.value })}
                 required
               >
@@ -390,6 +391,7 @@ const Invoices = () => {
               <CFormSelect
                 label="Status"
                 value={selectedInvoice.status}
+                style={{ marginBottom: '10px' }}
                 onChange={(e) => setSelectedInvoice({ ...selectedInvoice, status: e.target.value })}
                 required
               >

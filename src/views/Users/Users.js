@@ -213,7 +213,7 @@ const Users = () => {
                 placeholder="Name"
                 id="Name"
                 label="Name"
-                style={{ borderColor: 'black' }}
+
                 value={user.name}
                 onChange={(e) => setUser({ ...user, name: e.target.value })}
                 required
@@ -224,7 +224,7 @@ const Users = () => {
                 placeholder="Username"
                 id="username"
                 label="Username"
-                style={{ borderColor: 'black' }}
+
                 value={user.username}
                 onChange={(e) => setUser({ ...user, username: e.target.value })}
                 required
@@ -236,7 +236,7 @@ const Users = () => {
                 id="Password"
                 label="Password"
                 type="password"
-                style={{ borderColor: 'black' }}
+
                 value={user.password}
                 onChange={(e) => setUser({ ...user, password: e.target.value })}
                 required
@@ -248,7 +248,7 @@ const Users = () => {
                 id="CPassword"
                 label="Confirm Password"
                 type="password"
-                style={{ borderColor: 'black' }}
+
                 required
               />
             </CCol>
@@ -256,7 +256,7 @@ const Users = () => {
               <CFormSelect
                 id="Role"
                 label="Role User"
-                style={{ borderColor: 'black' }}
+
                 value={user.role}
                 onChange={(e) => setUser({ ...user, role: e.target.value })}
                 required
@@ -272,7 +272,7 @@ const Users = () => {
                 placeholder="DNI"
                 id="DNI"
                 label="DNI"
-                style={{ borderColor: 'black' }}
+
                 value={user.dni}
                 onChange={(e) => setUser({ ...user, dni: e.target.value })}
                 required
@@ -284,7 +284,7 @@ const Users = () => {
                 id="email"
                 label="Email"
                 type="email"
-                style={{ borderColor: 'black' }}
+
                 value={user.email}
                 onChange={(e) => setUser({ ...user, email: e.target.value })}
                 required
@@ -295,7 +295,7 @@ const Users = () => {
                 placeholder="Phone"
                 id="Phone"
                 label="Phone"
-                style={{ borderColor: 'black' }}
+
                 value={user.phone}
                 onChange={(e) => setUser({ ...user, phone: e.target.value })}
                 required
@@ -306,7 +306,7 @@ const Users = () => {
                 placeholder="Address"
                 id="Address"
                 label="Address"
-                style={{ borderColor: 'black' }}
+
                 value={user.address}
                 onChange={(e) => setUser({ ...user, address: e.target.value })}
                 required
@@ -316,7 +316,7 @@ const Users = () => {
               <CButton
                 style={{
                   backgroundColor: 'red',
-                  borderColor: 'black',
+
                   color: 'white',
                   marginRight: '10px',
                 }}
@@ -344,7 +344,7 @@ const Users = () => {
                 placeholder="User Name"
                 id="username"
                 label="User Name"
-                style={{ borderColor: 'black' }}
+
                 value={user.name}
                 onChange={(e) => setUser({ ...user, name: e.target.value })}
                 required
@@ -356,7 +356,7 @@ const Users = () => {
                 id="email"
                 label="Email"
                 type="email"
-                style={{ borderColor: 'black' }}
+
                 value={user.email}
                 onChange={(e) => setUser({ ...user, email: e.target.value })}
                 required
@@ -367,7 +367,7 @@ const Users = () => {
                 placeholder="Phone"
                 id="Phone"
                 label="Phone"
-                style={{ borderColor: 'black' }}
+
                 value={user.phone}
                 onChange={(e) => setUser({ ...user, phone: e.target.value })}
                 required
@@ -378,7 +378,7 @@ const Users = () => {
                 placeholder="Address"
                 id="Address"
                 label="Address"
-                style={{ borderColor: 'black' }}
+
                 value={user.address}
                 onChange={(e) => setUser({ ...user, address: e.target.value })}
                 required
@@ -389,7 +389,7 @@ const Users = () => {
                 <CFormSelect
                   id="Status"
                   label="Status User"
-                  style={{ borderColor: 'black' }}
+
                   value={user.status}
                   onChange={(e) => setUser({ ...user, status: e.target.value })}
                   required

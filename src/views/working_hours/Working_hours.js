@@ -190,13 +190,13 @@ const Working_hours = () => {
 
 
 
-      <CModal size="lg" visible={visibleAdd} onClose={() => setVisibleAdd(false)}>
+      <CModal size="md" visible={visibleAdd} onClose={() => setVisibleAdd(false)}>
         <CModalHeader>
           <CModalTitle>Add Working Hour</CModalTitle>
         </CModalHeader>
         <CModalBody>
           <CForm onSubmit={handleAddWorkingHour}>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormSelect
                 label="Select Driver"
                 value={selectedHour?.driver_id}
@@ -221,7 +221,7 @@ const Working_hours = () => {
                 ))}
               </CFormSelect>
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormInput
                 label="Entry Time"
                 value={selectedHour?.entry_time}
@@ -229,7 +229,7 @@ const Working_hours = () => {
                 required
               />
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormInput
                 label="Exit Time"
                 value={selectedHour?.exit_time}
@@ -237,12 +237,13 @@ const Working_hours = () => {
                 required
               />
             </CCol>
-            <CCol md={6}>
+            <CCol md={12}>
               <CFormSelect
                 label="Day"
                 value={selectedHour?.day_id}
                 onChange={(e) => setSelectedHour({ ...selectedHour, day_id: e.target.value })}
                 required
+                style={{ marginBottom: '10px' }}
               >
                 <option value="">Choose...</option>
                 {day.map(dayItem => (

@@ -262,7 +262,7 @@ const Drivers = () => {
                   type="date"
                   value={driver.date_of_issue}
                   onChange={(e) => setDriver({ ...driver, date_of_issue: e.target.value })}
-                  style={{ borderColor: 'black' }}
+
                 />
               </CCol>
               <CCol md={12}>
@@ -270,7 +270,7 @@ const Drivers = () => {
                   id="dateExpiration"
                   label="Expiration Date"
                   type="date"
-                  style={{ borderColor: 'black' }}
+
                   value={driver.expiration_date}
                   onChange={(e) => setDriver({ ...driver, expiration_date: e.target.value })}
                 />
@@ -279,7 +279,7 @@ const Drivers = () => {
                 <CFormSelect
                   id="sex"
                   label="Sex"
-                  style={{ borderColor: 'black' }}
+
                   value={driver.sex}
                   onChange={(e) => setDriver({ ...driver, sex: e.target.value })}
                 >
@@ -310,7 +310,7 @@ const Drivers = () => {
       </CModal>
 
       <CModal
-        size="xl"
+        size="md"
         visible={visibleND}
         onClose={() => setVisibleND(false)}
         aria-labelledby="modalTitle"
@@ -324,7 +324,7 @@ const Drivers = () => {
               <CFormSelect
                 id="user_id"
                 label="Select User"
-                style={{ borderColor: 'black' }}
+
                 value={driver.user_id}
                 onChange={(e) => setDriver({ ...driver, user_id: e.target.value })}
                 required
@@ -345,7 +345,7 @@ const Drivers = () => {
               <CFormSelect
                 id="type"
                 label="Limitations License"
-                style={{ borderColor: 'black' }}
+
                 value={driver.limitations}
                 onChange={(e) => setDriver({ ...driver, limitations: e.target.value })}>
                 <option value={""}>Choose...</option>
@@ -358,7 +358,7 @@ const Drivers = () => {
                 id="dateIssue"
                 label="Date of Issue License"
                 type="date"
-                style={{ borderColor: 'black' }}
+
                 value={driver.date_of_issue}
                 onChange={(e) => setDriver({ ...driver, date_of_issue: e.target.value })}
               />
@@ -368,16 +368,16 @@ const Drivers = () => {
                 id="dateExp"
                 label="Expiration Date"
                 type="date"
-                style={{ borderColor: 'black' }}
+
                 value={driver.expiration_date}
                 onChange={(e) => setDriver({ ...driver, expiration_date: e.target.value })}
               />
             </CCol>
-            <CCol md={12} style={{ marginTop: '10px' }}>
+            <CCol md={12} style={{ marginTop: '10px', marginBottom: '10px' }}>
               <CFormSelect
                 id="sex"
                 label="Sex"
-                style={{ borderColor: 'black' }}
+
                 value={driver.sex}
                 onChange={(e) => setDriver({ ...driver, sex: e.target.value })}
               >
