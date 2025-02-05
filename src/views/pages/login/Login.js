@@ -16,6 +16,8 @@ import {
 import CIcon from '@coreui/icons-react';
 import { cilLockLocked, cilUser } from '@coreui/icons';
 import axios from 'axios';
+import { helpHttp } from '../../../helpHttp';
+import { bodyParser } from 'json-server';
 
 const Login = () => {
   const url = 'https://aplication-backend-production.up.railway.app/login';
@@ -23,6 +25,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
+  const api = helpHttp();
 
   useEffect(() => {
     const loggedInUser = localStorage.getItem('user');
@@ -39,10 +42,13 @@ const Login = () => {
     console.log('Password:', password);
 
     try {
-      const response = await axios.post(url, {
-        username: username,
-        password: password,
-      }, { withCredentials: true });
+      const response = await api.post(url, {
+        body: {
+          username: username,
+          password: password,
+        },
+        credentials: 'include',
+      });
 
       if (response.status === 200) {
         console.log('Login successful:', response.data);
