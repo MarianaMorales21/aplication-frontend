@@ -42,11 +42,11 @@ const Invoices = () => {
   });
 
   const api = helpHttp();
-  const urlInvoices = 'http://localhost:8080/bills';
-  const urlClients = 'http://localhost:8080/clients';
-  const urlPaymentMethods = 'http://localhost:8080/payment_method';
-  const urlUsers = 'http://localhost:8080/ormusers';
-  const urlOrders = 'http://localhost:8080/orders';
+  const urlInvoices = 'https://aplication-backend-production.up.railway.app/bills';
+  const urlClients = 'https://aplication-backend-production.up.railway.app/clients';
+  const urlPaymentMethods = 'https://aplication-backend-production.up.railway.app/payment_method';
+  const urlUsers = 'https://aplication-backend-production.up.railway.app/ormusers';
+  const urlOrders = 'https://aplication-backend-production.up.railway.app/orders';
 
   useEffect(() => {
     fetchInvoices();

@@ -29,10 +29,10 @@ const WidgetsDropdown = (props) => {
     const fetchData = async () => {
       const api = helpHttp()
       try {
-        const urlUsers = await api.get('http://localhost:8080/ormusers')
-        const urlDriver = await api.get('http://localhost:8080/ormdriver')
-        const urlOrder = await api.get('http://localhost:8080/orders')
-        const urlTruck = await api.get('http://localhost:8080/trucks')
+        const urlUsers = await api.get('https://aplication-backend-production.up.railway.app/ormusers')
+        const urlDriver = await api.get('https://aplication-backend-production.up.railway.app/ormdriver')
+        const urlOrder = await api.get('https://aplication-backend-production.up.railway.app/orders')
+        const urlTruck = await api.get('https://aplication-backend-production.up.railway.app/trucks')
 
         setStats({
           users: urlUsers.length,

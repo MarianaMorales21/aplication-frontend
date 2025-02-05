@@ -27,13 +27,13 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const urlMaterial = await api.get('http://localhost:8080/material');
-        const urlUsers = await api.get('http://localhost:8080/ormusers');
-        const urlDriver = await api.get('http://localhost:8080/ormdriver');
-        const urlOrder = await api.get('http://localhost:8080/orders');
-        const urlTruck = await api.get('http://localhost:8080/trucks');
-        const urlUsersWithDrivers = await api.get('http://localhost:8080/users-with-drivers');
-        const urlDriversWithUsers = await api.get('http://localhost:8080/drivers-with-users');
+        const urlMaterial = await api.get('https://aplication-backend-production.up.railway.app/material');
+        const urlUsers = await api.get('https://aplication-backend-production.up.railway.app/ormusers');
+        const urlDriver = await api.get('https://aplication-backend-production.up.railway.app/ormdriver');
+        const urlOrder = await api.get('https://aplication-backend-production.up.railway.app/orders');
+        const urlTruck = await api.get('https://aplication-backend-production.up.railway.app/trucks');
+        const urlUsersWithDrivers = await api.get('https://aplication-backend-production.up.railway.app/users-with-drivers');
+        const urlDriversWithUsers = await api.get('https://aplication-backend-production.up.railway.app/drivers-with-users');
 
         const processedData = [
           { title: 'Materials', value: `${urlMaterial.length} Materials`, percent: 100, color: 'success' },

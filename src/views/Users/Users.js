@@ -24,7 +24,7 @@ import { helpHttp } from '../../helpHttp'
 
 const Users = () => {
   const api = helpHttp()
-  const url = 'http://localhost:8080/ormusers'
+  const url = 'https://aplication-backend-production.up.railway.app/ormusers'
 
   const [users, setUsers] = useState([])
   const [user, setUser] = useState({

@@ -32,7 +32,7 @@ const ForgotPassword = () => {
     setIsResetting(true);
 
     try {
-      const response = await axios.post('http://localhost:8080/request-password-reset', { email });
+      const response = await axios.post('https://aplication-backend-production.up.railway.app/request-password-reset', { email });
       alert(response.data);
       setIsResetting(false);
       setIsResetting(true);
@@ -49,7 +49,7 @@ const ForgotPassword = () => {
 
     try {
       const newPassword = e.target[1].value;
-      const response = await axios.post('http://localhost:8080/reset-password', { token, newPassword });
+      const response = await axios.post('https://aplication-backend-production.up.railway.app/reset-password', { token, newPassword });
       setTimeout(() => {
         setModalVisible(false);
         navigate('/');

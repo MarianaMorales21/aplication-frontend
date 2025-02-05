@@ -24,8 +24,8 @@ import { helpHttp } from '../../helpHttp';
 const Clients = () => {
   const [visibleNC, setVisibleNC] = useState(false);
   const api = helpHttp();
-  const urlClients = 'http://localhost:8080/clients';
-  const urlUsers = 'http://localhost:8080/ormusers';
+  const urlClients = 'https://aplication-backend-production.up.railway.app/clients';
+  const urlUsers = 'https://aplication-backend-production.up.railway.app/ormusers';
   const [clients, setClients] = useState([]);
   const [users, setUsers] = useState([]);
   const [client, setClient] = useState({

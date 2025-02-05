@@ -27,8 +27,8 @@ const Drivers = () => {
   const [confirmDeleteModalVisible, setConfirmDeleteModalVisible] = useState(false)
   const [driverIdToDelete, setDriverIdToDelete] = useState(null)
   const api = helpHttp()
-  const urlDrivers = 'http://localhost:8080/ormdriver'
-  const urlUsers = 'http://localhost:8080/ormusers'
+  const urlDrivers = 'https://aplication-backend-production.up.railway.app/ormdriver'
+  const urlUsers = 'https://aplication-backend-production.up.railway.app/ormusers'
   const [drivers, setDrivers] = useState([])
   const [users, setUsers] = useState([])
   const [driver, setDriver] = useState({

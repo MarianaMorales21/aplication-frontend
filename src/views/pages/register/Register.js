@@ -41,7 +41,7 @@ const Register = () => {
     }
 
     try {
-      const response = await api.post('http://localhost:8080/register', {
+      const response = await api.post('https://aplication-backend-production.up.railway.app/register', {
         body: {
           username,
           name,

@@ -30,10 +30,10 @@ const Working_hours = () => {
   const [selectedHour, setSelectedHour] = useState(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const api = helpHttp();
-  const urlWorkingHours = 'http://localhost:8080/schedules';
-  const urlDrivers = 'http://localhost:8080/ormdriver';
-  const urlUsers = 'http://localhost:8080/ormusers';
-  const urlDay = 'http://localhost:8080/days';
+  const urlWorkingHours = 'https://aplication-backend-production.up.railway.app/schedules';
+  const urlDrivers = 'https://aplication-backend-production.up.railway.app/ormdriver';
+  const urlUsers = 'https://aplication-backend-production.up.railway.app/ormusers';
+  const urlDay = 'https://aplication-backend-production.up.railway.app/days';
 
   useEffect(() => {
     fetchWorkingHours();

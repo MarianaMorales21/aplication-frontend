@@ -51,13 +51,13 @@ const Order_details = () => {
   const [drivers, setDrivers] = useState([]);
   const [trucks, setTruck] = useState([]);
   const api = helpHttp();
-  const urlOrders = 'http://localhost:8080/orders';
-  const urlOrderDetails = 'http://localhost:8080/orders-details';
-  const urlMaterials = 'http://localhost:8080/material';
-  const urlClients = 'http://localhost:8080/clients';
-  const urlUsers = 'http://localhost:8080/ormusers';
-  const urlDrivers = 'http://localhost:8080/ormdriver';
-  const urlTruck = 'http://localhost:8080/trucks';
+  const urlOrders = 'https://aplication-backend-production.up.railway.app/orders';
+  const urlOrderDetails = 'https://aplication-backend-production.up.railway.app/orders-details';
+  const urlMaterials = 'https://aplication-backend-production.up.railway.app/material';
+  const urlClients = 'https://aplication-backend-production.up.railway.app/clients';
+  const urlUsers = 'https://aplication-backend-production.up.railway.app/ormusers';
+  const urlDrivers = 'https://aplication-backend-production.up.railway.app/ormdriver';
+  const urlTruck = 'https://aplication-backend-production.up.railway.app/trucks';
 
   const fetchOrders = async () => {
     const response = await api.get(urlOrders);

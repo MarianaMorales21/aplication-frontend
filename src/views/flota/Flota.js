@@ -40,10 +40,10 @@ const Flota = () => {
   });
 
   const api = helpHttp();
-  const urlTrucks = 'http://localhost:8080/trucks';
-  const urlUsers = 'http://localhost:8080/ormusers';
-  const urlDrivers = 'http://localhost:8080/ormdriver';
-  const urlModels = 'http://localhost:8080/model';
+  const urlTrucks = 'https://aplication-backend-production.up.railway.app/trucks';
+  const urlUsers = 'https://aplication-backend-production.up.railway.app/ormusers';
+  const urlDrivers = 'https://aplication-backend-production.up.railway.app/ormdriver';
+  const urlModels = 'https://aplication-backend-production.up.railway.app/model';
 
   useEffect(() => {
     fetchTrucks();
